@@ -1,7 +1,41 @@
 import { CheckCircle, XCircle, Volume2 } from 'lucide-react';
 import { TestQuestion } from '../../types';
 import { useSpeechSynthesis } from 'react-speech-kit';
-import { useEffect } from 'react';
+import { useEffect, useCallback } from 'react';
+
+// Declaración de tipos para react-speech-kit si no existen
+declare module 'react-speech-kit' {
+  interface SpeechSynthesisVoice {
+    voiceURI: string;
+    name: string;
+    lang: string;
+    localService: boolean;
+    default: boolean;
+  }
+
+  interface SpeechSynthesisUtterance {
+    text: string;
+    lang: string;
+    voice: SpeechSynthesisVoice;
+    volume: number;
+    rate: number;
+    pitch: number;
+  }
+
+  interface SpeechSynthesis {
+    speak: (utterance: SpeechSynthesisUtterance) => void;
+    cancel: () => void;
+    speaking: boolean;
+    voices: SpeechSynthesisVoice[];
+  }
+
+  export function useSpeechSynthesis(): {
+    speak: (args: { text: string; rate?: number; pitch?: number; voice?: SpeechSynthesisVoice }) => void;
+    cancel: () => void;
+    speaking: boolean;
+    voices: SpeechSynthesisVoice[];
+  };
+}
 
 interface QuestionDisplayProps {
   question: TestQuestion;
@@ -25,13 +59,17 @@ const QuestionDisplay = ({
   // Determinar si el usuario es un niño pequeño (menor de 7 años)
   const isYoungChild = parseInt(userAge) < 7;
   
-  // Función para leer un texto en voz alta
-  const readText = (text: string) => {
+  // Función para leer un texto en voz alta con useCallback para evitar recreación en cada render
+  const readText = useCallback((text: string) => {
     if (speaking) {
       cancel();
     }
-    speak({ text });
-  };
+    speak({ 
+      text,
+      rate: isYoungChild ? 0.9 : 1.0, // Velocidad más lenta para niños
+      pitch: isYoungChild ? 1.2 : 1.0 // Tono más alto para niños
+    });
+  }, [speak, cancel, speaking, isYoungChild]);
   
   // Si es un niño pequeño, leer automáticamente la pregunta al cargar
   useEffect(() => {
@@ -41,7 +79,8 @@ const QuestionDisplay = ({
       }, 500);
       return () => clearTimeout(timer);
     }
-  }, [question.question, isYoungChild]);
+  }, [question.question, isYoungChild, readText]);
+
   const getSkillTranslation = (skill: string) => {
     switch (skill) {
       case 'grammar': return 'Gramática';
@@ -74,6 +113,7 @@ const QuestionDisplay = ({
             className="ml-2 p-2 text-blue-600 hover:text-blue-800 rounded-full hover:bg-blue-100 transition-colors"
             title="Escuchar pregunta"
             type="button"
+            aria-label="Escuchar pregunta en voz alta"
           >
             <Volume2 className="h-5 w-5" />
           </button>
@@ -85,7 +125,14 @@ const QuestionDisplay = ({
             <button
               onClick={() => onAnswer(option)}
               disabled={feedbackState !== null}
-              className={`w-full text-left p-4 border rounded-lg hover:bg-blue-50 transition-colors relative ${feedbackState !== null ? 'cursor-not-allowed' : ''}`}
+              className={`w-full text-left p-4 border rounded-lg hover:bg-blue-50 transition-colors relative ${
+                feedbackState !== null ? 'cursor-not-allowed' : ''
+              } ${
+                feedbackState === 'correct' && option === question.correctAnswer ? 'border-green-500 bg-green-50' :
+                feedbackState === 'incorrect' && option === question.correctAnswer ? 'border-green-500 bg-green-50' :
+                feedbackState === 'incorrect' && option !== question.correctAnswer ? 'border-red-300 bg-red-50' :
+                'border-gray-300'
+              }`}
             >
               {option}
             </button>
@@ -97,6 +144,7 @@ const QuestionDisplay = ({
               className="ml-2 p-2 text-blue-600 hover:text-blue-800 rounded-full hover:bg-blue-100 transition-colors"
               title="Escuchar opción"
               type="button"
+              aria-label="Escuchar opción en voz alta"
             >
               <Volume2 className="h-4 w-4" />
             </button>
@@ -105,7 +153,9 @@ const QuestionDisplay = ({
       </div>
       
       {feedbackState && (
-        <div className={`mt-4 p-3 rounded-lg flex items-center ${feedbackState === 'correct' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+        <div className={`mt-4 p-3 rounded-lg flex items-center ${
+          feedbackState === 'correct' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+        }`}>
           {feedbackState === 'correct' ? (
             <>
               <CheckCircle className="h-5 w-5 mr-2" />
@@ -114,7 +164,7 @@ const QuestionDisplay = ({
           ) : (
             <>
               <XCircle className="h-5 w-5 mr-2" />
-              <span>Respuesta incorrecta</span>
+              <span>Respuesta incorrecta. La respuesta correcta es: {question.correctAnswer}</span>
             </>
           )}
         </div>
