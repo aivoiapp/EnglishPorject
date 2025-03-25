@@ -1,0 +1,1 @@
+echo REACT_APP_DEEPSEEK_API_KEY=your_api_key_here >> c:\Users\USUARIO\Proyectos\EnglishPorject\.env
