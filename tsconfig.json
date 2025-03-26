@@ -1,4 +1,7 @@
 {
+  "compilerOptions": {
+    "types": ["vite/client", "node"] // Add 'node' here
+  },
   "files": [],
   "references": [
     { "path": "./tsconfig.app.json" },

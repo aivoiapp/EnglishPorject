@@ -1,13 +1,27 @@
 import { useState } from 'react';
 import { Book } from 'lucide-react';
 import { ScheduleSection, HeroSection, ContactSection, PaymentSection, FAQSection, PlacementSection, BenefitsSection, AudienceSection, CurriculumSection, ProfessorsSection } from './components';
+import ThemeToggle from './components/ThemeToggle';
 
 function App() {
-  const [name, setName] = useState('');
+  // Estado para almacenar los datos del usuario
+  const [userData, setUserData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    group: '',
+    documentType: 'dni',
+    documentNumber: ''
+  });
 
-  // Function to update the name from ContactSection
+  // Manejador para actualizar el nombre desde el componente ContactSection
   const handleNameChange = (newName: string) => {
-    setName(newName);
+    setUserData(prev => ({ ...prev, name: newName }));
+  };
+
+  // Manejador para recibir los datos del formulario de HeroSection
+  const handleHeroFormSubmit = (name: string, email: string, phone: string, documentType: string, documentNumber: string) => {
+    setUserData(prev => ({ ...prev, name, email, phone, documentType, documentNumber }));
   };
 
   return (
@@ -19,32 +33,41 @@ function App() {
               <Book className="h-8 w-8 text-blue-600 dark:text-blue-400" />
               <span className="ml-2 text-2xl font-bold text-gray-800 dark:text-white">English Academy</span>
             </div>
+            
             <nav className="hidden md:flex space-x-8">
               <a href="#audiencia" className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400">Audiencia</a>
               <a href="#curriculum" className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400">Curriculum</a>
               <a href="#profesores" className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400">Profesores</a>
               <a href="#horarios" className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400">Horarios</a>
-              {/* Remove the "Precios" link */}
-              {/* <a href="#precios" className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400">Precios</a> */}
               <a href="#faq" className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400">FAQ</a>
-              <a href="#evaluacion" className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400">Placement Test</a> {/* Ensure correct ID */}
+              <a href="#evaluacion" className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400">Placement Test</a>
               <a href="#contacto" className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400">Contacto</a>
             </nav>
+
+            <div className="flex items-center gap-4">
+              <ThemeToggle />
+            </div>
           </div>
         </div>
       </header>
 
       <main>
-        <HeroSection />
+        <HeroSection onFormSubmit={handleHeroFormSubmit} />
         <BenefitsSection />
         <AudienceSection />
         <CurriculumSection />
         <ProfessorsSection />
         <ScheduleSection />
         <FAQSection />
-        <PlacementSection /> 
+        <PlacementSection />
         <ContactSection onNameChange={handleNameChange} />
-        <PaymentSection name={name} />
+        <PaymentSection 
+          name={userData.name} 
+          email={userData.email} 
+          phone={userData.phone} 
+          documentType={userData.documentType} 
+          documentNumber={userData.documentNumber} 
+        />
       </main>
 
       <footer className="bg-gray-800 dark:bg-gray-900 text-white py-8">

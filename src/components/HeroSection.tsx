@@ -1,20 +1,27 @@
 import React, { useState } from 'react';
 import { Sparkles, CheckCircle2, BookOpen, Clock, Award } from 'lucide-react';
-import { Agent, agents } from '../types';
 
-const HeroSection = () => {
+interface HeroSectionProps {
+  onFormSubmit: (name: string, email: string, phone: string, documentType: string, documentNumber: string) => void;
+}
+
+const HeroSection: React.FC<HeroSectionProps> = ({ onFormSubmit }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
-  const [selectedGroup, setSelectedGroup] = useState('');
-  const [selectedAgent, setSelectedAgent] = useState<Agent>(agents[0]);
+  const [documentType, setDocumentType] = useState('dni');
+  const [documentNumber, setDocumentNumber] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const whatsappMessage = encodeURIComponent(
-      `Hola ${selectedAgent.name}, me interesa tomar clases de inglés. Mi nombre es ${name} y me gustaría más información sobre el grupo de ${selectedGroup}.`
-    );
-    window.open(`https://wa.me/${selectedAgent.phone}?text=${whatsappMessage}`, '_blank');
+    // Enviar los datos del formulario al componente padre para redirigir a la sección de pago
+    onFormSubmit(name, email, phone, documentType, documentNumber);
+    
+    // Desplazar la página hasta la sección de pago
+    const paymentSection = document.getElementById('payment');
+    if (paymentSection) {
+      paymentSection.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   return (
@@ -125,33 +132,30 @@ const HeroSection = () => {
                 />
               </div>
 
-              <div>
-                <label className="block text-gray-700 dark:text-gray-300 mb-2">Grupo de interés</label>
-                <select
-                  value={selectedGroup}
-                  onChange={(e) => setSelectedGroup(e.target.value)}
-                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                  required
-                >
-                  <option value="">Selecciona un grupo</option>
-                  <option value="niños">Niños (7-12 años)</option>
-                  <option value="adolescentes">Adolescentes (13-17 años)</option>
-                  <option value="adultos">Adultos (18+ años)</option>
-                </select>
-              </div>
+
 
               <div>
-                <label className="block text-gray-700 dark:text-gray-300 mb-2">Consultar con</label>
+                <label className="block text-gray-700 dark:text-gray-300 mb-2">Tipo de Documento</label>
                 <select
-                  value={selectedAgent.phone}
-                  onChange={(e) => setSelectedAgent(agents.find(agent => agent.phone === e.target.value) || agents[0])}
+                  value={documentType}
+                  onChange={(e) => setDocumentType(e.target.value)}
                   className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                   required
                 >
-                  {agents.map((agent, index) => (
-                    <option key={index} value={agent.phone}>{agent.name}</option>
-                  ))}
+                  <option value="dni">DNI</option>
+                  <option value="ce">Carnet de Extranjería</option>
                 </select>
+              </div>
+              
+              <div>
+                <label className="block text-gray-700 dark:text-gray-300 mb-2">Número de Documento</label>
+                <input
+                  type="text"
+                  value={documentNumber}
+                  onChange={(e) => setDocumentNumber(e.target.value)}
+                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                  required
+                />
               </div>
 
               <button
@@ -159,7 +163,7 @@ const HeroSection = () => {
                 className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center mt-6"
               >
                 <Sparkles className="mr-2 h-5 w-5" />
-                ¡Reserva tu plaza ahora!
+                ¡Continuar al pago!
               </button>
             </form>
           </div>
