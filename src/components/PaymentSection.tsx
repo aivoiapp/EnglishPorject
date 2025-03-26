@@ -70,18 +70,18 @@ const PaymentSection: React.FC<PaymentSectionProps> = ({ name }) => {
   };
 
   return (
-    <section className="py-16 bg-gray-50">
+    <section className="py-16 bg-gray-50 dark:bg-gray-900">
       <div className="container mx-auto px-6">
-        <h2 className="text-3xl font-bold text-center mb-12">Realiza tu pago</h2>
+        <h2 className="text-3xl font-bold text-center mb-12 dark:text-white">Realiza tu pago</h2>
         <div className="max-w-lg mx-auto">
-          <div className="bg-white p-6 rounded-lg shadow-md">
+          <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
             <div className="space-y-4">
               <div>
-                <label className="block text-gray-700 mb-2">Método de pago</label>
+                <label className="block text-gray-700 dark:text-gray-300 mb-2">Método de pago</label>
                 <select
                   value={paymentMethod}
                   onChange={(e) => setPaymentMethod(e.target.value)}
-                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                   required
                 >
                   <option value="">Selecciona un método</option>
@@ -92,7 +92,7 @@ const PaymentSection: React.FC<PaymentSectionProps> = ({ name }) => {
               {paymentMethod && (
                 <button
                   onClick={handlePayment}
-                  className="w-full bg-blue-600 text-white py-3 rounded-lg flex items-center justify-center hover:bg-blue-700"
+                  className="w-full bg-blue-600 text-white py-3 rounded-lg flex items-center justify-center hover:bg-blue-700 transition-colors"
                 >
                   <CreditCard className="mr-2" />
                   Pagar S/. 100
@@ -105,12 +105,12 @@ const PaymentSection: React.FC<PaymentSectionProps> = ({ name }) => {
 
       {showPaymentSuccess && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-          <div className="bg-white p-8 rounded-lg max-w-md">
-            <h3 className="text-2xl font-bold mb-4">¡Pago exitoso!</h3>
-            <p className="mb-4">Tu recibo ha sido generado y descargado automáticamente.</p>
+          <div className="bg-white dark:bg-gray-800 p-8 rounded-lg max-w-md">
+            <h3 className="text-2xl font-bold mb-4 dark:text-white">¡Pago exitoso!</h3>
+            <p className="mb-4 dark:text-gray-300">Tu recibo ha sido generado y descargado automáticamente.</p>
             <button
               onClick={() => setShowPaymentSuccess(false)}
-              className="w-full bg-blue-600 text-white py-2 rounded-lg"
+              className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700"
             >
               Cerrar
             </button>

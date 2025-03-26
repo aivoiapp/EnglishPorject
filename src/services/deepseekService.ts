@@ -96,9 +96,9 @@ export const parseApiResponse = <T>(data: DeepSeekResponse): T => {
     }
     
     // Limpiar caracteres no imprimibles y espacios en blanco al inicio y final
-    // Replace the problematic regex with this version
+    // Preservamos caracteres especiales del español (á, é, í, ó, ú, ñ, Á, É, Í, Ó, Ú, Ñ, ü, Ü)
     jsonContent = jsonContent.trim()
-      .replace(/[^\x20-\x7E]/g, '');
+      .replace(/[^\x20-\x7E\xC1\xC9\xCD\xD3\xDA\xD1\xE1\xE9\xED\xF3\xFA\xF1\xFC\xDC]/g, '');
     
     // Verificar si el contenido comienza y termina con corchetes o llaves (indicativo de JSON)
     if (!((jsonContent.startsWith('{') && jsonContent.endsWith('}')) || 
@@ -114,10 +114,28 @@ export const parseApiResponse = <T>(data: DeepSeekResponse): T => {
     
     console.log('Intentando parsear como JSON:', jsonContent);
     const parsedData = JSON.parse(jsonContent) as unknown;
+
+    // Define a type for the questions if not already defined
+    type QuestionType = {
+      question: string;
+      options: string[];
+      correctAnswer: string;
+      difficulty: 'A1' | 'A2' | 'B1' | 'B2' | 'C1';
+      skill: 'grammar' | 'vocabulary' | 'listening' | 'reading';
+      image?: string;
+    };
+
+    // Filtrar preguntas que mencionan imágenes
+    let filteredData;
+    if (Array.isArray(parsedData)) {
+      filteredData = parsedData.filter((question: QuestionType) => !question.question.includes('image'));
+    } else {
+      filteredData = parsedData;
+    }
     
     // Validar y asegurar que los datos cumplen con la estructura esperada
-    console.log('Datos parseados correctamente:', parsedData);
-    return parsedData as T;
+    console.log('Datos parseados correctamente:', filteredData);
+    return filteredData as T;
   } catch (error) {
     console.error('Error al parsear la respuesta JSON de la API:', error);
     console.log('Contenido que no se pudo parsear:', data.choices[0]?.message?.content);

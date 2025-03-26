@@ -12,7 +12,7 @@ const PricingSection = () => (
           50% de Descuento
         </div>
       </div>
-      <div className="max-w-md mx-auto bg-white text-gray-800 rounded-xl shadow-2xl overflow-hidden transform hover:scale-105 transition-transform duration-300">
+      <div className="max-w-md mx-auto bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 rounded-xl shadow-2xl overflow-hidden transform hover:scale-105 transition-transform duration-300">
         <div className="relative">
           <div className="absolute top-0 right-0 bg-red-500 text-white px-4 py-1 rounded-bl-lg">
             ¡LIMITADO!
@@ -20,30 +20,30 @@ const PricingSection = () => (
           <div className="p-8">
             <div className="text-center mb-6">
               <div className="flex justify-center items-center gap-2 mb-4">
-                <span className="text-4xl font-bold line-through text-gray-400">S/. 200</span>
-                <span className="text-5xl font-bold text-blue-600">S/. 100</span>
+                <span className="text-4xl font-bold line-through text-gray-400 dark:text-gray-500">S/. 200</span>
+                <span className="text-5xl font-bold text-blue-600 dark:text-blue-400">S/. 100</span>
               </div>
-              <span className="text-gray-500">/mes</span>
+              <span className="text-gray-500 dark:text-gray-400">/mes</span>
             </div>
             <ul className="space-y-4">
               <li className="flex items-center">
-                <CheckCircle2 className="w-5 h-5 text-green-500 mr-2" />
+                <CheckCircle2 className="w-5 h-5 text-green-500 dark:text-green-400 mr-2" />
                 Clases virtuales en vivo
               </li>
               <li className="flex items-center">
-                <CheckCircle2 className="w-5 h-5 text-green-500 mr-2" />
+                <CheckCircle2 className="w-5 h-5 text-green-500 dark:text-green-400 mr-2" />
                 2 sesiones semanales
               </li>
               <li className="flex items-center">
-                <CheckCircle2 className="w-5 h-5 text-green-500 mr-2" />
+                <CheckCircle2 className="w-5 h-5 text-green-500 dark:text-green-400 mr-2" />
                 Material didáctico incluido
               </li>
               <li className="flex items-center">
-                <CheckCircle2 className="w-5 h-5 text-green-500 mr-2" />
+                <CheckCircle2 className="w-5 h-5 text-green-500 dark:text-green-400 mr-2" />
                 Profesores nativos
               </li>
               <li className="flex items-center">
-                <CheckCircle2 className="w-5 h-5 text-green-500 mr-2" />
+                <CheckCircle2 className="w-5 h-5 text-green-500 dark:text-green-400 mr-2" />
                 Grupos reducidos
               </li>
             </ul>

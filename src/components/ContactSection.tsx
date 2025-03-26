@@ -21,13 +21,13 @@ const ContactSection: React.FC<ContactSectionProps> = ({ onNameChange }) => {
   };
 
   return (
-    <section id="contacto" className="py-16 bg-white">
+    <section id="contacto" className="py-16 bg-white dark:bg-gray-800">
       <div className="container mx-auto px-6">
-        <h2 className="text-3xl font-bold text-center mb-12">Contáctanos</h2>
+        <h2 className="text-3xl font-bold text-center mb-12 dark:text-white">Contáctanos</h2>
         <div className="max-w-lg mx-auto">
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label className="block text-gray-700 mb-2">Nombre completo</label>
+              <label className="block text-gray-700 dark:text-gray-300 mb-2">Nombre completo</label>
               <input
                 type="text"
                 value={name}
@@ -37,26 +37,26 @@ const ContactSection: React.FC<ContactSectionProps> = ({ onNameChange }) => {
                     onNameChange(e.target.value);
                   }
                 }}
-                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                 required
               />
             </div>
             <div>
-              <label className="block text-gray-700 mb-2">WhatsApp</label>
+              <label className="block text-gray-700 dark:text-gray-300 mb-2">WhatsApp</label>
               <input
                 type="tel"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
-                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                 required
               />
             </div>
             <div>
-              <label className="block text-gray-700 mb-2">Grupo de interés</label>
+              <label className="block text-gray-700 dark:text-gray-300 mb-2">Grupo de interés</label>
               <select
                 value={selectedGroup}
                 onChange={(e) => setSelectedGroup(e.target.value)}
-                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                 required
               >
                 <option value="">Selecciona un grupo</option>
@@ -66,11 +66,11 @@ const ContactSection: React.FC<ContactSectionProps> = ({ onNameChange }) => {
               </select>
             </div>
             <div>
-              <label className="block text-gray-700 mb-2">Consultar con</label>
+              <label className="block text-gray-700 dark:text-gray-300 mb-2">Consultar con</label>
               <select
                 value={selectedAgent.phone}
                 onChange={(e) => setSelectedAgent(agents.find(agent => agent.phone === e.target.value) || agents[0])}
-                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                 required
               >
                 {agents.map((agent, index) => (

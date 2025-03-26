@@ -2,13 +2,9 @@
  * Servicio para manejar la generación y evaluación de preguntas del test de nivel
  */
 
-import { TestQuestion, PlacementTestResult } from '../types';
+import { PlacementTestResult } from '../types';
 import { isApiKeyConfigured, callDeepSeekApi, parseApiResponse } from './deepseekService';
-
-// Interfaz extendida para incluir respuestas correctas
-export interface TestQuestionWithAnswer extends TestQuestion {
-  correctAnswer: string;
-}
+import { TestQuestionWithAnswer } from '../types';
 
 /**
  * Genera preguntas para el test de nivel basadas en los datos del usuario
@@ -34,7 +30,7 @@ export const generateQuestions = async (
 - Learning goals: ${learningGoals}
 
 Generate an adaptive English placement test that evaluates the user’s actual level. Adjust:
-- The **type of content** to be age-appropriate (e.g., use images, simpler vocabulary, or oral-type instructions for very young users under 8).
+- The **type of content** to be age-appropriate (e.g., use simpler vocabulary or oral-type instructions for very young users under 8).
 - The **complexity and number of questions** based on both the age and self-assessed level. For example:
   - Very young learners (age < 8): 3–5 very basic questions focused on listening or simple recognition.
   - Children 8–12: 6–8 questions, mostly A1–A2, with short and clear wording.
@@ -43,6 +39,7 @@ Generate an adaptive English placement test that evaluates the user’s actual l
 Important:
 - Vary skills (grammar, vocabulary, reading, listening) proportionally to the user's profile.
 - Make sure questions are pedagogically meaningful and suitable to identify the user’s actual level.
+- Do not include questions that reference images unless they can be displayed.
 
 Return ONLY a JSON array of questions, each with the following structure:
 
@@ -108,115 +105,9 @@ export const evaluateTest = async (
   }
 };
 
-/**
- * Determina el grupo recomendado basado en la edad
- * @param age Edad del usuario
- * @returns Grupo recomendado
- */
-export const getRecommendedGroup = (age: number): string => {
-  if (age >= 7 && age <= 12) return "Niños (7-12 años)";
-  if (age >= 13 && age <= 17) return "Adolescentes (13-17 años)";
-  return "Adultos (18+ años)";
-};
+// Importar funciones de mocks
+import { getRecommendedGroup, getMockQuestions, getMockResult } from '../mocks/placementMocks';
 
-/**
- * Obtiene preguntas mock para el test
- * @returns Array de preguntas mock
- */
-export const getMockQuestions = (): TestQuestionWithAnswer[] => {
-  return [
-    {
-      question: "What is the correct form of the verb in this sentence? 'She ___ to the store yesterday.'",
-      options: ["go", "goes", "went", "going"],
-      correctAnswer: "went",
-      difficulty: "A2",
-      skill: "grammar"
-    },
-    {
-      question: "Choose the word that best completes the sentence: 'I ___ my homework before dinner.'",
-      options: ["did", "done", "do", "doing"],
-      correctAnswer: "did",
-      difficulty: "A1",
-      skill: "grammar"
-    },
-    {
-      question: "What is the meaning of 'ubiquitous'?",
-      options: ["rare", "present everywhere", "beautiful", "dangerous"],
-      correctAnswer: "present everywhere",
-      difficulty: "C1",
-      skill: "vocabulary"
-    },
-    {
-      question: "Which sentence is grammatically correct?",
-      options: [
-        "I have been to Paris last year.", 
-        "I went to Paris last year.", 
-        "I have gone to Paris last year.", 
-        "I was go to Paris last year."
-      ],
-      correctAnswer: "I went to Paris last year.",
-      difficulty: "B1",
-      skill: "grammar"
-    },
-    {
-      question: "What is the opposite of 'generous'?",
-      options: ["kind", "stingy", "wealthy", "giving"],
-      correctAnswer: "stingy",
-      difficulty: "B1",
-      skill: "vocabulary"
-    },
-    {
-      question: "Read the passage and answer: 'John likes to play sports. He especially enjoys basketball and soccer. On weekends, he often goes to the park.' What does John like to do?",
-      options: ["Read books", "Play sports", "Go shopping", "Watch movies"],
-      correctAnswer: "Play sports",
-      difficulty: "A1",
-      skill: "reading"
-    },
-    {
-      question: "Choose the correct preposition: 'I'm afraid ___ spiders.'",
-      options: ["of", "from", "about", "for"],
-      correctAnswer: "of",
-      difficulty: "A2",
-      skill: "grammar"
-    },
-    {
-      question: "Which word is a synonym for 'happy'?",
-      options: ["sad", "angry", "joyful", "tired"],
-      correctAnswer: "joyful",
-      difficulty: "A1",
-      skill: "vocabulary"
-    }
-  ];
-};
+// Las funciones getMockQuestions y getRecommendedGroup ahora se importan desde placementMocks.ts
 
-/**
- * Obtiene un resultado mock para el test
- * @param age Edad del usuario
- * @returns Resultado mock
- */
-export const getMockResult = (age: number): PlacementTestResult => {
-  const recommendedGroup = getRecommendedGroup(age);
-  
-  return {
-    level: "B1",
-    score: 65,
-    strengths: [
-      "Buen manejo de vocabulario básico",
-      "Comprensión de estructuras gramaticales simples",
-      "Capacidad para entender contextos cotidianos"
-    ],
-    weaknesses: [
-      "Dificultad con tiempos verbales complejos",
-      "Vocabulario limitado en temas específicos",
-      "Errores en preposiciones y artículos"
-    ],
-    recommendation: "Recomendamos enfocarte en practicar más la gramática intermedia y expandir tu vocabulario. Sería beneficioso unirte a nuestro grupo de nivel intermedio donde podrás desarrollar estas habilidades con actividades específicas.",
-    nextSteps: [
-      "Inscribirte en nuestro curso de nivel B1",
-      "Practicar con ejercicios de gramática enfocados en tiempos verbales",
-      "Expandir vocabulario con lecturas temáticas",
-      "Participar en conversaciones guiadas para mejorar fluidez"
-    ],
-    recommendedGroup: recommendedGroup
-  };
-};
+// La función getMockResult ahora se importa desde placementMocks.ts

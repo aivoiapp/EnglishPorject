@@ -14,6 +14,13 @@
   box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
 }
 
+@media (prefers-color-scheme: dark) {
+  .question-container {
+    background-color: rgb(31, 41, 55);
+    color: white;
+  }
+}
+
 .options-grid {
   display: grid;
   gap: 1rem;
@@ -26,6 +33,13 @@
   border-radius: 0.5rem;
   box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   transition: all 0.2s ease-in-out;
+}
+
+@media (prefers-color-scheme: dark) {
+  .options-grid button {
+    background-color: rgb(55, 65, 81);
+    color: white;
+  }
 }
 
 .options-grid button:hover {

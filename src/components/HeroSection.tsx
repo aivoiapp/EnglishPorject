@@ -18,7 +18,7 @@ const HeroSection = () => {
   };
 
   return (
-    <section id="hero" className="py-12 md:py-20 bg-gradient-to-br from-blue-700 to-blue-900 text-white">
+    <section id="hero" className="py-12 md:py-20 bg-gradient-to-br from-blue-700 to-blue-900 dark:from-blue-900 dark:to-blue-950 text-white">
       <div className="container mx-auto px-6">
         <div className="grid md:grid-cols-2 gap-12 items-center">
           {/* Columna izquierda - Contenido */}
@@ -85,52 +85,52 @@ const HeroSection = () => {
           </div>
 
           {/* Columna derecha - Formulario */}
-          <div className="bg-white text-gray-800 rounded-xl shadow-2xl overflow-hidden p-8">
+          <div className="bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 rounded-xl shadow-2xl overflow-hidden p-8">
             <div className="text-center mb-6">
-              <h2 className="text-2xl font-bold text-blue-800">Inscríbete al curso</h2>
-              <p className="text-gray-600">Inicio: 01 de Mayo | Cupos: limitados</p>
+              <h2 className="text-2xl font-bold text-blue-800 dark:text-blue-400">Inscríbete al curso</h2>
+              <p className="text-gray-600 dark:text-gray-400">Inicio: 01 de Mayo | Cupos: limitados</p>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="block text-gray-700 mb-2">Nombre completo</label>
+                <label className="block text-gray-700 dark:text-gray-300 mb-2">Nombre completo</label>
                 <input
                   type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                   required
                 />
               </div>
               
               <div>
-                <label className="block text-gray-700 mb-2">Email</label>
+                <label className="block text-gray-700 dark:text-gray-300 mb-2">Email</label>
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                   required
                 />
               </div>
 
               <div>
-                <label className="block text-gray-700 mb-2">WhatsApp</label>
+                <label className="block text-gray-700 dark:text-gray-300 mb-2">WhatsApp</label>
                 <input
                   type="tel"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
-                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                   required
                 />
               </div>
 
               <div>
-                <label className="block text-gray-700 mb-2">Grupo de interés</label>
+                <label className="block text-gray-700 dark:text-gray-300 mb-2">Grupo de interés</label>
                 <select
                   value={selectedGroup}
                   onChange={(e) => setSelectedGroup(e.target.value)}
-                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                   required
                 >
                   <option value="">Selecciona un grupo</option>
@@ -141,11 +141,11 @@ const HeroSection = () => {
               </div>
 
               <div>
-                <label className="block text-gray-700 mb-2">Consultar con</label>
+                <label className="block text-gray-700 dark:text-gray-300 mb-2">Consultar con</label>
                 <select
                   value={selectedAgent.phone}
                   onChange={(e) => setSelectedAgent(agents.find(agent => agent.phone === e.target.value) || agents[0])}
-                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                   required
                 >
                   {agents.map((agent, index) => (

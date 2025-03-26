@@ -48,4 +48,10 @@ export interface TestQuestion {
   correctAnswer: string;
   difficulty: 'A1' | 'A2' | 'B1' | 'B2' | 'C1';
   skill: 'grammar' | 'vocabulary' | 'listening' | 'reading';
+  image?: string; // Add this line to include the image property
+}
+
+// Interfaz extendida para incluir respuestas correctas
+export interface TestQuestionWithAnswer extends TestQuestion {
+  correctAnswer: string;
 }
