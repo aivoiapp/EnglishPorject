@@ -1,41 +1,10 @@
 import { Volume2 } from 'lucide-react';
 import { TestQuestion } from '../../types';
-import { useSpeechSynthesis } from 'react-speech-kit';
 import { useEffect, useCallback, useState } from 'react';
+import { useSpeechSynthesis } from '../../hooks/useSpeechSynthesis';
 
-// Declaración de tipos para react-speech-kit si no existen
-declare module 'react-speech-kit' {
-  interface SpeechSynthesisVoice {
-    voiceURI: string;
-    name: string;
-    lang: string;
-    localService: boolean;
-    default: boolean;
-  }
-
-  interface SpeechSynthesisUtterance {
-    text: string;
-    lang: string;
-    voice: SpeechSynthesisVoice;
-    volume: number;
-    rate: number;
-    pitch: number;
-  }
-
-  interface SpeechSynthesis {
-    speak: (utterance: SpeechSynthesisUtterance) => void;
-    cancel: () => void;
-    speaking: boolean;
-    voices: SpeechSynthesisVoice[];
-  }
-
-  export function useSpeechSynthesis(): {
-    speak: (args: { text: string; rate?: number; pitch?: number; voice?: SpeechSynthesisVoice }) => void;
-    cancel: () => void;
-    speaking: boolean;
-    voices: SpeechSynthesisVoice[];
-  };
-}
+// Ya no necesitamos declarar tipos para react-speech-kit
+// Los tipos ahora vienen de nuestro hook personalizado
 
 interface QuestionDisplayProps {
   question: TestQuestion;
