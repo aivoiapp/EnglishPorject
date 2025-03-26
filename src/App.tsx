@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Book } from 'lucide-react';
-import { ScheduleSection, HeroSection, ContactSection, PaymentSection, FAQSection, PlacementSection, BenefitsSection } from './components';
+import { ScheduleSection, HeroSection, ContactSection, PaymentSection, FAQSection, PlacementSection, BenefitsSection, AudienceSection, CurriculumSection, ProfessorsSection } from './components';
 
 function App() {
   const [name, setName] = useState('');
@@ -20,6 +20,9 @@ function App() {
               <span className="ml-2 text-2xl font-bold text-gray-800 dark:text-white">English Academy</span>
             </div>
             <nav className="hidden md:flex space-x-8">
+              <a href="#audiencia" className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400">Audiencia</a>
+              <a href="#curriculum" className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400">Curriculum</a>
+              <a href="#profesores" className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400">Profesores</a>
               <a href="#horarios" className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400">Horarios</a>
               {/* Remove the "Precios" link */}
               {/* <a href="#precios" className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400">Precios</a> */}
@@ -34,6 +37,9 @@ function App() {
       <main>
         <HeroSection />
         <BenefitsSection />
+        <AudienceSection />
+        <CurriculumSection />
+        <ProfessorsSection />
         <ScheduleSection />
         <FAQSection />
         <PlacementSection /> 
