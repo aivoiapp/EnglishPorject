@@ -16,12 +16,7 @@ interface MakeWebhookResponse {
 }
 
 // URLs de los webhooks de Make.com desde variables de entorno
-const WEBHOOKS = {
-  HERO_FORM: import.meta.env.VITE_MAKE_WEBHOOK_HERO || 'https://hook.eu1.make.com/your-hero-form-webhook',
-  CONTACT_FORM: import.meta.env.VITE_MAKE_WEBHOOK_CONTACT || 'https://hook.eu1.make.com/your-contact-form-webhook',
-  PLACEMENT_TEST: import.meta.env.VITE_MAKE_WEBHOOK_PLACEMENT || 'https://hook.eu1.make.com/your-placement-test-webhook',
-  PAYMENT_FORM: import.meta.env.VITE_MAKE_WEBHOOK_PAYMENT || 'https://hook.eu1.make.com/your-payment-form-webhook'
-};
+const UNIFIED_WEBHOOK = 'https://hook.us2.make.com/gyebx6etjrubt48brle65sdvhdsm07qq';
 
 /**
  * Envía los datos del formulario Hero a Make.com
@@ -36,9 +31,9 @@ export const sendHeroFormData = async (formData: {
   documentNumber: string;
 }) => {
   try {
-    const response = await axios.post('https://hook.us2.make.com/gyebx6etjrubt48brle65sdvhdsm07qq', {
+    const response = await axios.post(UNIFIED_WEBHOOK, {
       ...formData,
-      source: 'Hero Form',
+      formType: 'hero',
       timestamp: new Date().toISOString()
     });
     
@@ -65,10 +60,10 @@ export const sendContactFormData = async (formData: {
   };
 }): Promise<MakeWebhookResponse> => {
   try {
-    console.log('Sending contact form data to Make.com webhook:', WEBHOOKS.CONTACT_FORM);
-    const response = await axios.post(WEBHOOKS.CONTACT_FORM, {
+    console.log('Sending contact form data to Make.com webhook:', UNIFIED_WEBHOOK);
+    const response = await axios.post(UNIFIED_WEBHOOK, {
       ...formData,
-      source: 'Contact Form',
+      formType: 'contact',
       timestamp: new Date().toISOString()
     });
     
@@ -76,7 +71,6 @@ export const sendContactFormData = async (formData: {
     return response.data;
   } catch (error) {
     console.error('Error sending contact form data:', error);
-    // Proporcionar información más detallada sobre el error
     if (axios.isAxiosError(error)) {
       console.error('Axios error details:', {
         status: error.response?.status,
@@ -177,11 +171,11 @@ export const sendPlacementTestData = async (
   try {
     console.log('Processing placement test data for Make.com webhook');
     
-    // Convertir el PDF a base64
+    // Convert the PDF to base64
     const pdfBase64 = await convertPdfToBase64(pdfBlob);
     console.log('PDF converted to base64 successfully');
     
-    // Crear el objeto de datos para enviar
+    // Create the data object to send
     const formData = {
       userData,
       testResult,
@@ -191,18 +185,18 @@ export const sendPlacementTestData = async (
         mimeType: 'application/pdf'
       },
       source: 'Placement Test',
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
+      formType: 'placement' // Add formType here
     };
     
-    // Enviar los datos a Make.com
-    console.log('Sending placement test data to Make.com webhook:', WEBHOOKS.PLACEMENT_TEST);
-    const response = await axios.post(WEBHOOKS.PLACEMENT_TEST, formData);
+    // Send the data to Make.com
+    console.log('Sending placement test data to Make.com webhook:', UNIFIED_WEBHOOK);
+    const response = await axios.post(UNIFIED_WEBHOOK, formData);
     
     console.log('Placement test data sent successfully:', response.data);
     return response.data;
   } catch (error) {
     console.error('Error sending placement test data:', error);
-    // Proporcionar información más detallada sobre el error
     if (axios.isAxiosError(error)) {
       console.error('Axios error details:', {
         status: error.response?.status,
@@ -229,11 +223,11 @@ export const sendPaymentFormData = async (
   try {
     console.log('Processing payment form data for Make.com webhook');
     
-    // Convertir el PDF a base64
+    // Convert the PDF to base64
     const pdfBase64 = await convertPdfToBase64(pdfBlob);
     console.log('PDF converted to base64 successfully');
     
-    // Crear el objeto de datos para enviar
+    // Create the data object to send
     const formData = {
       paymentData,
       pdfAttachment: {
@@ -242,18 +236,18 @@ export const sendPaymentFormData = async (
         mimeType: 'application/pdf'
       },
       source: 'Payment Form',
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
+      formType: 'payment' // Add formType here
     };
     
-    // Enviar los datos a Make.com
-    console.log('Sending payment form data to Make.com webhook:', WEBHOOKS.PAYMENT_FORM);
-    const response = await axios.post(WEBHOOKS.PAYMENT_FORM, formData);
+    // Send the data to Make.com
+    console.log('Sending payment form data to Make.com webhook:', UNIFIED_WEBHOOK);
+    const response = await axios.post(UNIFIED_WEBHOOK, formData);
     
     console.log('Payment form data sent successfully:', response.data);
     return response.data;
   } catch (error) {
     console.error('Error sending payment form data:', error);
-    // Proporcionar información más detallada sobre el error
     if (axios.isAxiosError(error)) {
       console.error('Axios error details:', {
         status: error.response?.status,
