@@ -1,73 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { CreditCard } from 'lucide-react';
 import { PaymentForm, PaymentFormData } from './payment';
 import { storePaymentData, generatePaymentReceipt, getCurrentPaymentData, clearPaymentData } from '../services/paymentService';
 
-// Definición de tipos para Izipay
-interface IzipayConfig {
-  config: {
-    render: {
-      typeForm: string;
-    };
-    style?: {
-      theme?: string;
-      buttonColor?: string;
-      // Propiedades adicionales de estilo con tipos específicos
-      customCss?: string;
-      inputStyle?: string;
-      buttonStyle?: string;
-    };
-    // Propiedades adicionales de configuración con tipos específicos
-    language?: string;
-    currency?: string;
-    amount?: number;
-    orderId?: string;
-    customer?: {
-      email?: string;
-      name?: string;
-    };
-  };
-}
-
-// Definición de la respuesta de Izipay
-interface IzipayResponse {
-  status: string;
-  transactionId?: string;
-  orderId?: string;
-  amount?: number;
-  currency?: string;
-  errorCode?: string;
-  errorMessage?: string;
-  // Propiedades adicionales específicas que pueden venir en la respuesta
-  date?: string;
-  time?: string;
-  cardBrand?: string;
-  cardNumber?: string;
-  authorizationCode?: string;
-  paymentMethodType?: string;
-  paymentMethodToken?: string;
-  customerName?: string;
-  customerEmail?: string;
-  Errors?: Record<string, string>;
-}
-
-interface IzipayInstance {
-  LoadForm: (params: {
-    authorization: string;
-    keyRSA: string;
-    callbackResponse: (response: IzipayResponse) => void;
-  }) => void;
-}
-
-interface IzipayConstructor {
-  new (config: { config: IzipayConfig }): IzipayInstance;
-}
-
-declare global {
-  interface Window {
-    Izipay: IzipayConstructor;
-  }
-}
 
 interface PaymentSectionProps {
   name: string;
@@ -81,75 +16,16 @@ const PaymentSection: React.FC<PaymentSectionProps> = ({ name, email, phone, doc
   const [showPaymentSuccess, setShowPaymentSuccess] = useState(false);
   const [showPaymentForm, setShowPaymentForm] = useState(true);
   const [paymentData, setPaymentData] = useState<PaymentFormData | null>(null);
-  const paymentMethod = 'Izipay'; // Valor fijo ya que solo usamos Izipay
+  const paymentMethod = 'Simulación'; // Cambiado de Izipay a Simulación
 
-  useEffect(() => {
-    // Cargar el script de Izipay
-    const script = document.createElement('script');
-    script.src = 'https://checkout.izipay.pe/plugins/api/V1/assets/js/izipay.min.js';
-    script.async = true;
-    
-    // También mantenemos el script de KR para compatibilidad con el método de pago Visa existente
-    const krScript = document.createElement('script');
-    krScript.src = 'https://static.micuentaweb.pe/static/js/krypton-client/V4.0/stable/kr-payment-form.min.js';
-    krScript.setAttribute('kr-public-key', import.meta.env.VITE_PUBLIC_KEY);
-    krScript.setAttribute('kr-language', 'es-ES');
-    krScript.setAttribute('kr-currency', 'PEN');
-    
-    document.body.appendChild(script);
-    document.body.appendChild(krScript);
-
-    return () => {
-      document.body.removeChild(script);
-      document.body.removeChild(krScript);
-    };
-  }, []);
-  
-  // Configuración de Izipay
-  const iziConfig = {
-    config: {
-      render: {
-        typeForm: 'pop-up'
-      },
-      style: {
-        theme: 'classic',
-        buttonColor: '#3B82F6'
-      }
-    }
-  };
-
-  const handlePayment = async () => {
-    try {
-      const callbackResponsePayment = (response: IzipayResponse) => {
-        console.log('Izipay response:', response);
-        if (response && response.status === 'success') {
-          setShowPaymentSuccess(true);
-          const currentData = paymentData || getCurrentPaymentData();
-          if (currentData) {
-            generatePaymentReceipt(currentData, paymentMethod, response.transactionId);
-          }
-        }
-      };
-
-      if (window.Izipay) {
-        try {
-          const checkout = new window.Izipay({ config: iziConfig });
-          const authorization = import.meta.env.VITE_IZIPAY_TOKEN_DEV; // Use development token
-          const keyRSA = import.meta.env.VITE_IZIPAY_KEY_RSA_DEV; // Use development RSA key
-
-          checkout.LoadForm({
-            authorization,
-            keyRSA,
-            callbackResponse: callbackResponsePayment
-          });
-        } catch (error) {
-          console.error('Izipay error:', error instanceof Error ? error.message : 'Unknown error');
-        }
-      } else {
-        console.error('Izipay SDK no está cargado correctamente');
-      }
-    } catch (error) {
-      console.error('Payment failed:', error instanceof Error ? error.message : 'Unknown error');
+  const handlePayment = () => {
+    // Simulamos un pago exitoso inmediatamente
+    setShowPaymentSuccess(true);
+    const currentData = paymentData || getCurrentPaymentData();
+    if (currentData) {
+      // Generamos el recibo con un ID de transacción simulado
+      const simulatedTransactionId = `SIM-${Date.now()}`;
+      generatePaymentReceipt(currentData, paymentMethod, simulatedTransactionId);
     }
   };
 
@@ -217,7 +93,7 @@ const PaymentSection: React.FC<PaymentSectionProps> = ({ name, email, phone, doc
               <div className="space-y-4">
                 <div>
                   <label className="block text-gray-700 dark:text-gray-300 mb-2">Método de pago</label>
-                  <p className="text-gray-600 dark:text-gray-400 mb-4">Pago con tarjeta a través de Izipay</p>
+                  <p className="text-gray-600 dark:text-gray-400 mb-4">Simulación de pago (sin pasarela de pago real)</p>
                 </div>
                 <div className="flex flex-col sm:flex-row gap-3">
                   <button
