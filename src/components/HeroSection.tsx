@@ -15,13 +15,9 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onFormSubmit }) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Enviar los datos del formulario al componente padre para redirigir a la sección de pago
+    console.log('Enviando datos del formulario:', { name, email, phone, documentType, documentNumber });
     onFormSubmit(name, email, phone, documentType, documentNumber);
-    
-    // Desplazar la página hasta la sección de pago
-    const paymentSection = document.getElementById('payment');
-    if (paymentSection) {
-      paymentSection.scrollIntoView({ behavior: 'smooth' });
-    }
+    // El desplazamiento se maneja ahora en App.tsx
   };
 
   return (

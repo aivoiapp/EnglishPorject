@@ -21,7 +21,29 @@ function App() {
 
   // Manejador para recibir los datos del formulario de HeroSection
   const handleHeroFormSubmit = (name: string, email: string, phone: string, documentType: string, documentNumber: string) => {
-    setUserData(prev => ({ ...prev, name, email, phone, documentType, documentNumber }));
+    console.log('Datos recibidos del formulario Hero:', { name, email, phone, documentType, documentNumber });
+    
+    // Asegurarse de que los datos no sean undefined o null antes de actualizar el estado
+    const sanitizedData = {
+      name: name || '',
+      email: email || '',
+      phone: phone || '',
+      group: '', // Mantener la propiedad group del estado inicial
+      documentType: documentType || 'dni',
+      documentNumber: documentNumber || ''
+    };
+     
+    // Actualizar el estado con los nuevos datos
+    setUserData(sanitizedData);
+    console.log('Estado actualizado con:', sanitizedData);
+    
+    // Desplazar la página hasta la sección de pago
+    const paymentSection = document.getElementById('payment');
+    if (paymentSection) {
+      setTimeout(() => {
+        paymentSection.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+    }
   };
 
   return (

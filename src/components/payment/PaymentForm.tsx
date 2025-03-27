@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Schedule, schedules } from '../../types';
 
 export interface PaymentFormData {
   // Datos personales
-  firstName: string;
-  lastName: string;
+  fullName: string;
   documentType: 'dni' | 'ce';
   documentNumber: string;
   email: string;
@@ -33,8 +32,7 @@ interface PaymentFormProps {
 
 const PaymentForm: React.FC<PaymentFormProps> = ({ onFormSubmit, initialData = {} }) => {
   const [formData, setFormData] = useState<PaymentFormData>({
-    firstName: initialData.firstName || '',
-    lastName: initialData.lastName || '',
+    fullName: initialData.fullName || '',
     documentType: initialData.documentType || 'dni',
     documentNumber: initialData.documentNumber || '',
     email: initialData.email || '',
@@ -51,6 +49,21 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ onFormSubmit, initialData = {
     generateReceipt: initialData.generateReceipt || false,
     ruc: initialData.ruc || '',
   });
+  
+  // Actualizar el formulario cuando cambien los datos iniciales
+  useEffect(() => {
+    console.log('PaymentForm initialData changed:', initialData);
+    if (initialData.fullName || initialData.email || initialData.phone || initialData.documentNumber) {
+      setFormData(prev => ({
+        ...prev,
+        fullName: initialData.fullName || prev.fullName,
+        email: initialData.email || prev.email,
+        phone: initialData.phone || prev.phone,
+        documentType: initialData.documentType as 'dni' | 'ce' || prev.documentType,
+        documentNumber: initialData.documentNumber || prev.documentNumber
+      }));
+    }
+  }, [initialData]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -87,25 +100,13 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ onFormSubmit, initialData = {
       <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
         <h3 className="text-xl font-semibold mb-4 dark:text-white">Datos Personales</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label htmlFor="firstName" className="block text-gray-700 dark:text-gray-300 mb-2">Nombres</label>
+          <div className="md:col-span-2">
+            <label htmlFor="fullName" className="block text-gray-700 dark:text-gray-300 mb-2">Nombre Completo</label>
             <input
               type="text"
-              id="firstName"
-              name="firstName"
-              value={formData.firstName}
-              onChange={handleInputChange}
-              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-              required
-            />
-          </div>
-          <div>
-            <label htmlFor="lastName" className="block text-gray-700 dark:text-gray-300 mb-2">Apellidos</label>
-            <input
-              type="text"
-              id="lastName"
-              name="lastName"
-              value={formData.lastName}
+              id="fullName"
+              name="fullName"
+              value={formData.fullName}
               onChange={handleInputChange}
               className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
               required

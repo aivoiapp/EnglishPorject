@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { CreditCard } from 'lucide-react';
 import { PaymentForm, PaymentFormData } from './payment';
 import { storePaymentData, generatePaymentReceipt, getCurrentPaymentData, clearPaymentData } from '../services/paymentService';
@@ -13,6 +13,13 @@ interface PaymentSectionProps {
 }
 
 const PaymentSection: React.FC<PaymentSectionProps> = ({ name, email, phone, documentType, documentNumber }) => {
+  // Add debug logging with more visibility
+  console.log('%c PaymentSection received props:', 'background: #ff0; color: #000', { name, email, phone, documentType, documentNumber });
+  
+  // Verificar si los datos están llegando correctamente
+  useEffect(() => {
+    console.log('%c PaymentSection props updated:', 'background: #0f0; color: #000', { name, email, phone, documentType, documentNumber });
+  }, [name, email, phone, documentType, documentNumber]);
   const [showPaymentSuccess, setShowPaymentSuccess] = useState(false);
   const [showPaymentForm, setShowPaymentForm] = useState(true);
   const [paymentData, setPaymentData] = useState<PaymentFormData | null>(null);
@@ -56,11 +63,10 @@ const PaymentSection: React.FC<PaymentSectionProps> = ({ name, email, phone, doc
             <PaymentForm 
               onFormSubmit={handleFormSubmit} 
               initialData={{
-                firstName: name ? (name.split(' ')[0] || '') : '',
-                lastName: name ? (name.split(' ').slice(1).join(' ') || '') : '',
+                fullName: name || '',
                 email: email || '',
                 phone: phone || '',
-                documentType: (documentType === 'dni' || documentType === 'ce') ? documentType : 'dni',
+                documentType: (documentType === 'dni' || documentType === 'ce') ? documentType as 'dni' | 'ce' : 'dni',
                 documentNumber: documentNumber || '',
                 courseLevel: 'Básico',
                 studentGroup: '',
@@ -75,7 +81,7 @@ const PaymentSection: React.FC<PaymentSectionProps> = ({ name, email, phone, doc
                 <div className="mb-6">
                   <h3 className="text-xl font-semibold mb-4 dark:text-white">Resumen de pago</h3>
                   <div className="space-y-2 text-gray-700 dark:text-gray-300">
-                    <p><span className="font-medium">Estudiante:</span> {paymentData.firstName} {paymentData.lastName}</p>
+                    <p><span className="font-medium">Estudiante:</span> {paymentData.fullName}</p>
                     <p><span className="font-medium">Documento:</span> {paymentData.documentType.toUpperCase()} {paymentData.documentNumber}</p>
                     <p><span className="font-medium">Nivel:</span> {paymentData.courseLevel}</p>
                     <p><span className="font-medium">Grupo:</span> {paymentData.studentGroup}</p>
