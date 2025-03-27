@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { MapIcon as WhatsappIcon } from 'lucide-react';
 import { Agent, agents } from '../types';
+import { sendContactFormData } from '../services/makeService';
 
 interface ContactSectionProps {
   onNameChange?: (name: string) => void;
@@ -12,8 +13,24 @@ const ContactSection: React.FC<ContactSectionProps> = ({ onNameChange }) => {
   const [selectedGroup, setSelectedGroup] = useState('');
   const [selectedAgent, setSelectedAgent] = useState<Agent>(agents[0]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    try {
+      // Enviar los datos al webhook de Make.com
+      await sendContactFormData({
+        name,
+        phone,
+        selectedGroup,
+        selectedAgent
+      });
+      console.log('Datos de contacto enviados correctamente a Make.com');
+    } catch (error) {
+      console.error('Error al enviar datos de contacto a Make.com:', error);
+      // Continuamos con el flujo normal incluso si hay error
+    }
+    
+    // Redirigir a WhatsApp como estaba originalmente
     const whatsappMessage = encodeURIComponent(
       `Hola ${selectedAgent.name}, me interesa tomar clases de inglés. Mi nombre es ${name} y me gustaría más información sobre el grupo de ${selectedGroup}.`
     );

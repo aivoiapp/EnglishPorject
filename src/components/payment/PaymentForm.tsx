@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Schedule, schedules } from '../../types';
+import DatePicker from 'react-datepicker';
+import { format, addMonths } from 'date-fns';
+import { es } from 'date-fns/locale';
+import 'react-datepicker/dist/react-datepicker.css';
 
 export interface PaymentFormData {
   // Datos personales
@@ -17,12 +21,14 @@ export interface PaymentFormData {
   // Datos del pago
   paymentType: 'monthly' | 'fullLevel';
   monthsCount: number;
+  startDate: Date; // Fecha de inicio del pago
+  endDate: Date; // Fecha de fin del pago
   amount: number;
-  paymentMethod: string; // Add this line
-  operationNumber: string; // Add this line
-  bank: string; // Add this line
-  generateReceipt: boolean; // Add this line
-  ruc: string; // Add this line
+  paymentMethod: string;
+  operationNumber: string;
+  bank: string;
+  generateReceipt: boolean;
+  ruc: string;
 }
 
 interface PaymentFormProps {
@@ -42,6 +48,8 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ onFormSubmit, initialData = {
     studentGroup: initialData.studentGroup || '',
     paymentType: initialData.paymentType || 'monthly',
     monthsCount: initialData.monthsCount || 1,
+    startDate: initialData.startDate || new Date(),
+    endDate: initialData.endDate || addMonths(new Date(), 1),
     amount: initialData.amount || 100, // Monto por defecto para un mes
     paymentMethod: initialData.paymentMethod || '',
     operationNumber: initialData.operationNumber || '',
@@ -53,14 +61,27 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ onFormSubmit, initialData = {
   // Actualizar el formulario cuando cambien los datos iniciales
   useEffect(() => {
     console.log('PaymentForm initialData changed:', initialData);
-    if (initialData.fullName || initialData.email || initialData.phone || initialData.documentNumber) {
+    if (initialData) {
       setFormData(prev => ({
         ...prev,
         fullName: initialData.fullName || prev.fullName,
         email: initialData.email || prev.email,
         phone: initialData.phone || prev.phone,
         documentType: initialData.documentType as 'dni' | 'ce' || prev.documentType,
-        documentNumber: initialData.documentNumber || prev.documentNumber
+        documentNumber: initialData.documentNumber || prev.documentNumber,
+        courseLevel: initialData.courseLevel || prev.courseLevel,
+        studentGroup: initialData.studentGroup || prev.studentGroup,
+        courseSchedule: initialData.courseSchedule || prev.courseSchedule,
+        paymentType: initialData.paymentType || prev.paymentType,
+        monthsCount: initialData.monthsCount || prev.monthsCount,
+        startDate: initialData.startDate || prev.startDate,
+        endDate: initialData.endDate || prev.endDate,
+        amount: initialData.amount || prev.amount,
+        paymentMethod: initialData.paymentMethod || prev.paymentMethod,
+        operationNumber: initialData.operationNumber || prev.operationNumber,
+        bank: initialData.bank || prev.bank,
+        generateReceipt: initialData.generateReceipt || prev.generateReceipt,
+        ruc: initialData.ruc || prev.ruc
       }));
     }
   }, [initialData]);
@@ -78,15 +99,32 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ onFormSubmit, initialData = {
         // Calcular el monto
         if (paymentType === 'monthly') {
           updatedData.amount = 100 * monthsCount;
+          // Actualizar la fecha de fin basada en la fecha de inicio y la cantidad de meses
+          updatedData.endDate = addMonths(prev.startDate, monthsCount);
         } else {
           // Descuento del 10% para pago de nivel completo (6 meses)
           updatedData.amount = 100 * 6 * 0.9;
           updatedData.monthsCount = 6;
+          // Actualizar la fecha de fin para nivel completo (6 meses)
+          updatedData.endDate = addMonths(prev.startDate, 6);
         }
       }
       
       return updatedData;
     });
+  };
+  // Manejar cambios en la fecha de inicio
+  const handleStartDateChange = (date: Date | null) => {
+    if (date) {
+      setFormData(prev => {
+        const monthsCount = prev.paymentType === 'monthly' ? prev.monthsCount : 6;
+        return {
+          ...prev,
+          startDate: date,
+          endDate: addMonths(date, monthsCount)
+        };
+      });
+    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -242,20 +280,41 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ onFormSubmit, initialData = {
             </select>
           </div>
           {formData.paymentType === 'monthly' && (
-            <div>
-              <label htmlFor="monthsCount" className="block text-gray-700 dark:text-gray-300 mb-2">Cantidad de Meses</label>
-              <input
-                type="number"
-                id="monthsCount"
-                name="monthsCount"
-                min="1"
-                max="12"
-                value={formData.monthsCount}
-                onChange={handleInputChange}
-                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                required
-              />
-            </div>
+            <>
+              <div>
+                <label htmlFor="monthsCount" className="block text-gray-700 dark:text-gray-300 mb-2">Cantidad de Meses</label>
+                <input
+                  type="number"
+                  id="monthsCount"
+                  name="monthsCount"
+                  min="1"
+                  max="12"
+                  value={formData.monthsCount}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                  required
+                />
+              </div>
+              <div>
+                <label htmlFor="startDate" className="block text-gray-700 dark:text-gray-300 mb-2">Mes de inicio</label>
+                <DatePicker
+                  id="startDate"
+                  selected={formData.startDate}
+                  onChange={handleStartDateChange}
+                  dateFormat="MMMM yyyy"
+                  showMonthYearPicker
+                  locale={es}
+                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                />
+              </div>
+              <div>
+                <label className="block text-gray-700 dark:text-gray-300 mb-2">Período de pago</label>
+                <div className="text-gray-700 dark:text-gray-300 p-2 bg-gray-100 dark:bg-gray-700 rounded-lg">
+                  <p>Desde: <strong>{format(formData.startDate, 'MMMM yyyy', { locale: es })}</strong></p>
+                  <p>Hasta: <strong>{format(formData.endDate, 'MMMM yyyy', { locale: es })}</strong></p>
+                </div>
+              </div>
+            </>
           )}
           <div className="md:col-span-2">
             <p className="text-lg font-semibold dark:text-white">
@@ -419,7 +478,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ onFormSubmit, initialData = {
           type="submit"
           className="bg-blue-600 text-white py-3 px-6 rounded-lg flex items-center justify-center hover:bg-blue-700 transition-colors"
         >
-          Continuar con el Pago
+          Enviar y generar comprobante
         </button>
       </div>
     </form>

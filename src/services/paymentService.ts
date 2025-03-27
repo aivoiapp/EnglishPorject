@@ -4,6 +4,7 @@
 
 import { jsPDF } from 'jspdf';
 import { format } from 'date-fns';
+import { es } from 'date-fns/locale';
 import { PaymentFormData } from '../components/payment/PaymentForm';
 
 // Almacenamiento temporal de la información del pago actual
@@ -55,7 +56,7 @@ export const generatePaymentReceipt = (
   // Información del estudiante
   doc.setFontSize(12);
   doc.text(`Fecha: ${currentDate}`, 20, 40);
-  doc.text(`Nombre: ${paymentData.firstName} ${paymentData.lastName}`, 20, 50);
+  doc.text(`Nombre: ${paymentData.fullName}`, 20, 50);
   doc.text(`Documento: ${paymentData.documentType.toUpperCase()} ${paymentData.documentNumber}`, 20, 60);
   doc.text(`Email: ${paymentData.email}`, 20, 70);
   doc.text(`Teléfono: ${paymentData.phone}`, 20, 80);
@@ -72,18 +73,26 @@ export const generatePaymentReceipt = (
   } else {
     doc.text('Tipo: Nivel Completo (6 meses con 10% descuento)', 30, 150);
   }
-  doc.text(`Monto: S/. ${paymentData.amount.toFixed(2)}`, 30, 160);
-  doc.text(`Método de pago: ${paymentMethod}`, 30, 170);
+  
+  // Agregar período de pago
+  if (paymentData.startDate && paymentData.endDate) {
+    doc.text(`Período: ${format(paymentData.startDate, 'MMMM yyyy', { locale: es })} a ${format(paymentData.endDate, 'MMMM yyyy', { locale: es })}`, 30, 160);
+    doc.text(`Monto: S/. ${paymentData.amount.toFixed(2)}`, 30, 170);
+    doc.text(`Método de pago: ${paymentMethod}`, 30, 180);
+  } else {
+    doc.text(`Monto: S/. ${paymentData.amount.toFixed(2)}`, 30, 160);
+    doc.text(`Método de pago: ${paymentMethod}`, 30, 170);
+  }
   
   if (transactionId) {
-    doc.text(`ID de Transacción: ${transactionId}`, 30, 180);
+    doc.text(`ID de Transacción: ${transactionId}`, 30, paymentData.startDate && paymentData.endDate ? 190 : 180);
   }
   
   // Pie de página
   doc.setFontSize(10);
   doc.text('English Academy - Comprobante de Pago', 105, 285, { align: 'center' });
   
-  const fileName = `recibo-${currentMonth}-${paymentData.firstName}-${paymentData.lastName}.pdf`;
+  const fileName = `recibo-${currentMonth}-${paymentData.fullName.replace(/ /g, '-')}.pdf`;
   doc.save(fileName);
   return fileName;
 };

@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Sparkles, CheckCircle2, BookOpen, Clock, Award } from 'lucide-react';
+import { sendHeroFormData } from '../services/makeService';
+
 
 interface HeroSectionProps {
   onFormSubmit: (name: string, email: string, phone: string, documentType: string, documentNumber: string) => void;
@@ -12,12 +14,25 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onFormSubmit }) => {
   const [documentType, setDocumentType] = useState('dni');
   const [documentNumber, setDocumentNumber] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Enviar los datos del formulario al componente padre para redirigir a la sección de pago
     console.log('Enviando datos del formulario:', { name, email, phone, documentType, documentNumber });
-    onFormSubmit(name, email, phone, documentType, documentNumber);
-    // El desplazamiento se maneja ahora en App.tsx
+    
+    try {
+      await sendHeroFormData({
+        name,
+        email,
+        phone,
+        documentType,
+        documentNumber
+      });
+      console.log('Datos enviados correctamente a Make.com');
+      
+      onFormSubmit(name, email, phone, documentType, documentNumber);
+    } catch (error) {
+      console.error('Error al enviar datos a Make.com:', error);
+      onFormSubmit(name, email, phone, documentType, documentNumber);
+    }
   };
 
   return (
@@ -127,8 +142,6 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onFormSubmit }) => {
                   required
                 />
               </div>
-
-
 
               <div>
                 <label className="block text-gray-700 dark:text-gray-300 mb-2">Tipo de Documento</label>

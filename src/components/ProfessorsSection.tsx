@@ -1,21 +1,22 @@
-import { GraduationCap, Award, Star } from 'lucide-react';
+// Remove the unused import 'GraduationCap'
+import { Award, Star } from 'lucide-react';
 
 // Datos de las profesoras
 const professors = [
   {
     id: 1,
-    name: 'Cyril Ordoñez',
-    title: 'Especialista en Inglés Académico',
-    photo: '/images/professor-placeholder-1.svg', // Placeholder hasta tener fotos reales
-    certifications: ['TEFL Certificada', 'Máster en Educación'],
-    experience: 'Con más de 8 años de experiencia enseñando inglés en entornos académicos y empresariales. Especializada en preparación para exámenes internacionales como TOEFL y Cambridge. Su enfoque comunicativo y dinámico hace que sus clases sean altamente efectivas y entretenidas.',
-    specialties: ['Inglés Académico', 'Preparación para Exámenes', 'Business English']
+    name: 'Cyril D.',
+    title: 'Tutora certificada por Cambridge',
+    photo: '/images/cyril.jpg',
+    certifications: ['CAE (Certificate in Advanced English)', 'CELTA (Cambridge ESOL)'],
+    experience: 'Con 9 años de experiencia enseñando inglés como lengua extranjera. Sus clases son dinámicas, con materiales relevantes y un ambiente ameno. Utiliza un método comunicativo y herramientas digitales interactivas, con planes de aprendizaje personalizados según intereses y objetivos del estudiante. Habla Español (nativo), Inglés (C1), Francés (B1) e Italiano (A1).',
+    specialties: ['Inglés General', 'Inglés Académico', 'Conversación', 'Preparación para Exámenes']
   },
   {
     id: 2,
-    name: 'Maricielo Caceres',
+    name: 'Maricielo C.',
     title: 'Experta en Conversación y Pronunciación',
-    photo: '/images/professor-placeholder-2.svg', // Placeholder hasta tener fotos reales
+    photo: '/images/maricielo.jpg',
     certifications: ['CELTA Certificada', 'Especialista en Fonética Inglesa'],
     experience: 'Profesora apasionada con 6 años de experiencia en la enseñanza del inglés con enfoque conversacional. Ha vivido en Estados Unidos y Reino Unido, lo que le ha permitido dominar diferentes acentos y expresiones coloquiales. Su metodología se centra en la práctica constante y la corrección fonética personalizada.',
     specialties: ['Conversación Avanzada', 'Pronunciación', 'Inglés Cotidiano']
@@ -40,8 +41,12 @@ const ProfessorsSection = () => {
               <div className="flex flex-col md:flex-row">
                 {/* Área de foto */}
                 <div className="md:w-1/3 bg-pink-500 flex items-center justify-center p-6">
-                  <div className="w-32 h-32 rounded-full bg-white dark:bg-gray-700 flex items-center justify-center">
-                    <GraduationCap className="w-16 h-16 text-pink-500" />
+                  <div className="w-32 h-32 rounded-full bg-white dark:bg-gray-700 flex items-center justify-center overflow-hidden">
+                    <img 
+                      src={professor.photo} 
+                      alt={`Foto de ${professor.name}`} 
+                      className="w-full h-full object-cover" 
+                    />
                   </div>
                 </div>
                 

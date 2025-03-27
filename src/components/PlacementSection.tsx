@@ -6,7 +6,9 @@ import Loader from './placement/Loader';
 import { generateQuestions } from '../services/placementService'; // Correct path
 import { evaluateUserTest } from '../services/evaluationService'; // Correct path
 import { generatePlacementTestPDF } from '../services/pdfService'; // Correct path
+import { sendPlacementTestData } from '../services/makeService'; // Importar el servicio de Make.com
 import { UserData } from './placement/UserForm';
+import { jsPDF } from 'jspdf';
 
 const PlacementSection = () => {
   // Estados para el flujo del test
@@ -156,11 +158,76 @@ const PlacementSection = () => {
   };
   
   /**
-   * Genera un PDF con los resultados del test
+   * Genera un PDF con los resultados del test y lo envía a Make.com
    */
-  const handleGeneratePDF = () => {
+  const handleGeneratePDF = async () => {
     if (!result) return;
-    generatePlacementTestPDF(result, userData);
+    
+    try {
+      // Generar el PDF y obtener el blob
+      const doc = new jsPDF();
+      doc.setFontSize(22);
+      doc.text('Evaluación de Nivel de Inglés', 105, 20, { align: 'center' });
+      
+      doc.setFontSize(12);
+      doc.text(`Nombre: ${userData.name || 'No proporcionado'}`, 20, 30);
+      doc.text(`Email: ${userData.email || 'No proporcionado'}`, 20, 37);
+      doc.text(`Edad: ${userData.age}`, 20, 44);
+      
+      doc.setFontSize(16);
+      doc.text(`Nivel: ${result.level}`, 20, 55);
+      doc.text(`Puntuación: ${result.score}/100`, 20, 65);
+      
+      if (result.recommendedGroup) {
+        doc.text(`Grupo recomendado: ${result.recommendedGroup}`, 20, 75);
+      }
+      
+      doc.setFontSize(14);
+      doc.text('Fortalezas:', 20, 90);
+      result.strengths.forEach((strength, i) => {
+        doc.text(`- ${strength}`, 30, 100 + (i * 7));
+      });
+      
+      const weaknessesStartY = 100 + (result.strengths.length * 7) + 10;
+      doc.text('Áreas de mejora:', 20, weaknessesStartY);
+      result.weaknesses.forEach((weakness, i) => {
+        doc.text(`- ${weakness}`, 30, weaknessesStartY + 10 + (i * 7));
+      });
+      
+      const recStartY = weaknessesStartY + 10 + (result.weaknesses.length * 7) + 10;
+      doc.text('Recomendación:', 20, recStartY);
+      const splitRecommendation = doc.splitTextToSize(result.recommendation, 170);
+      doc.text(splitRecommendation, 20, recStartY + 10);
+      
+      const nextStepsY = recStartY + 10 + (splitRecommendation.length * 7) + 10;
+      doc.text('Próximos pasos:', 20, nextStepsY);
+      result.nextSteps.forEach((step, i) => {
+        const splitStep = doc.splitTextToSize(`${i+1}. ${step}`, 170);
+        doc.text(splitStep, 20, nextStepsY + 10 + (i * 14));
+      });
+      
+      const pageCount = doc.getNumberOfPages();
+      for(let i = 1; i <= pageCount; i++) {
+        doc.setPage(i);
+        doc.setFontSize(10);
+        doc.text('English Academy - Evaluación de Nivel', 105, 285, { align: 'center' });
+      }
+      
+      // Guardar el PDF localmente
+      const fileName = `english-assessment-${userData.name || 'user'}.pdf`;
+      doc.save(fileName);
+      
+      // Obtener el blob del PDF para enviarlo a Make.com
+      const pdfBlob = doc.output('blob');
+      
+      // Enviar los datos y el PDF a Make.com
+      await sendPlacementTestData(userData, result, pdfBlob);
+      console.log('Datos y PDF del test de nivel enviados correctamente a Make.com');
+    } catch (error) {
+      console.error('Error al enviar datos del test de nivel a Make.com:', error);
+      // Generar el PDF localmente de todos modos para no interrumpir la experiencia del usuario
+      generatePlacementTestPDF(result, userData);
+    }
   };
 
   return (
