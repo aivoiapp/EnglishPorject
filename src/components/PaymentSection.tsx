@@ -16,21 +16,20 @@ const PaymentSection: React.FC<PaymentSectionProps> = ({ name, email, phone, doc
   const [showPaymentSuccess, setShowPaymentSuccess] = useState(false);
   const [showPaymentForm, setShowPaymentForm] = useState(true);
   const [paymentData, setPaymentData] = useState<PaymentFormData | null>(null);
-  const paymentMethod = 'Simulación'; // Cambiado de Izipay a Simulación
+  const paymentMethod = 'Simulación'; // Updated to reflect simulation
 
   const handlePayment = () => {
-    // Simulamos un pago exitoso inmediatamente
+    // Simulate a successful payment
     setShowPaymentSuccess(true);
     const currentData = paymentData || getCurrentPaymentData();
     if (currentData) {
-      // Generamos el recibo con un ID de transacción simulado
       const simulatedTransactionId = `SIM-${Date.now()}`;
       generatePaymentReceipt(currentData, paymentMethod, simulatedTransactionId);
     }
   };
 
   const handleFormSubmit = (data: PaymentFormData) => {
-    // Almacenar los datos del formulario para su uso posterior
+    console.log('Form submitted with data:', data); // Add this line for debugging
     storePaymentData(data);
     setPaymentData(data);
     setShowPaymentForm(false);
@@ -65,7 +64,6 @@ const PaymentSection: React.FC<PaymentSectionProps> = ({ name, email, phone, doc
                 documentNumber: documentNumber || '',
                 courseLevel: 'Básico',
                 studentGroup: '',
-                // No preseleccionamos el horario, se seleccionará en el formulario
                 courseSchedule: ''
               }}
             />
@@ -86,6 +84,10 @@ const PaymentSection: React.FC<PaymentSectionProps> = ({ name, email, phone, doc
                       `Mensual (${paymentData.monthsCount} ${paymentData.monthsCount > 1 ? 'meses' : 'mes'})` : 
                       'Nivel Completo (6 meses con 10% descuento)'}</p>
                     <p className="text-lg font-semibold">Monto a pagar: S/. {paymentData.amount.toFixed(2)}</p>
+                    <p><span className="font-medium">Método de pago:</span> {paymentData.paymentMethod}</p>
+                    {paymentData.generateReceipt && (
+                      <p><span className="font-medium">RUC:</span> {paymentData.ruc}</p>
+                    )}
                   </div>
                 </div>
               )}

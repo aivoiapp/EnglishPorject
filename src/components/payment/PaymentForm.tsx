@@ -19,6 +19,11 @@ export interface PaymentFormData {
   paymentType: 'monthly' | 'fullLevel';
   monthsCount: number;
   amount: number;
+  paymentMethod: string; // Add this line
+  operationNumber: string; // Add this line
+  bank: string; // Add this line
+  generateReceipt: boolean; // Add this line
+  ruc: string; // Add this line
 }
 
 interface PaymentFormProps {
@@ -40,6 +45,11 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ onFormSubmit, initialData = {
     paymentType: initialData.paymentType || 'monthly',
     monthsCount: initialData.monthsCount || 1,
     amount: initialData.amount || 100, // Monto por defecto para un mes
+    paymentMethod: initialData.paymentMethod || '',
+    operationNumber: initialData.operationNumber || '',
+    bank: initialData.bank || '',
+    generateReceipt: initialData.generateReceipt || false,
+    ruc: initialData.ruc || '',
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -68,6 +78,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ onFormSubmit, initialData = {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    console.log('Submitting form with data:', formData); // Add this line for debugging
     onFormSubmit(formData);
   };
 
@@ -253,6 +264,150 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ onFormSubmit, initialData = {
               <p className="text-sm text-green-600 dark:text-green-400">
                 Incluye descuento del 10% por pago de nivel completo
               </p>
+            )}
+          </div>
+
+          <div className="md:col-span-2 mt-4">
+            <label htmlFor="paymentMethod" className="block text-gray-700 dark:text-gray-300 mb-2">Método de Pago</label>
+            <select
+              id="paymentMethod"
+              name="paymentMethod"
+              value={formData.paymentMethod}
+              onChange={handleInputChange}
+              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+              required
+            >
+              <option value="">Selecciona tu método de pago</option>
+              <option value="yape">Yape</option>
+              <option value="transferencia">Transferencia Bancaria</option>
+              <option value="ligo">Tarjeta de Crédito/Débito (Ligo)</option>
+            </select>
+          </div>
+
+          {formData.paymentMethod === 'yape' && (
+            <div className="md:col-span-2 mt-2">
+              <div className="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-4">
+                <p className="text-gray-700 dark:text-gray-300 mb-2">
+                  Realiza el pago vía Yape al número <span className="font-bold">926328988</span> a nombre de <span className="font-bold">Cyril Y. Ordoñez M.</span>
+                </p>
+              </div>
+              <div>
+                <label htmlFor="operationNumber" className="block text-gray-700 dark:text-gray-300 mb-2">Número de Operación</label>
+                <input
+                  type="text"
+                  id="operationNumber"
+                  name="operationNumber"
+                  value={formData.operationNumber}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                  required
+                />
+              </div>
+            </div>
+          )}
+
+          {formData.paymentMethod === 'transferencia' && (
+            <div className="md:col-span-2 mt-2">
+              <div className="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-4">
+                <p className="text-gray-700 dark:text-gray-300 mb-2">
+                  Realiza una transferencia a la cuenta: <span className="font-bold">000-000000000000000000</span> (cuenta referencial).
+                </p>
+              </div>
+              <div>
+                <label htmlFor="operationNumber" className="block text-gray-700 dark:text-gray-300 mb-2">Código de Operación</label>
+                <input
+                  type="text"
+                  id="operationNumber"
+                  name="operationNumber"
+                  value={formData.operationNumber}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                  required
+                />
+              </div>
+            </div>
+          )}
+
+          {formData.paymentMethod === 'ligo' && (
+            <div className="md:col-span-2 mt-2">
+              <div>
+                <label htmlFor="bank" className="block text-gray-700 dark:text-gray-300 mb-2">Selecciona tu Banco</label>
+                <select
+                  id="bank"
+                  name="bank"
+                  value={formData.bank}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                  required
+                >
+                  <option value="">Selecciona un banco</option>
+                  <option value="BCP">BCP</option>
+                  <option value="BBVA">BBVA</option>
+                  <option value="Interbank">Interbank</option>
+                  <option value="Scotiabank">Scotiabank</option>
+                </select>
+              </div>
+
+              {formData.bank && (
+                <div className="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg my-4">
+                  <p className="text-gray-700 dark:text-gray-300 mb-2">
+                    {formData.bank === 'BCP' && 'Instrucciones para pago con BCP: Ingresa a tu app BCP, selecciona "Pagar servicios" > "Empresas diversas" > "Ligo" y completa el pago.'}
+                    {formData.bank === 'BBVA' && 'Instrucciones para pago con BBVA: Ingresa a tu app BBVA, selecciona "Pagos" > "Servicios" > "Ligo" y completa el pago.'}
+                    {formData.bank === 'Interbank' && 'Instrucciones para pago con Interbank: Ingresa a tu app Interbank, selecciona "Pagar" > "Servicios" > "Ligo" y completa el pago.'}
+                    {formData.bank === 'Scotiabank' && 'Instrucciones para pago con Scotiabank: Ingresa a tu app Scotiabank, selecciona "Pagos" > "Servicios" > "Ligo" y completa el pago.'}
+                  </p>
+                </div>
+              )}
+
+              <div>
+                <label htmlFor="operationNumber" className="block text-gray-700 dark:text-gray-300 mb-2">Número de Operación</label>
+                <input
+                  type="text"
+                  id="operationNumber"
+                  name="operationNumber"
+                  value={formData.operationNumber}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                  required
+                />
+              </div>
+            </div>
+          )}
+
+          <div className="md:col-span-2 mt-4">
+            <div className="flex items-center">
+              <input
+                type="checkbox"
+                id="generateReceipt"
+                name="generateReceipt"
+                checked={formData.generateReceipt}
+                onChange={(e) => {
+                  setFormData(prev => ({
+                    ...prev,
+                    generateReceipt: e.target.checked,
+                    ruc: e.target.checked ? prev.ruc : ''
+                  }));
+                }}
+                className="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:bg-gray-700 dark:border-gray-600"
+              />
+              <label htmlFor="generateReceipt" className="ml-2 text-gray-700 dark:text-gray-300">
+                Deseo que se genere un recibo por honorarios
+              </label>
+            </div>
+
+            {formData.generateReceipt && (
+              <div className="mt-4">
+                <label htmlFor="ruc" className="block text-gray-700 dark:text-gray-300 mb-2">Ingrese su RUC para emitir el recibo</label>
+                <input
+                  type="text"
+                  id="ruc"
+                  name="ruc"
+                  value={formData.ruc}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                  required={formData.generateReceipt}
+                />
+              </div>
             )}
           </div>
         </div>
