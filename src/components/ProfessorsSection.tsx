@@ -5,7 +5,7 @@ import { Award, Star } from 'lucide-react';
 const professors = [
   {
     id: 1,
-    name: 'Cyril D.',
+    name: 'Cyril O.',
     title: 'Tutora certificada por Cambridge',
     photo: '/images/cyril.jpg',
     certifications: ['CAE (Certificate in Advanced English)', 'CELTA (Cambridge ESOL)'],

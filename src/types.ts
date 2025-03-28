@@ -11,8 +11,8 @@ export interface Agent {
 }
 
 export const agents: Agent[] = [
-  { name: "Cyril Ordoñez", phone: "51926328988" },
-  { name: "Maricielo Caceres", phone: "51955402309" }
+  { name: "Cyril O.", phone: "51926328988" },
+  { name: "Maricielo C.", phone: "51955402309" }
 ];
 
 export const schedules: Schedule[] = [

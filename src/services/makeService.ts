@@ -27,8 +27,6 @@ export const sendHeroFormData = async (formData: {
   name: string;
   email: string;
   phone: string;
-  documentType: string;
-  documentNumber: string;
 }) => {
   try {
     const response = await axios.post(UNIFIED_WEBHOOK, {

@@ -4,12 +4,12 @@ import DatePicker from 'react-datepicker';
 import { format, addMonths } from 'date-fns';
 import { es } from 'date-fns/locale';
 import 'react-datepicker/dist/react-datepicker.css';
+import CustomPhoneInput from '../CustomPhoneInput';
+import '../../phone-input.css';
 
 export interface PaymentFormData {
   // Datos personales
   fullName: string;
-  documentType: 'dni' | 'ce';
-  documentNumber: string;
   email: string;
   phone: string;
   
@@ -39,8 +39,6 @@ interface PaymentFormProps {
 const PaymentForm: React.FC<PaymentFormProps> = ({ onFormSubmit, initialData = {} }) => {
   const [formData, setFormData] = useState<PaymentFormData>({
     fullName: initialData.fullName || '',
-    documentType: initialData.documentType || 'dni',
-    documentNumber: initialData.documentNumber || '',
     email: initialData.email || '',
     phone: initialData.phone || '',
     courseLevel: initialData.courseLevel || 'Básico',
@@ -67,8 +65,6 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ onFormSubmit, initialData = {
         fullName: initialData.fullName || prev.fullName,
         email: initialData.email || prev.email,
         phone: initialData.phone || prev.phone,
-        documentType: initialData.documentType as 'dni' | 'ce' || prev.documentType,
-        documentNumber: initialData.documentNumber || prev.documentNumber,
         courseLevel: initialData.courseLevel || prev.courseLevel,
         studentGroup: initialData.studentGroup || prev.studentGroup,
         courseSchedule: initialData.courseSchedule || prev.courseSchedule,
@@ -150,32 +146,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ onFormSubmit, initialData = {
               required
             />
           </div>
-          <div>
-            <label htmlFor="documentType" className="block text-gray-700 dark:text-gray-300 mb-2">Tipo de Documento</label>
-            <select
-              id="documentType"
-              name="documentType"
-              value={formData.documentType}
-              onChange={handleInputChange}
-              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-              required
-            >
-              <option value="dni">DNI</option>
-              <option value="ce">Carnet de Extranjería</option>
-            </select>
-          </div>
-          <div>
-            <label htmlFor="documentNumber" className="block text-gray-700 dark:text-gray-300 mb-2">Número de Documento</label>
-            <input
-              type="text"
-              id="documentNumber"
-              name="documentNumber"
-              value={formData.documentNumber}
-              onChange={handleInputChange}
-              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-              required
-            />
-          </div>
+
           <div>
             <label htmlFor="email" className="block text-gray-700 dark:text-gray-300 mb-2">Correo Electrónico</label>
             <input
@@ -189,13 +160,11 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ onFormSubmit, initialData = {
             />
           </div>
           <div>
-            <label htmlFor="phone" className="block text-gray-700 dark:text-gray-300 mb-2">Teléfono</label>
-            <input
-              type="tel"
-              id="phone"
-              name="phone"
+            <CustomPhoneInput
+              label="Teléfono"
+              defaultCountry="PE"
               value={formData.phone}
-              onChange={handleInputChange}
+              onChange={(value) => setFormData(prev => ({ ...prev, phone: value || '' }))}
               className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
               required
             />

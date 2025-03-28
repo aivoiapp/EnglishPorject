@@ -1,37 +1,35 @@
 import React, { useState } from 'react';
 import { Sparkles, CheckCircle2, BookOpen, Clock, Award } from 'lucide-react';
 import { sendHeroFormData } from '../services/makeService';
+import CustomPhoneInput from './CustomPhoneInput';
+import '../phone-input.css';
 
 
 interface HeroSectionProps {
-  onFormSubmit: (name: string, email: string, phone: string, documentType: string, documentNumber: string) => void;
+  onFormSubmit: (name: string, email: string, phone: string) => void;
 }
 
 const HeroSection: React.FC<HeroSectionProps> = ({ onFormSubmit }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
-  const [documentType, setDocumentType] = useState('dni');
-  const [documentNumber, setDocumentNumber] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Enviando datos del formulario:', { name, email, phone, documentType, documentNumber });
+    console.log('Enviando datos del formulario:', { name, email, phone });
     
     try {
       await sendHeroFormData({
         name,
         email,
-        phone,
-        documentType,
-        documentNumber
+        phone
       });
       console.log('Datos enviados correctamente a Make.com');
       
-      onFormSubmit(name, email, phone, documentType, documentNumber);
+      onFormSubmit(name, email, phone);
     } catch (error) {
       console.error('Error al enviar datos a Make.com:', error);
-      onFormSubmit(name, email, phone, documentType, documentNumber);
+      onFormSubmit(name, email, phone);
     }
   };
 
@@ -133,39 +131,17 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onFormSubmit }) => {
               </div>
 
               <div>
-                <label className="block text-gray-700 dark:text-gray-300 mb-2">WhatsApp</label>
-                <input
-                  type="tel"
+                <CustomPhoneInput
+                  label="WhatsApp"
+                  defaultCountry="PE"
                   value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
+                  onChange={(value) => setPhone(value || '')}
                   className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                   required
                 />
               </div>
 
-              <div>
-                <label className="block text-gray-700 dark:text-gray-300 mb-2">Tipo de Documento</label>
-                <select
-                  value={documentType}
-                  onChange={(e) => setDocumentType(e.target.value)}
-                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                  required
-                >
-                  <option value="dni">DNI</option>
-                  <option value="ce">Carnet de Extranjería</option>
-                </select>
-              </div>
-              
-              <div>
-                <label className="block text-gray-700 dark:text-gray-300 mb-2">Número de Documento</label>
-                <input
-                  type="text"
-                  value={documentNumber}
-                  onChange={(e) => setDocumentNumber(e.target.value)}
-                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                  required
-                />
-              </div>
+
 
               <button
                 type="submit"

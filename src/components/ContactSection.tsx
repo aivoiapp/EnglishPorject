@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { MapIcon as WhatsappIcon } from 'lucide-react';
 import { Agent, agents } from '../types';
 import { sendContactFormData } from '../services/makeService';
+import CustomPhoneInput from './CustomPhoneInput';
+import '../phone-input.css';
 
 interface ContactSectionProps {
   onNameChange?: (name: string) => void;
@@ -59,11 +61,11 @@ const ContactSection: React.FC<ContactSectionProps> = ({ onNameChange }) => {
               />
             </div>
             <div>
-              <label className="block text-gray-700 dark:text-gray-300 mb-2">WhatsApp</label>
-              <input
-                type="tel"
+              <CustomPhoneInput
+                label="WhatsApp"
+                defaultCountry="PE"
                 value={phone}
-                onChange={(e) => setPhone(e.target.value)}
+                onChange={(value) => setPhone(value || '')}
                 className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                 required
               />
