@@ -7,7 +7,7 @@ const IZIPAY_API_URL = 'https://api.micuentaweb.pe/api-payment/V4/Charge/CreateP
 const SHOP_ID = process.env.IZIPAY_SHOP_ID;
 const SECRET_KEY = process.env.IZIPAY_SECRET_KEY;
 
-// Validar variables de entorno al iniciar
+// Validar variables de entorno
 if (!SHOP_ID || !SECRET_KEY) {
   console.error('❌ Error: Faltan variables de entorno IZIPAY_SHOP_ID o IZIPAY_SECRET_KEY');
   throw new Error('Configuración incompleta de Izipay');
@@ -32,7 +32,7 @@ const generateSignature = (payload, secretKey) => {
 /**
  * Valida los datos del pago
  */
-const validatePaymentData = ({ amount, currency, orderId, customerEmail }) => {
+const validatePaymentData = ({ amount, currency, orderId, customerEmail, paymentMethod }) => {
   const errors = [];
   
   if (!amount || isNaN(amount) || amount <= 0) {
@@ -49,6 +49,10 @@ const validatePaymentData = ({ amount, currency, orderId, customerEmail }) => {
   
   if (!customerEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(customerEmail)) {
     errors.push('Email inválido');
+  }
+
+  if (!paymentMethod || !['yape-pasarela', 'yape-izipay', 'tarjeta'].includes(paymentMethod)) {
+    errors.push('Método de pago no soportado');
   }
   
   if (errors.length > 0) {
@@ -80,7 +84,9 @@ export default async function handler(req, res) {
     const { amount, currency, orderId, customerEmail, paymentMethod } = req.body;
 
     console.log('📦 Datos recibidos:', { 
-      amount, currency, orderId, 
+      amount, 
+      currency, 
+      orderId, 
       customerEmail: customerEmail ? 'provided' : 'missing',
       paymentMethod: paymentMethod || 'no especificado'
     });
@@ -90,27 +96,41 @@ export default async function handler(req, res) {
 
     // Construir payload
     const payload = {
-      amount: Math.round(parseFloat(amount) * 100), // Convertir a centavos
+      amount: Math.round(parseFloat(amount)), // Asegurar formato numérico
       currency,
       orderId,
       formAction: 'PAYMENT',
       ctx_mode: 'PRODUCTION',
       paymentConfig: 'SINGLE',
-      customer: { email: customerEmail },
+      customer: { 
+        email: customerEmail,
+        billingDetails: {
+          // Datos adicionales si es necesario
+        }
+      },
       transactionOptions: {
-        cardOptions: { paymentSource: 'INTERNET' }
+        cardOptions: { 
+          paymentSource: 'INTERNET' 
+        }
       },
       shopId: SHOP_ID,
       metadata: {
-        source: 'Vite React App'
+        source: 'Vite React App',
+        integrationType: 'popup'
       }
     };
 
-    // Configurar método de pago
-    if (paymentMethod === 'yape-pasarela') {
-      payload.paymentMethods = { specificPaymentMethods: ['YAPE'] };
+    // Configurar método de pago (corrección clave)
+    if (paymentMethod === 'yape-pasarela' || paymentMethod === 'yape-izipay') {
+      payload.paymentMethods = { 
+        specificPaymentMethods: ['YAPE'],
+        paymentMethodType: 'WALLET'
+      };
     } else if (paymentMethod === 'tarjeta') {
-      payload.paymentMethods = { specificPaymentMethods: ['CARD'] };
+      payload.paymentMethods = { 
+        specificPaymentMethods: ['CARD'],
+        paymentMethodType: 'CARD'
+      };
     }
 
     // Generar firma
@@ -123,10 +143,12 @@ export default async function handler(req, res) {
         'Authorization': signature,
         'Accept': 'application/json'
       },
-      timeout: 8000 // Timeout de 8 segundos
+      timeout: 10000 // Timeout de 10 segundos
     });
 
+    // Validar respuesta
     if (!response.data?.formToken) {
+      console.error('❌ Respuesta incompleta de Izipay:', response.data);
       throw new Error('No se recibió formToken en la respuesta');
     }
 
@@ -136,7 +158,8 @@ export default async function handler(req, res) {
       success: true,
       formToken: response.data.formToken,
       orderId,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
+      paymentMethod // Devolver el método usado para referencia
     });
 
   } catch (error) {
@@ -155,14 +178,16 @@ export default async function handler(req, res) {
         data: error.response.data,
         request: {
           url: error.config?.url,
-          method: error.config?.method,
-          data: error.config?.data
+          method: error.config?.method
         }
       });
 
       errorResponse.error = 'Error en pasarela de pago';
-      errorResponse.details = error.response.data?.message || 'Error desconocido de Izipay';
-      errorResponse.debug = error.response.data;
+      errorResponse.details = error.response.data?.errorMessage || 'Error desconocido de Izipay';
+      errorResponse.debug = {
+        code: error.response.data?.errorCode,
+        detail: error.response.data?.detailedErrorMessage
+      };
 
       return res.status(error.response.status || 500).json(errorResponse);
     }
