@@ -1,3 +1,6 @@
+console.log('BODY RECIBIDO:', req.body);
+console.log('CLAVES:', process.env.IZIPAY_SHOP_ID, process.env.IZIPAY_SECRET_KEY);
+
 // Función serverless para integrar la pasarela de pago de Izipay
 const crypto = require('crypto');
 const axios = require('axios');
