@@ -97,11 +97,21 @@ export default async function handler(req, res) {
     // 1. Validar y registrar datos de entrada REALES
     const { amount, currency, orderId, customerEmail, paymentMethod } = req.body;
     
+    // Validar que no se reciban valores 'provided'
+    if (orderId === 'provided' || customerEmail === 'provided') {
+      return res.status(400).json({
+        success: false,
+        error: 'Datos inválidos',
+        details: 'Los valores "provided" no son válidos para orderId o customerEmail',
+        code: 'INVALID_DATA'
+      });
+    }
+    
     console.log('📦 Datos recibidos:', { 
       amount,
       currency,
       orderId,
-      customerEmail: customerEmail ? customerEmail.substring(0, 3) + '...@...' + customerEmail.split('@')[1] : 'missing',
+      customerEmail: customerEmail ? customerEmail.substring(0, 3) + '...@...' + (customerEmail.includes('@') ? customerEmail.split('@')[1] : 'invalid') : 'missing',
       paymentMethod: paymentMethod || 'no especificado'
     });
 

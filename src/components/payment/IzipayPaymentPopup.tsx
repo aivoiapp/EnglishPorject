@@ -87,11 +87,33 @@ const IzipayPaymentPopup: React.FC<IzipayPaymentPopupProps> = ({
       setLoading(true);
       await loadIzipayScript();
 
+      // Generar un orderId único si no es válido
+      const validOrderId = orderId && orderId !== 'provided' 
+        ? orderId 
+        : `ORD-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+      
+      // Validar el email del cliente
+      const validEmail = customerEmail && customerEmail !== 'provided' && customerEmail.includes('@')
+        ? customerEmail
+        : '';
+      
+      if (!validEmail) {
+        throw new Error('Email de cliente no válido. Por favor proporcione un email válido.');
+      }
+
+      console.log('Enviando datos de pago:', {
+        amount,
+        currency,
+        orderId: validOrderId,
+        customerEmail: validEmail,
+        paymentMethod
+      });
+
       const response = await axios.post('/api/createPaymentToken', {
         amount,
         currency,
-        orderId,
-        customerEmail,
+        orderId: validOrderId,
+        customerEmail: validEmail,
         paymentMethod,
       });
 

@@ -148,15 +148,18 @@ const PaymentSection: React.FC<PaymentSectionProps> = ({ name, email, phone }) =
               {paymentData?.paymentMethod === 'tarjeta' && (
                 <IzipayPaymentPopup
                   paymentMethod={paymentData.paymentMethod}
-                  amount={paymentData.amount}
+                  amount={Math.round(paymentData.amount * 100)}
                   currency="PEN"
-                  orderId={`ORD-${Date.now()}`}
-                  customerEmail={paymentData.email}
+                  orderId={`ORD-${Date.now()}-${Math.floor(Math.random() * 1000)}`}
+                  customerEmail={paymentData.email || ''}
                   onSuccess={(res) => {
                     console.log('Pago exitoso', res);
+                    // Mostrar mensaje de éxito
+                    setReceiptGenerated(true);
                   }}
                   onError={(err) => {
                     console.error('Error en el pago', err);
+                    alert(`Error en el pago: ${err.message}`);
                   }}
                 />
               )}
