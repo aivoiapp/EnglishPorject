@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Schedule, schedules } from '../../types';
 import DatePicker from 'react-datepicker';
 import { format, addMonths } from 'date-fns';
@@ -6,23 +6,20 @@ import { es } from 'date-fns/locale';
 import 'react-datepicker/dist/react-datepicker.css';
 import CustomPhoneInput from '../CustomPhoneInput';
 import '../../phone-input.css';
+import { FaUniversity, FaCreditCard, FaQrcode, FaMobileAlt } from 'react-icons/fa';
+import IzipayPaymentPopup from './IzipayPaymentPopup';
 
 export interface PaymentFormData {
-  // Datos personales
   fullName: string;
   email: string;
   phone: string;
-  
-  // Datos del curso
   courseLevel: string;
   courseSchedule: string;
-  studentGroup: string; // Nuevo campo para el grupo de interés
-  
-  // Datos del pago
+  studentGroup: string;
   paymentType: 'monthly' | 'fullLevel';
   monthsCount: number;
-  startDate: Date; // Fecha de inicio del pago
-  endDate: Date; // Fecha de fin del pago
+  startDate: Date;
+  endDate: Date;
   amount: number;
   paymentMethod: string;
   operationNumber: string;
@@ -36,101 +33,270 @@ interface PaymentFormProps {
   initialData?: Partial<PaymentFormData>;
 }
 
-const PaymentForm: React.FC<PaymentFormProps> = ({ onFormSubmit, initialData = {} }) => {
-  const [formData, setFormData] = useState<PaymentFormData>({
-    fullName: initialData.fullName || '',
-    email: initialData.email || '',
-    phone: initialData.phone || '',
-    courseLevel: initialData.courseLevel || 'Básico',
-    courseSchedule: initialData.courseSchedule || '',
-    studentGroup: initialData.studentGroup || '',
-    paymentType: initialData.paymentType || 'monthly',
-    monthsCount: initialData.monthsCount || 1,
-    startDate: initialData.startDate || new Date(),
-    endDate: initialData.endDate || addMonths(new Date(), 1),
-    amount: initialData.amount || 100, // Monto por defecto para un mes
-    paymentMethod: initialData.paymentMethod || '',
-    operationNumber: initialData.operationNumber || '',
-    bank: initialData.bank || '',
-    generateReceipt: initialData.generateReceipt || false,
-    ruc: initialData.ruc || '',
-  });
-  
-  // Actualizar el formulario cuando cambien los datos iniciales
-  useEffect(() => {
-    console.log('PaymentForm initialData changed:', initialData);
-    if (initialData) {
-      setFormData(prev => ({
-        ...prev,
-        fullName: initialData.fullName || prev.fullName,
-        email: initialData.email || prev.email,
-        phone: initialData.phone || prev.phone,
-        courseLevel: initialData.courseLevel || prev.courseLevel,
-        studentGroup: initialData.studentGroup || prev.studentGroup,
-        courseSchedule: initialData.courseSchedule || prev.courseSchedule,
-        paymentType: initialData.paymentType || prev.paymentType,
-        monthsCount: initialData.monthsCount || prev.monthsCount,
-        startDate: initialData.startDate || prev.startDate,
-        endDate: initialData.endDate || prev.endDate,
-        amount: initialData.amount || prev.amount,
-        paymentMethod: initialData.paymentMethod || prev.paymentMethod,
-        operationNumber: initialData.operationNumber || prev.operationNumber,
-        bank: initialData.bank || prev.bank,
-        generateReceipt: initialData.generateReceipt || prev.generateReceipt,
-        ruc: initialData.ruc || prev.ruc
-      }));
-    }
-  }, [initialData]);
+type PaymentMethodType = 'transferencia' | 'yape-qr' | 'tarjeta' | 'yape-izipay' | '';
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => {
-      const updatedData = { ...prev, [name]: value };
-      
-      // Actualizar el monto basado en el tipo de pago y cantidad de meses
-      if (name === 'paymentType' || name === 'monthsCount') {
-        const monthsCount = name === 'monthsCount' ? parseInt(value) : prev.monthsCount;
-        const paymentType = name === 'paymentType' ? value as 'monthly' | 'fullLevel' : prev.paymentType;
-        
-        // Calcular el monto
-        if (paymentType === 'monthly') {
-          updatedData.amount = 100 * monthsCount;
-          // Actualizar la fecha de fin basada en la fecha de inicio y la cantidad de meses
-          updatedData.endDate = addMonths(prev.startDate, monthsCount);
-        } else {
-          // Descuento del 10% para pago de nivel completo (6 meses)
-          updatedData.amount = 100 * 6 * 0.9;
-          updatedData.monthsCount = 6;
-          // Actualizar la fecha de fin para nivel completo (6 meses)
-          updatedData.endDate = addMonths(prev.startDate, 6);
-        }
-      }
-      
-      return updatedData;
-    });
-  };
-  // Manejar cambios en la fecha de inicio
-  const handleStartDateChange = (date: Date | null) => {
-    if (date) {
+const PaymentForm: React.FC<PaymentFormProps> = ({ onFormSubmit, initialData = {} }) => {
+  const initialFormState = useMemo<PaymentFormData>(() => ({
+    fullName: '',
+    email: '',
+    phone: '',
+    courseLevel: 'Básico',
+    courseSchedule: '',
+    studentGroup: '',
+    paymentType: 'monthly',
+    monthsCount: 1,
+    startDate: new Date(),
+    endDate: addMonths(new Date(), 1),
+    amount: 100,
+    paymentMethod: '',
+    operationNumber: '',
+    bank: '',
+    generateReceipt: false,
+    ruc: '',
+  }), []);
+
+  const [formData, setFormData] = useState<PaymentFormData>({ 
+    ...initialFormState,
+    ...initialData,
+    paymentType: initialData.paymentType === 'fullLevel' ? 'fullLevel' : 'monthly',
+    startDate: initialData.startDate || new Date(),
+    endDate: initialData.startDate 
+      ? addMonths(
+          initialData.startDate, 
+          initialData.paymentType === 'fullLevel' ? 6 : initialData.monthsCount || 1
+        )
+      : addMonths(new Date(), 1),
+    amount: initialData.paymentType === 'fullLevel' 
+      ? 100 * 6 * 0.9 
+      : 100 * (initialData.monthsCount || 1)
+  });
+
+  useEffect(() => {
+    if (initialData) {
       setFormData(prev => {
-        const monthsCount = prev.paymentType === 'monthly' ? prev.monthsCount : 6;
+        const newPaymentType = initialData.paymentType === 'fullLevel' ? 'fullLevel' : prev.paymentType;
+        const newMonths = newPaymentType === 'fullLevel' ? 6 : initialData.monthsCount || prev.monthsCount;
+        
         return {
+          ...initialFormState,
           ...prev,
-          startDate: date,
-          endDate: addMonths(date, monthsCount)
+          ...initialData,
+          paymentType: newPaymentType,
+          monthsCount: newMonths,
+          startDate: initialData.startDate || prev.startDate,
+          endDate: addMonths(
+            initialData.startDate || prev.startDate,
+            newPaymentType === 'fullLevel' ? 6 : newMonths
+          ),
+          amount: newPaymentType === 'monthly' 
+            ? 100 * newMonths 
+            : 100 * 6 * 0.9
         };
       });
     }
+  }, [initialData, initialFormState]);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    
+    setFormData(prev => {
+      if (name === 'paymentType') {
+        const paymentType = value as 'monthly' | 'fullLevel';
+        const monthsCount = paymentType === 'fullLevel' ? 6 : prev.monthsCount;
+        
+        return {
+          ...prev,
+          paymentType,
+          monthsCount,
+          amount: paymentType === 'monthly' ? 100 * monthsCount : 100 * 6 * 0.9,
+          endDate: addMonths(prev.startDate, monthsCount)
+        };
+      }
+      
+      if (name === 'monthsCount') {
+        const monthsCount = Math.min(Math.max(parseInt(value) || 1, 1), 12);
+        return {
+          ...prev,
+          monthsCount,
+          amount: prev.paymentType === 'monthly' ? 100 * monthsCount : prev.amount,
+          endDate: addMonths(prev.startDate, monthsCount)
+        };
+      }
+      
+      return { ...prev, [name]: value };
+    });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log('Submitting form with data:', formData); // Add this line for debugging
+  const handleStartDateChange = (date: Date | null) => {
+    if (date) {
+      setFormData(prev => ({
+        ...prev,
+        startDate: date,
+        endDate: addMonths(date, prev.paymentType === 'monthly' ? prev.monthsCount : 6)
+      }));
+    }
+  };
+
+  const handlePaymentMethodChange = (method: PaymentMethodType) => {
+    setFormData(prev => ({ ...prev, paymentMethod: method }));
+  };
+
+  const renderPaymentOptions = () => (
+    <div className="mb-6">
+      <h3 className="text-xl font-semibold mb-4 dark:text-white">Selecciona tu método de pago</h3>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div 
+          className={`p-4 border rounded-lg cursor-pointer transition-all ${formData.paymentMethod === 'transferencia' ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20' : 'border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-700'}`}
+          onClick={() => handlePaymentMethodChange('transferencia')}
+        >
+          <div className="flex items-center">
+            <div className="bg-blue-100 dark:bg-blue-900 p-3 rounded-full mr-4">
+              <FaUniversity className="text-blue-600 dark:text-blue-400 text-xl" />
+            </div>
+            <div>
+              <h4 className="font-medium dark:text-white">Transferencia Bancaria</h4>
+              <p className="text-sm text-gray-600 dark:text-gray-400">Transfiere desde tu app bancaria</p>
+            </div>
+          </div>
+        </div>
+
+        <div 
+          className={`p-4 border rounded-lg cursor-pointer transition-all ${formData.paymentMethod === 'yape-qr' ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/20' : 'border-gray-200 dark:border-gray-700 hover:border-purple-300 dark:hover:border-purple-700'}`}
+          onClick={() => handlePaymentMethodChange('yape-qr')}
+        >
+          <div className="flex items-center">
+            <div className="bg-purple-100 dark:bg-purple-900 p-3 rounded-full mr-4">
+              <FaQrcode className="text-purple-600 dark:text-purple-400 text-xl" />
+            </div>
+            <div>
+              <h4 className="font-medium dark:text-white">Yape con QR</h4>
+              <p className="text-sm text-gray-600 dark:text-gray-400">Escanea el código QR con tu app</p>
+            </div>
+          </div>
+        </div>
+
+        <div 
+          className={`p-4 border rounded-lg cursor-pointer transition-all ${formData.paymentMethod === 'tarjeta' ? 'border-green-500 bg-green-50 dark:bg-green-900/20' : 'border-gray-200 dark:border-gray-700 hover:border-green-300 dark:hover:border-green-700'}`}
+          onClick={() => handlePaymentMethodChange('tarjeta')}
+        >
+          <div className="flex items-center">
+            <div className="bg-green-100 dark:bg-green-900 p-3 rounded-full mr-4">
+              <FaCreditCard className="text-green-600 dark:text-green-400 text-xl" />
+            </div>
+            <div>
+              <h4 className="font-medium dark:text-white">Tarjeta de Crédito/Débito</h4>
+              <p className="text-sm text-gray-600 dark:text-gray-400">Paga con Izipay de forma segura</p>
+            </div>
+          </div>
+        </div>
+
+        <div 
+          className={`p-4 border rounded-lg cursor-pointer transition-all ${formData.paymentMethod === 'yape-izipay' ? 'border-orange-500 bg-orange-50 dark:bg-orange-900/20' : 'border-gray-200 dark:border-gray-700 hover:border-orange-300 dark:hover:border-orange-700'}`}
+          onClick={() => handlePaymentMethodChange('yape-izipay')}
+        >
+          <div className="flex items-center">
+            <div className="bg-orange-100 dark:bg-orange-900 p-3 rounded-full mr-4">
+              <FaMobileAlt className="text-orange-600 dark:text-orange-400 text-xl" />
+            </div>
+            <div>
+              <h4 className="font-medium dark:text-white">Yape via Izipay</h4>
+              <p className="text-sm text-gray-600 dark:text-gray-400">Pago instantáneo con Yape</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderPaymentInstructions = () => {
+    switch (formData.paymentMethod) {
+      case 'transferencia':
+        return (
+          <div className="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-4">
+            <h4 className="font-medium mb-2 dark:text-white">Instrucciones para Transferencia Bancaria</h4>
+            <p className="text-gray-700 dark:text-gray-300 mb-2">
+              Realiza una transferencia a la cuenta: 
+              <span className="font-bold"> 000-000000000000000000</span>
+            </p>
+            <div className="mt-3">
+              <label htmlFor="operationNumber" className="block text-gray-700 dark:text-gray-300 mb-2">
+                Código de Operación
+              </label>
+              <input
+                type="text"
+                id="operationNumber"
+                name="operationNumber"
+                value={formData.operationNumber}
+                onChange={handleInputChange}
+                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                required
+              />
+            </div>
+          </div>
+        );
+
+      case 'yape-qr':
+        return (
+          <div className="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-4">
+            <h4 className="font-medium mb-2 dark:text-white">Instrucciones para Yape con QR</h4>
+            <p className="text-gray-700 dark:text-gray-300 mb-2">
+              Escanea el siguiente código QR con la app de Yape:
+            </p>
+            <div className="flex justify-center my-4">
+              <div className="w-48 h-48 bg-white flex items-center justify-center border">
+                <p className="text-center text-gray-500">Código QR de Yape</p>
+              </div>
+            </div>
+            <div className="mt-3">
+              <label htmlFor="operationNumber" className="block text-gray-700 dark:text-gray-300 mb-2">
+                Número de Operación
+              </label>
+              <input
+                type="text"
+                id="operationNumber"
+                name="operationNumber"
+                value={formData.operationNumber}
+                onChange={handleInputChange}
+                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                required
+              />
+            </div>
+          </div>
+        );
+
+      case 'tarjeta':
+      case 'yape-izipay':
+        return (
+          <div className="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-4">
+            <IzipayPaymentPopup
+  amount={Math.round(formData.amount * 100)}
+  currency="PEN"
+  orderId={`ORDER-${Date.now()}`}
+  customerEmail={formData.email}
+  paymentMethod={formData.paymentMethod}
+  onSuccess={(response) => {
+    setFormData(prev => ({
+      ...prev,
+      operationNumber: response.transactionId || '',
+      bank: response.paymentMethod?.type || '' // Ensure bank is a string
+    }));
     onFormSubmit(formData);
+  }}
+  onError={(error) => {
+    alert(`Error en el pago: ${error.message}`);
+  }}
+/>
+
+          </div>
+        );
+
+      default:
+        return null;
+    }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={(e) => { e.preventDefault(); onFormSubmit(formData); }}>
       <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
         <h3 className="text-xl font-semibold mb-4 dark:text-white">Datos Personales</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -159,6 +325,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ onFormSubmit, initialData = {
               required
             />
           </div>
+          
           <div>
             <CustomPhoneInput
               label="Teléfono"
@@ -190,6 +357,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ onFormSubmit, initialData = {
               <option value="Avanzado">Avanzado (C1-C2)</option>
             </select>
           </div>
+          
           <div>
             <label htmlFor="studentGroup" className="block text-gray-700 dark:text-gray-300 mb-2">Grupo de interés</label>
             <select
@@ -206,6 +374,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ onFormSubmit, initialData = {
               <option value="Adultos (18+ años)">Adultos (18+ años)</option>
             </select>
           </div>
+          
           <div className="md:col-span-2">
             <label htmlFor="courseSchedule" className="block text-gray-700 dark:text-gray-300 mb-2">Horario</label>
             <select
@@ -219,13 +388,13 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ onFormSubmit, initialData = {
               <option value="">Seleccione un horario</option>
               {formData.studentGroup && schedules
                 .filter((schedule: Schedule) => schedule.group === formData.studentGroup)
-                .map((schedule: Schedule) => (
+                .flatMap((schedule: Schedule) => 
                   schedule.times.map((time: string, index: number) => (
                     <option key={`${schedule.group}-${index}`} value={`${schedule.group} - ${time}`}>
                       {time}
                     </option>
                   ))
-              ))}
+                )}
             </select>
           </div>
         </div>
@@ -248,6 +417,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ onFormSubmit, initialData = {
               <option value="fullLevel">Nivel Completo (6 meses con 10% descuento)</option>
             </select>
           </div>
+
           {formData.paymentType === 'monthly' && (
             <>
               <div>
@@ -285,6 +455,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ onFormSubmit, initialData = {
               </div>
             </>
           )}
+
           <div className="md:col-span-2">
             <p className="text-lg font-semibold dark:text-white">
               Monto a pagar: S/. {formData.amount.toFixed(2)}
@@ -296,112 +467,8 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ onFormSubmit, initialData = {
             )}
           </div>
 
-          <div className="md:col-span-2 mt-4">
-            <label htmlFor="paymentMethod" className="block text-gray-700 dark:text-gray-300 mb-2">Método de Pago</label>
-            <select
-              id="paymentMethod"
-              name="paymentMethod"
-              value={formData.paymentMethod}
-              onChange={handleInputChange}
-              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-              required
-            >
-              <option value="">Selecciona tu método de pago</option>
-              <option value="yape">Yape</option>
-              <option value="transferencia">Transferencia Bancaria</option>
-              <option value="ligo">Tarjeta de Crédito/Débito (Ligo)</option>
-            </select>
-          </div>
-
-          {formData.paymentMethod === 'yape' && (
-            <div className="md:col-span-2 mt-2">
-              <div className="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-4">
-                <p className="text-gray-700 dark:text-gray-300 mb-2">
-                  Realiza el pago vía Yape al número <span className="font-bold">926328988</span> a nombre de <span className="font-bold">Cyril Y. Ordoñez M.</span>
-                </p>
-              </div>
-              <div>
-                <label htmlFor="operationNumber" className="block text-gray-700 dark:text-gray-300 mb-2">Número de Operación</label>
-                <input
-                  type="text"
-                  id="operationNumber"
-                  name="operationNumber"
-                  value={formData.operationNumber}
-                  onChange={handleInputChange}
-                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                  required
-                />
-              </div>
-            </div>
-          )}
-
-          {formData.paymentMethod === 'transferencia' && (
-            <div className="md:col-span-2 mt-2">
-              <div className="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-4">
-                <p className="text-gray-700 dark:text-gray-300 mb-2">
-                  Realiza una transferencia a la cuenta: <span className="font-bold">000-000000000000000000</span> (cuenta referencial).
-                </p>
-              </div>
-              <div>
-                <label htmlFor="operationNumber" className="block text-gray-700 dark:text-gray-300 mb-2">Código de Operación</label>
-                <input
-                  type="text"
-                  id="operationNumber"
-                  name="operationNumber"
-                  value={formData.operationNumber}
-                  onChange={handleInputChange}
-                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                  required
-                />
-              </div>
-            </div>
-          )}
-
-          {formData.paymentMethod === 'ligo' && (
-            <div className="md:col-span-2 mt-2">
-              <div>
-                <label htmlFor="bank" className="block text-gray-700 dark:text-gray-300 mb-2">Selecciona tu Banco</label>
-                <select
-                  id="bank"
-                  name="bank"
-                  value={formData.bank}
-                  onChange={handleInputChange}
-                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                  required
-                >
-                  <option value="">Selecciona un banco</option>
-                  <option value="BCP">BCP</option>
-                  <option value="BBVA">BBVA</option>
-                  <option value="Interbank">Interbank</option>
-                  <option value="Scotiabank">Scotiabank</option>
-                </select>
-              </div>
-
-              {formData.bank && (
-                <div className="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg my-4">
-                  <p className="text-gray-700 dark:text-gray-300 mb-2">
-                    {formData.bank === 'BCP' && 'Instrucciones para pago con BCP: Ingresa a tu app BCP, selecciona "Pagar servicios" > "Empresas diversas" > "Ligo" y completa el pago.'}
-                    {formData.bank === 'BBVA' && 'Instrucciones para pago con BBVA: Ingresa a tu app BBVA, selecciona "Pagos" > "Servicios" > "Ligo" y completa el pago.'}
-                    {formData.bank === 'Interbank' && 'Instrucciones para pago con Interbank: Ingresa a tu app Interbank, selecciona "Pagar" > "Servicios" > "Ligo" y completa el pago.'}
-                    {formData.bank === 'Scotiabank' && 'Instrucciones para pago con Scotiabank: Ingresa a tu app Scotiabank, selecciona "Pagos" > "Servicios" > "Ligo" y completa el pago.'}
-                  </p>
-                </div>
-              )}
-
-              <div>
-                <label htmlFor="operationNumber" className="block text-gray-700 dark:text-gray-300 mb-2">Número de Operación</label>
-                <input
-                  type="text"
-                  id="operationNumber"
-                  name="operationNumber"
-                  value={formData.operationNumber}
-                  onChange={handleInputChange}
-                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                  required
-                />
-              </div>
-            </div>
-          )}
+          {renderPaymentOptions()}
+          {renderPaymentInstructions()}
 
           <div className="md:col-span-2 mt-4">
             <div className="flex items-center">
@@ -442,14 +509,16 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ onFormSubmit, initialData = {
         </div>
       </div>
 
-      <div className="flex justify-end">
-        <button
-          type="submit"
-          className="bg-blue-600 text-white py-3 px-6 rounded-lg flex items-center justify-center hover:bg-blue-700 transition-colors"
-        >
-          Enviar y generar comprobante
-        </button>
-      </div>
+      {formData.paymentMethod !== 'tarjeta' && formData.paymentMethod !== 'yape-izipay' && (
+        <div className="flex justify-end">
+          <button
+            type="submit"
+            className="bg-blue-600 text-white py-3 px-6 rounded-lg flex items-center justify-center hover:bg-blue-700 transition-colors"
+          >
+            Enviar y generar comprobante
+          </button>
+        </div>
+      )}
     </form>
   );
 };
