@@ -72,7 +72,7 @@ module.exports = async (req, res) => {
       currency: currency,
       orderId: orderId,
       formAction: 'PAYMENT',
-      ctx_mode: 'TEST',
+      ctx_mode: 'PRODUCTION',
       paymentConfig: 'SINGLE',
       customer: { email: customerEmail },
       transactionOptions: {
