@@ -6,7 +6,7 @@ import axios from 'axios';
 // ======================
 const IZIPAY_API_URL = 'https://api.micuentaweb.pe/api-payment/V4/Charge/CreatePayment';
 
-// Obtener y limpiar las credenciales
+// Obtener y limpiar las credenciales desde variables de entorno de Vercel
 const SHOP_ID = process.env.IZIPAY_SHOP_ID ? process.env.IZIPAY_SHOP_ID.trim() : '';
 const SECRET_KEY = process.env.IZIPAY_SECRET_KEY ? process.env.IZIPAY_SECRET_KEY.trim() : '';
 
@@ -16,7 +16,13 @@ if (!SHOP_ID || !SECRET_KEY) {
   if (!SHOP_ID) missing.push('IZIPAY_SHOP_ID');
   if (!SECRET_KEY) missing.push('IZIPAY_SECRET_KEY');
   console.error(`❌ ERROR CRÍTICO: Faltan variables de entorno: ${missing.join(', ')}`);
-  throw new Error(`❌ Faltan variables de entorno: ${missing.join(', ')}. Verifica tu archivo .env`);
+  throw new Error(`❌ Faltan variables de entorno: ${missing.join(', ')}. Verifica las variables de entorno en el panel de Vercel.`);
+}
+
+// Verificación adicional de formato
+if (SHOP_ID.includes('tu_shop_id_aqui') || SECRET_KEY.includes('tu_secret_key_aqui')) {
+  console.error('❌ ERROR: Las credenciales de Izipay parecen ser valores de ejemplo');
+  throw new Error('Las credenciales de Izipay no han sido configuradas correctamente. Reemplaza los valores de ejemplo con tus credenciales reales en el panel de Vercel.');
 }
 
 // ======================
@@ -192,8 +198,14 @@ export default async function handler(req, res) {
       });
 
       errorData.error = 'Error de autenticación con Izipay';
-      errorData.details = 'Verifique sus credenciales (Shop ID y Secret Key)';
+      errorData.details = 'Verifique que las credenciales (Shop ID y Secret Key) estén correctamente configuradas en las variables de entorno de Vercel. Este error suele ocurrir cuando las credenciales son inválidas o no coinciden con el entorno actual (TEST/PRODUCTION).';
       errorData.code = 'AUTH_ERROR';
+      
+      // Verificación adicional para ayudar en la depuración
+      if (SHOP_ID.length < 5 || SECRET_KEY.length < 10) {
+        errorData.details += ' Las credenciales parecen estar incompletas o malformadas.';
+      }
+      
       return res.status(401).json(errorData);
     }
 

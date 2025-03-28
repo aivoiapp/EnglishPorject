@@ -2,7 +2,7 @@
 
 ## Introducción
 
-Este proyecto utiliza Izipay como pasarela de pagos para procesar transacciones con tarjetas de crédito/débito y Yape. Para que funcione correctamente, es necesario configurar las credenciales de Izipay en el archivo `.env` del proyecto.
+Este proyecto utiliza Izipay como pasarela de pagos para procesar transacciones con tarjetas de crédito/débito y Yape. Para que funcione correctamente, es necesario configurar las credenciales de Izipay en las variables de entorno del proyecto.
 
 ## Credenciales Necesarias
 
@@ -17,13 +17,28 @@ Se requieren tres credenciales principales:
 1. Accede a tu cuenta de Izipay (Back Office)
 2. Ve a la sección de Configuración > Tienda > Claves
 3. Copia las credenciales correspondientes
-4. Añade estas credenciales a tu archivo `.env` en la raíz del proyecto:
+4. Configura las variables de entorno:
+
+### Para desarrollo local
+
+Añade solo la clave pública a tu archivo `.env` en la raíz del proyecto:
 
 ```
-IZIPAY_SHOP_ID=tu_shop_id_aqui
-IZIPAY_SECRET_KEY=tu_secret_key_aqui
 VITE_IZIPAY_PUBLIC_KEY=tu_public_key_aqui
 ```
+
+### Para producción (Vercel)
+
+Configura todas las credenciales en el panel de Vercel:
+
+1. Ve a la configuración de tu proyecto en Vercel
+2. Navega a la sección "Environment Variables"
+3. Añade las siguientes variables:
+   - `IZIPAY_SHOP_ID`: Tu ID de tienda
+   - `IZIPAY_SECRET_KEY`: Tu clave secreta
+   - `VITE_IZIPAY_PUBLIC_KEY`: Tu clave pública
+
+> **⚠️ IMPORTANTE**: Nunca incluyas las claves privadas (`IZIPAY_SHOP_ID` y `IZIPAY_SECRET_KEY`) en el código del frontend. Estas deben manejarse exclusivamente en el backend (funciones serverless).
 
 ## Entornos de Izipay
 
@@ -40,9 +55,12 @@ Asegúrate de usar las credenciales correctas según el entorno en el que estés
 
 Este error indica que las credenciales proporcionadas no son válidas. Verifica:
 
-1. Que las variables IZIPAY_SHOP_ID e IZIPAY_SECRET_KEY estén correctamente configuradas en el archivo `.env`
+1. Que las variables IZIPAY_SHOP_ID e IZIPAY_SECRET_KEY estén correctamente configuradas en las variables de entorno de Vercel
 2. Que no haya espacios adicionales o caracteres no válidos en las credenciales
 3. Que estés usando las credenciales del entorno correcto (TEST vs PRODUCTION)
+4. Que las credenciales no estén expiradas o revocadas
+
+Si estás desplegando en Vercel, asegúrate de que las variables de entorno estén correctamente configuradas en el panel de Vercel y que el despliegue haya incluido estas variables.
 
 ### Error: "kr-public-key no definida"
 
