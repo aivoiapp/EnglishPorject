@@ -4,9 +4,8 @@ import { sendHeroFormData } from '../services/makeService';
 import CustomPhoneInput from './CustomPhoneInput';
 import '../phone-input.css';
 
-
 interface HeroSectionProps {
-  onFormSubmit: (name: string, email: string, phone: string) => void;
+  onFormSubmit: (name: string, email: string, phone: string) => void; // Update the function signature
 }
 
 const HeroSection: React.FC<HeroSectionProps> = ({ onFormSubmit }) => {
@@ -26,10 +25,10 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onFormSubmit }) => {
       });
       console.log('Datos enviados correctamente a Make.com');
       
-      onFormSubmit(name, email, phone);
+      onFormSubmit(name, email, phone); // Remove extra arguments
     } catch (error) {
       console.error('Error al enviar datos a Make.com:', error);
-      onFormSubmit(name, email, phone);
+      onFormSubmit(name, email, phone); // Remove extra arguments
     }
   };
 

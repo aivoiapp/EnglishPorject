@@ -57,9 +57,8 @@ export const generatePaymentReceipt = (
   doc.setFontSize(12);
   doc.text(`Fecha: ${currentDate}`, 20, 40);
   doc.text(`Nombre: ${paymentData.fullName}`, 20, 50);
-  doc.text(`Documento: ${paymentData.documentType.toUpperCase()} ${paymentData.documentNumber}`, 20, 60);
-  doc.text(`Email: ${paymentData.email}`, 20, 70);
-  doc.text(`Teléfono: ${paymentData.phone}`, 20, 80);
+  doc.text(`Email: ${paymentData.email}`, 20, 60);
+  doc.text(`Teléfono: ${paymentData.phone}`, 20, 70);
   
   // Información del curso
   doc.text('Detalles del Curso:', 20, 100);
