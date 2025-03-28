@@ -33,8 +33,18 @@ const IzipayPaymentPopup: React.FC<IzipayPaymentPopupProps> = ({
       const script = document.createElement('script');
       script.src = 'https://api.micuentaweb.pe/static/js/krypton-client/V4.0/stable/kr-payment-form.min.js';
       script.async = true;
+
+      // ✅ Agregamos la clave pública para KR desde variable de entorno
+      const publicKey = import.meta.env.VITE_IZIPAY_PUBLIC_KEY;
+      if (!publicKey) {
+        reject(new Error('kr-public-key no definida. Asegúrate de tener NEXT_PUBLIC_IZIPAY_PUBLIC_KEY configurada.'));
+        return;
+      }
+      script.setAttribute('kr-public-key', publicKey);
+
       script.onload = () => resolve();
       script.onerror = () => reject(new Error('Error al cargar el script de Izipay'));
+
       document.head.appendChild(script);
     });
   };
@@ -59,7 +69,10 @@ const IzipayPaymentPopup: React.FC<IzipayPaymentPopupProps> = ({
         }
       });
 
-      window.KR.openPopup();
+      // 🕐 Aseguramos que el modal tenga un pequeño retardo para cargar correctamente
+      setTimeout(() => {
+        window.KR?.openPopup();
+      }, 300);
     } else {
       onError({
         code: 'SCRIPT_NOT_LOADED',
@@ -72,6 +85,7 @@ const IzipayPaymentPopup: React.FC<IzipayPaymentPopupProps> = ({
     try {
       setLoading(true);
       await loadIzipayScript();
+
       const response = await axios.post('/api/createPaymentToken', {
         amount,
         currency,
@@ -79,10 +93,12 @@ const IzipayPaymentPopup: React.FC<IzipayPaymentPopupProps> = ({
         customerEmail,
         paymentMethod,
       });
+
       const { formToken } = response.data;
       if (!formToken) {
         throw new Error('Token de formulario no recibido');
       }
+
       initializePaymentForm(formToken);
     } catch (error) {
       console.error('Error al iniciar el proceso de pago:', error);
