@@ -37,7 +37,8 @@ const IzipayPaymentPopup: React.FC<IzipayPaymentPopupProps> = ({
       // ✅ Agregamos la clave pública para KR desde variable de entorno
       const publicKey = import.meta.env.VITE_IZIPAY_PUBLIC_KEY;
       if (!publicKey) {
-        reject(new Error('kr-public-key no definida. Asegúrate de tener NEXT_PUBLIC_IZIPAY_PUBLIC_KEY configurada.'));
+        console.error('❌ Error: VITE_IZIPAY_PUBLIC_KEY no está definida en el archivo .env');
+        reject(new Error('Clave pública de Izipay no configurada. Verifica la variable VITE_IZIPAY_PUBLIC_KEY en tu archivo .env'));
         return;
       }
       script.setAttribute('kr-public-key', publicKey);

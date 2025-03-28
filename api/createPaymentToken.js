@@ -5,15 +5,18 @@ import axios from 'axios';
 // Configuración Inicial
 // ======================
 const IZIPAY_API_URL = 'https://api.micuentaweb.pe/api-payment/V4/Charge/CreatePayment';
-const SHOP_ID = process.env.IZIPAY_SHOP_ID?.trim();
-const SECRET_KEY = process.env.IZIPAY_SECRET_KEY?.trim();
+
+// Obtener y limpiar las credenciales
+const SHOP_ID = process.env.IZIPAY_SHOP_ID ? process.env.IZIPAY_SHOP_ID.trim() : '';
+const SECRET_KEY = process.env.IZIPAY_SECRET_KEY ? process.env.IZIPAY_SECRET_KEY.trim() : '';
 
 // Validación estricta al iniciar
 if (!SHOP_ID || !SECRET_KEY) {
   const missing = [];
   if (!SHOP_ID) missing.push('IZIPAY_SHOP_ID');
   if (!SECRET_KEY) missing.push('IZIPAY_SECRET_KEY');
-  throw new Error(`❌ Faltan variables de entorno: ${missing.join(', ')}`);
+  console.error(`❌ ERROR CRÍTICO: Faltan variables de entorno: ${missing.join(', ')}`);
+  throw new Error(`❌ Faltan variables de entorno: ${missing.join(', ')}. Verifica tu archivo .env`);
 }
 
 // ======================
