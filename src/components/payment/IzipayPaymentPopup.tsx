@@ -21,11 +21,15 @@ const IzipayPaymentPopup: React.FC<IzipayPaymentPopupProps> = ({
 }) => {
   const [loading, setLoading] = useState(false);
   const [sdkLoaded, setSdkLoaded] = useState(false);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null); // State for error messages
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   useEffect(() => {
-    if (typeof window !== 'undefined' && !window.Izipay) {
+    const scriptId = 'izipay-sdk-script';
+    const existingScript = document.getElementById(scriptId);
+
+    if (!existingScript) {
       const script = document.createElement('script');
+      script.id = scriptId;
       script.src = 'https://static.micuentaweb.pe/static/js/krypton-client/V4.0/ext/classic.js';
       script.async = true;
       script.onload = () => {
@@ -37,7 +41,22 @@ const IzipayPaymentPopup: React.FC<IzipayPaymentPopupProps> = ({
         setSdkLoaded(false);
       };
       document.head.appendChild(script);
+
+      // Dynamically load the CSS
+      const link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = 'https://static.micuentaweb.pe/static/css/krypton-client/V4.0/ext/classic-reset.css';
+      document.head.appendChild(link);
+    } else {
+      setSdkLoaded(true);
     }
+
+    return () => {
+      // Cleanup script if necessary
+      if (existingScript) {
+        existingScript.remove();
+      }
+    };
   }, []);
 
   const handlePaymentClick = async () => {
@@ -46,12 +65,6 @@ const IzipayPaymentPopup: React.FC<IzipayPaymentPopupProps> = ({
       setLoading(true);
       setErrorMessage(null); // Clear previous error messages
       console.log('Button clicked');
-      
-      // Asegurarse de que el contenedor del modal esté visible
-      const modalContainer = document.getElementById('izipay-modal-container');
-      if (modalContainer) {
-        modalContainer.style.display = 'block';
-      }
 
       const validOrderId = orderId.startsWith('PROD-') 
         ? orderId 
@@ -69,15 +82,21 @@ const IzipayPaymentPopup: React.FC<IzipayPaymentPopupProps> = ({
         customerEmail,
         mode: 'PRODUCTION'
       });
+
       console.log('Form Token:', data.formToken);
+
+      // Validate formToken
+      if (!data.formToken) {
+        throw new Error('Form token is invalid or empty');
+      }
 
       const iziConfig: IzipayConfig = {
         render: {
-          typeForm: 'pop-up', // Cambiado de 'embedded' a 'pop-up' para forzar el modo popup
+          typeForm: 'pop-up',
           container: 'izipay-modal-container',
           showButtonProcessForm: true,
-          closeButton: true, // Añadir botón de cierre
-          position: 'center' // Centrar el popup
+          closeButton: true,
+          position: 'center'
         },
         paymentForm: {
           formToken: data.formToken,
@@ -119,12 +138,6 @@ const IzipayPaymentPopup: React.FC<IzipayPaymentPopupProps> = ({
         message: error instanceof Error ? error.message : 'Error crítico en pasarela'
       });
       setErrorMessage(error instanceof Error ? error.message : 'Error crítico en pasarela');
-      
-      // Ocultar el modal en caso de error
-      const modalContainer = document.getElementById('izipay-modal-container');
-      if (modalContainer) {
-        modalContainer.style.display = 'none';
-      }
     } finally {
       setLoading(false);
     }

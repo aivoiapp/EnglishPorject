@@ -4,7 +4,7 @@ import axios from 'axios';
 // ======================
 // Configuración Producción
 // ======================
-const IZIPAY_API_URL = 'https://api.micuentaweb.pe/api-payment/V4/Charge/CreateToken';
+const IZIPAY_API_URL = 'https://api.micuentaweb.pe/api-payment/V4/Charge/CreateToken'; // Verify if this is the correct endpoint for payment
 
 // Credenciales PRODUCCIÓN (deben estar en variables de entorno de Vercel)
 const SHOP_ID = process.env.IZIPAY_SHOP_ID?.trim() || '';
@@ -32,13 +32,14 @@ export default async function handler(req, res) {
 
   try {
     // Validar datos básicos
-    const { currency, orderId, customerEmail } = req.body;
-    if (!currency || !orderId || !customerEmail) {
+    const { amount, currency, orderId, customerEmail } = req.body; // Include amount in the request body
+    if (!amount || !currency || !orderId || !customerEmail) {
       throw new Error('Parámetros incompletos');
     }
 
     // 1. Construir payload según documentación oficial
     const payload = {
+      amount: Math.round(amount * 100), // Convert amount to cents
       currency,
       orderId,
       customer: {
