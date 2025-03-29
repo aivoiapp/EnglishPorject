@@ -46,6 +46,12 @@ const IzipayPaymentPopup: React.FC<IzipayPaymentPopupProps> = ({
       setLoading(true);
       setErrorMessage(null); // Clear previous error messages
       console.log('Button clicked');
+      
+      // Asegurarse de que el contenedor del modal esté visible
+      const modalContainer = document.getElementById('izipay-modal-container');
+      if (modalContainer) {
+        modalContainer.style.display = 'block';
+      }
 
       const validOrderId = orderId.startsWith('PROD-') 
         ? orderId 
@@ -67,9 +73,11 @@ const IzipayPaymentPopup: React.FC<IzipayPaymentPopupProps> = ({
 
       const iziConfig: IzipayConfig = {
         render: {
-          typeForm: 'embedded',
+          typeForm: 'pop-up', // Cambiado de 'embedded' a 'pop-up' para forzar el modo popup
           container: 'izipay-modal-container',
-          showButtonProcessForm: true
+          showButtonProcessForm: true,
+          closeButton: true, // Añadir botón de cierre
+          position: 'center' // Centrar el popup
         },
         paymentForm: {
           formToken: data.formToken,
@@ -111,6 +119,12 @@ const IzipayPaymentPopup: React.FC<IzipayPaymentPopupProps> = ({
         message: error instanceof Error ? error.message : 'Error crítico en pasarela'
       });
       setErrorMessage(error instanceof Error ? error.message : 'Error crítico en pasarela');
+      
+      // Ocultar el modal en caso de error
+      const modalContainer = document.getElementById('izipay-modal-container');
+      if (modalContainer) {
+        modalContainer.style.display = 'none';
+      }
     } finally {
       setLoading(false);
     }
