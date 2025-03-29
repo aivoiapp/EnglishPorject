@@ -1,154 +1,122 @@
-import React, { useEffect, useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import type { KRPaymentResponse } from '../../types/kr-payment';
+import KRGlue from '@lyracom/embedded-form-glue';
 
-interface KRFormConfig {
-  form: {
-    action: 'payment';
-    container: string;
-  };
+interface CreatePaymentTokenResponse {
+  formToken: string;
 }
 
-declare global {
-  interface Window {
-    KR: {
-      setFormConfig: (config: KRFormConfig) => void;
-      setFormToken: (token: string) => void;
-      onSubmit: (callback: (res: KRPaymentResponse) => void) => void;
-      removeForms: () => void;
-    };
-  }
-}
-
-export interface IzipayPaymentPopupProps {
-  amount: number;
-  currency: string;
+interface KRClientAnswer {
+  orderStatus: string;
   orderId: string;
-  customerEmail: string;
-  onSuccess: (response: KRPaymentResponse) => void;
-  onError: (error: { code: string; message: string }) => void;
+  [key: string]: unknown;
 }
 
-const IzipayPaymentPopup: React.FC<IzipayPaymentPopupProps> = ({
-  amount,
-  currency,
-  orderId,
-  customerEmail,
-  onSuccess,
-  onError,
-}) => {
-  const [sdkLoaded, setSdkLoaded] = useState(false);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+interface KRPaymentResponse {
+  clientAnswer: KRClientAnswer;
+  rawClientAnswer: string;
+  formId: string;
+  [key: string]: unknown;
+}
+
+interface KRError {
+  errorCode: string;
+  errorMessage: string;
+}
+
+interface KRInstance {
+  removeForms: () => Promise<void>;
+  setFormConfig: (config: Record<string, unknown>) => Promise<void>;
+  setFormToken: (token: string) => Promise<void>;
+  renderElements: (selector: string) => Promise<void>;
+  onSubmit: (callback: (response: KRPaymentResponse) => boolean | void) => Promise<void>;
+  onError: (callback: (error: KRError) => void) => Promise<void>;
+}
+
+interface IzipayPaymentPopupProps {
+  onSuccess: (response: KRPaymentResponse) => void;
+  onError: (error: Error) => void;
+}
+
+function IzipayPaymentPopup({ onSuccess, onError }: IzipayPaymentPopupProps) {
   const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const krRef = useRef<KRInstance | null>(null);
 
   useEffect(() => {
-    const scriptId = 'izipay-sdk';
-    if (!document.getElementById(scriptId)) {
-      const script = document.createElement('script');
-      script.id = scriptId;
-      script.src = 'https://static.micuentaweb.pe/static/js/krypton-client/V4.0/ext/classic.js';
-      script.async = true;
-      script.onload = () => setSdkLoaded(true);
-      script.onerror = () => {
-        setSdkLoaded(false);
-        setErrorMessage('Error al cargar el SDK de Izipay');
-      };
-      document.head.appendChild(script);
+    let isMounted = true;
 
-      // Temporarily remove the stylesheet link to test SDK initialization
-      // const link = document.createElement('link');
-      // link.rel = 'stylesheet';
-      // link.href = 'https://static.micuentaweb.pe/static/css/krypton-client/V4.0/ext/classic-reset.css';
-      // document.head.appendChild(link);
-    } else {
-      setSdkLoaded(true);
-    }
-  }, []);
-
-  const waitForKR = (): Promise<void> => {
-    return new Promise((resolve, reject) => {
-      let attempts = 0;
-      const interval = setInterval(() => {
-        if (window.KR) {
-          clearInterval(interval);
-          resolve();
-        } else if (++attempts > 100) { // Further increased attempts for longer wait
-          clearInterval(interval);
-          reject(new Error('Izipay SDK no está disponible tras múltiples intentos.'));
-        }
-      }, 100);
-    });
-  };
-
-  const handlePaymentClick = async () => {
-    try {
+    const setupPaymentForm = async () => {
       setLoading(true);
-      setErrorMessage(null);
+      try {
+        const { data } = await axios.post<CreatePaymentTokenResponse>('/api/createPaymentToken');
+        const formToken = data.formToken;
 
-      await waitForKR();
+        const endpoint = import.meta.env.VITE_IZIPAY_ENDPOINT;
+        const publicKey = import.meta.env.VITE_IZIPAY_PUBLIC_KEY;
 
-      const res = await axios.post('/api/createPaymentToken', {
-        amount,
-        currency,
-        orderId,
-        customerEmail,
-        mode: 'PRODUCTION',
-      });
+        if (!endpoint || !publicKey) throw new Error('Faltan las variables de entorno de Izipay');
 
-      const token = res.data.formToken;
-      if (!token) {
-        throw new Error('Token de formulario inválido');
+        const glue = await KRGlue.loadLibrary(endpoint, 'V4.0');
+        const KR = glue.KR as unknown as KRInstance;
+        if (!isMounted) return;
+        krRef.current = KR;
+
+        await KR.setFormConfig({
+          formToken,
+          'kr-language': 'es-PE',
+        });
+
+        await KR.setFormToken(formToken);
+
+        await KR.onSubmit((response: KRPaymentResponse) => {
+          const { orderStatus } = response.clientAnswer;
+          if (orderStatus === 'PAID') {
+            KR.removeForms();
+            onSuccess(response);
+          } else {
+            const message = 'El pago no fue exitoso.';
+            setErrorMessage(message);
+            onError(new Error(message));
+          }
+          return;
+        });
+
+        await KR.onError((error: KRError) => {
+          const message = error.errorMessage || 'Error desconocido';
+          setErrorMessage(message);
+          onError(new Error(message));
+        });
+
+        await KR.renderElements('#kr-form');
+      } catch (error) {
+        const message = error instanceof Error ? error.message : 'Error inesperado al inicializar el formulario de pago.';
+        setErrorMessage(message);
+        onError(new Error(message));
+      } finally {
+        if (isMounted) setLoading(false);
       }
+    };
 
-      window.KR.setFormConfig({
-        form: {
-          action: 'payment',
-          container: 'kr-form',
-        },
-      });
+    setupPaymentForm();
 
-      window.KR.setFormToken(token);
-
-      window.KR.onSubmit((res: KRPaymentResponse) => {
-        if (res.paymentStatus === 'PAID') {
-          window.KR.removeForms();
-          onSuccess(res);
-        } else {
-          onError({
-            code: res.errorCode || 'REJECTED',
-            message: res.errorMessage || 'Pago rechazado',
-          });
-          setErrorMessage('El pago no fue exitoso.');
-        }
-      });
-
-    } catch (error: unknown) {
-      console.error('🔥 Error en handlePaymentClick:', error);
-      const err = error instanceof Error ? error : new Error('Error inesperado');
-      setErrorMessage(err.message);
-      onError({ code: 'EXCEPTION', message: err.message });
-    } finally {
-      setLoading(false);
-    }
-  };
+    return () => {
+      isMounted = false;
+      if (krRef.current) {
+        krRef.current.removeForms().catch(() => {});
+      }
+    };
+  }, [onSuccess, onError]);
 
   return (
-    <>
-      <button
-        onClick={handlePaymentClick}
-        disabled={loading || !sdkLoaded}
-        className="izipay-production-button"
-      >
-        {loading ? 'Procesando...' : 'Pagar con Izipay'}
-      </button>
-
-      <div id="kr-form" className="mt-4" />
-
-      {errorMessage && (
-        <div className="text-red-500 mt-2 text-sm">{errorMessage}</div>
-      )}
-    </>
+    <div className="izipay-popup">
+      {loading && <p>Cargando formulario de pago...</p>}
+      {errorMessage && <p className="text-red-500">{errorMessage}</p>}
+      <div id="kr-form">
+        <div className="kr-embedded"></div>
+      </div>
+    </div>
   );
-};
+}
 
 export default IzipayPaymentPopup;
