@@ -21,14 +21,6 @@ export interface KRPaymentInterface {
   CloseForm?: () => void;
 }
 
-declare global {
-  interface Window {
-    Izipay?: {
-      new (config: IzipayConfig): KRPaymentInterface;
-    };
-  }
-}
-
 export interface IzipayConfig {
   render: {
     typeForm: 'pop-up' | 'embedded';
@@ -44,4 +36,10 @@ export interface IzipayConfig {
     publicKey: string;
     language: 'es-ES' | 'en-US';
   };
+}
+
+declare global {
+  interface Window {
+    Izipay: new (config: IzipayConfig) => KRPaymentInterface;
+  }
 }

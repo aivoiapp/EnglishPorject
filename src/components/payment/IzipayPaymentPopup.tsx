@@ -1,6 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import type { KRPaymentResponse, IzipayConfig } from '../../types/kr-payment';
+import type { KRPaymentResponse, IzipayConfig, KRPaymentInterface } from '../../types/kr-payment';
+
+declare global {
+  interface Window {
+    Izipay: new (config: IzipayConfig) => KRPaymentInterface;
+  }
+}
 
 export interface IzipayPaymentPopupProps {
   amount: number;
@@ -19,31 +25,24 @@ const IzipayPaymentPopup: React.FC<IzipayPaymentPopupProps> = ({
   onSuccess,
   onError,
 }) => {
-  const [loading, setLoading] = useState(false);
   const [sdkLoaded, setSdkLoaded] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   useEffect(() => {
-    const scriptId = 'izipay-sdk-script';
-    const existingScript = document.getElementById(scriptId);
-
-    if (!existingScript) {
+    const scriptId = 'izipay-sdk';
+    if (!document.getElementById(scriptId)) {
       const script = document.createElement('script');
       script.id = scriptId;
       script.src = 'https://static.micuentaweb.pe/static/js/krypton-client/V4.0/ext/classic.js';
       script.async = true;
-      script.onload = () => {
-        console.log('✅ Izipay SDK cargado (Producción)');
-        setSdkLoaded(true);
-      };
+      script.onload = () => setSdkLoaded(true);
       script.onerror = () => {
-        console.error('❌ Error al cargar el SDK de Izipay');
         setSdkLoaded(false);
         setErrorMessage('Error al cargar el SDK de Izipay');
       };
       document.head.appendChild(script);
 
-      // Dynamically load the CSS
       const link = document.createElement('link');
       link.rel = 'stylesheet';
       link.href = 'https://static.micuentaweb.pe/static/css/krypton-client/V4.0/ext/classic-reset.css';
@@ -51,42 +50,28 @@ const IzipayPaymentPopup: React.FC<IzipayPaymentPopupProps> = ({
     } else {
       setSdkLoaded(true);
     }
-
-    return () => {
-      if (existingScript) {
-        existingScript.remove();
-      }
-    };
   }, []);
 
   const handlePaymentClick = async () => {
     try {
-      if (!sdkLoaded) throw new Error('SDK no está cargado');
       setLoading(true);
       setErrorMessage(null);
 
+      if (!sdkLoaded) throw new Error('El SDK aún no se ha cargado.');
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(customerEmail)) {
-        throw new Error('Email inválido para producción');
+        throw new Error('Email inválido.');
       }
-
-      const validOrderId = orderId.startsWith('PROD-') 
-        ? orderId 
-        : `PROD-${orderId}-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
-      console.log('Valid Order ID:', validOrderId);
 
       const { data } = await axios.post<{ formToken: string }>('/api/createPaymentToken', {
         amount,
         currency,
-        orderId: validOrderId,
+        orderId,
         customerEmail,
-        mode: 'PRODUCTION'
+        mode: 'PRODUCTION',
       });
 
-      console.log('Form Token:', data.formToken);
-
-      if (!data.formToken) {
-        throw new Error('Form token is invalid or empty');
-      }
+      const formToken = data.formToken;
+      if (!formToken) throw new Error('No se recibió un formToken válido');
 
       const iziConfig: IzipayConfig = {
         render: {
@@ -94,75 +79,39 @@ const IzipayPaymentPopup: React.FC<IzipayPaymentPopupProps> = ({
           container: 'izipay-modal-container',
           showButtonProcessForm: true,
           closeButton: true,
-          position: 'center'
+          position: 'center',
         },
         paymentForm: {
-          formToken: data.formToken,
-          publicKey: import.meta.env.VITE_IZIPAY_PUBLIC_KEY,
-          language: 'es-ES'
-        }
+          formToken,
+          publicKey: import.meta.env.VITE_IZIPAY_PUBLIC_KEY!,
+          language: 'es-ES',
+        },
       };
 
-      if (window.Izipay) {
-        console.log('Izipay Object:', window.Izipay);
-        const checkout = new window.Izipay(iziConfig);
-        console.log('Checkout instance created:', checkout);
-        
-        checkout.LoadForm({
-          authorization: data.formToken,
-          callbackResponse: (response) => {
-            console.log('Payment Response:', response);
+      const checkout = new window.Izipay(iziConfig);
 
-            switch (response.paymentStatus) {
-              case 'PAID':
-                console.log('Payment successful');
-                onSuccess({
-                  ...response,
-                  transactionId: response.transactionId || `TX-${Date.now()}`
-                });
-                // Close the form after successful payment
-                if (checkout.CloseForm) {
-                  checkout.CloseForm();
-                }
-                break;
-
-              case 'UNPAID':
-                console.warn('Payment not completed');
-                onError({
-                  code: response.errorCode || 'PAYMENT_UNPAID',
-                  message: response.errorMessage || 'Pago no completado'
-                });
-                setErrorMessage(response.errorMessage || 'Pago no completado');
-                break;
-
-              case 'FAILED':
-                console.error('Payment failed');
-                onError({
-                  code: response.errorCode || 'PAYMENT_FAILED',
-                  message: response.errorMessage || 'Pago rechazado'
-                });
-                setErrorMessage(response.errorMessage || 'Pago rechazado');
-                break;
-
-              default:
-                console.error('Unknown payment status');
-                onError({
-                  code: 'UNKNOWN_STATUS',
-                  message: 'Estado de pago desconocido'
-                });
-                setErrorMessage('Estado de pago desconocido');
-            }
+      checkout.LoadForm({
+        authorization: formToken,
+        callbackResponse: (response: KRPaymentResponse) => {
+          if (response.paymentStatus === 'PAID') {
+            onSuccess(response);
+          } else {
+            const code = response.errorCode || 'FAILED';
+            const message = response.errorMessage || 'Pago no completado';
+            onError({ code, message });
+            setErrorMessage(message);
           }
-        });
-      }
-
-    } catch (error) {
-      console.error('🔥 Error producción:', error);
-      onError({
-        code: 'CHECKOUT_ERROR',
-        message: error instanceof Error ? error.message : 'Error crítico en pasarela'
+        },
       });
-      setErrorMessage(error instanceof Error ? error.message : 'Error crítico en pasarela');
+
+    } catch (error: unknown) {
+      console.error('🔥 Error en handlePaymentClick:', error);
+      const err = error instanceof Error ? error : new Error('Error inesperado');
+      onError({
+        code: 'EXCEPTION',
+        message: err.message,
+      });
+      setErrorMessage(err.message);
     } finally {
       setLoading(false);
     }
@@ -174,30 +123,16 @@ const IzipayPaymentPopup: React.FC<IzipayPaymentPopupProps> = ({
         onClick={handlePaymentClick}
         disabled={loading || !sdkLoaded}
         className="izipay-production-button"
-        data-testid="izipay-prod-button"
       >
-        {loading ? (
-          <div className="spinner">
-            <span className="spinner-dot"></span>
-            <span className="spinner-dot"></span>
-            <span className="spinner-dot"></span>
-          </div>
-        ) : (
-          'Pagar con Izipay'
-        )}
+        {loading ? 'Procesando...' : 'Pagar con Izipay'}
       </button>
 
-      <div id="izipay-modal-container" className="modal">
-        {/* This is where the embedded form will be rendered */}
-      </div>
+      <div id="izipay-modal-container" />
 
-      {errorMessage && (
-        <div className="error-message">
-          <p>{errorMessage}</p>
-        </div>
-      )}
+      {errorMessage && <div className="text-red-500 mt-2 text-sm">{errorMessage}</div>}
     </>
   );
 };
 
 export default IzipayPaymentPopup;
+
