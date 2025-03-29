@@ -35,6 +35,15 @@ const IzipayPaymentPopup: React.FC<IzipayPaymentPopupProps> = ({
       script.src = 'https://api.micuentaweb.pe/static/js/krypton-client/V4.0/stable/kr-payment-form.min.js';
       script.async = true;
 
+      const publicKey = import.meta.env.VITE_IZIPAY_PUBLIC_KEY;
+      if (!publicKey) {
+        console.error('❌ Error: VITE_IZIPAY_PUBLIC_KEY no está definida en el archivo .env');
+        reject(new Error('Clave pública de Izipay no configurada. Verifica la variable VITE_IZIPAY_PUBLIC_KEY en tu archivo .env'));
+        return;
+      }
+
+      script.setAttribute('kr-public-key', publicKey);
+
       script.onload = () => {
         console.log('Izipay script loaded successfully');
         resolve();
@@ -46,16 +55,18 @@ const IzipayPaymentPopup: React.FC<IzipayPaymentPopupProps> = ({
   };
 
   const initializePaymentForm = (formToken: string) => {
-    if (window.KR) {
+    if (typeof window !== 'undefined' && window.KR) {
       console.log('KR object is available');
-      window.KR.setFormConfig({
+      const KR = window.KR; // Store in local variable for type safety
+      
+      KR.setFormConfig({
         formToken: formToken,
         amount: amount,
         orderId: orderId,
         currency: currency,
       });
   
-      window.KR.onSubmit((response) => {
+      KR.onSubmit((response) => {
         if (response.status === 'SUCCESS') {
           onSuccess(response);
         } else {
@@ -66,10 +77,9 @@ const IzipayPaymentPopup: React.FC<IzipayPaymentPopupProps> = ({
         }
       });
   
-      // Ensure KR.openPopup is a function
-      if (typeof window.KR.openPopup === 'function') {
+      if (typeof KR.openPopup === 'function') {
         setTimeout(() => {
-          window.KR?.openPopup();
+          KR.openPopup(); // Now using the type-safe local variable
         }, 300);
       } else {
         console.error('KR.openPopup is not a function');
