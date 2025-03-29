@@ -1,11 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import type { KRPaymentResponse, IzipayConfig, KRPaymentInterface } from '../../types/kr-payment';
+import type { KRPaymentResponse } from '../../types/kr-payment';
+
+interface KRFormConfig {
+  form: {
+    action: 'payment';
+    container: string;
+  };
+}
 
 declare global {
   interface Window {
-    Izipay: {
-      new (config: IzipayConfig): KRPaymentInterface;
+    KR: {
+      setFormConfig: (config: KRFormConfig) => void;
+      setFormToken: (token: string) => void;
+      onSubmit: (callback: (res: KRPaymentResponse) => void) => void;
+      removeForms: () => void;
     };
   }
 }
@@ -28,8 +38,8 @@ const IzipayPaymentPopup: React.FC<IzipayPaymentPopupProps> = ({
   onError,
 }) => {
   const [sdkLoaded, setSdkLoaded] = useState(false);
-  const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const scriptId = 'izipay-sdk';
@@ -59,12 +69,11 @@ const IzipayPaymentPopup: React.FC<IzipayPaymentPopupProps> = ({
       setLoading(true);
       setErrorMessage(null);
 
-      if (!sdkLoaded) throw new Error('El SDK aún no se ha cargado.');
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(customerEmail)) {
-        throw new Error('Email inválido.');
+      if (!sdkLoaded || !window.KR) {
+        throw new Error('Izipay SDK no está disponible.');
       }
 
-      const { data } = await axios.post<{ formToken: string }>('/api/createPaymentToken', {
+      const res = await axios.post('/api/createPaymentToken', {
         amount,
         currency,
         orderId,
@@ -72,52 +81,38 @@ const IzipayPaymentPopup: React.FC<IzipayPaymentPopupProps> = ({
         mode: 'PRODUCTION',
       });
 
-      const formToken = data.formToken;
-      if (!formToken) throw new Error('No se recibió un formToken válido');
-
-      const iziConfig: IzipayConfig = {
-        render: {
-          typeForm: 'pop-up',
-          container: 'izipay-modal-container',
-          showButtonProcessForm: true,
-          closeButton: true,
-          position: 'center',
-        },
-        paymentForm: {
-          formToken,
-          publicKey: import.meta.env.VITE_IZIPAY_PUBLIC_KEY!,
-          language: 'es-ES',
-        },
-      };
-
-      if (window.Izipay) {
-        const checkout = new window.Izipay(iziConfig);
-
-        checkout.LoadForm({
-          authorization: formToken,
-          callbackResponse: (response: KRPaymentResponse) => {
-            if (response.paymentStatus === 'PAID') {
-              onSuccess(response);
-            } else {
-              const code = response.errorCode || 'FAILED';
-              const message = response.errorMessage || 'Pago no completado';
-              onError({ code, message });
-              setErrorMessage(message);
-            }
-          },
-        });
-      } else {
-        throw new Error('Izipay SDK no está disponible.');
+      const token = res.data.formToken;
+      if (!token) {
+        throw new Error('Token de formulario inválido');
       }
+
+      window.KR.setFormConfig({
+        form: {
+          action: 'payment',
+          container: 'kr-form',
+        },
+      });
+
+      window.KR.setFormToken(token);
+
+      window.KR.onSubmit((res: KRPaymentResponse) => {
+        if (res.paymentStatus === 'PAID') {
+          window.KR.removeForms();
+          onSuccess(res);
+        } else {
+          onError({
+            code: res.errorCode || 'REJECTED',
+            message: res.errorMessage || 'Pago rechazado',
+          });
+          setErrorMessage('El pago no fue exitoso.');
+        }
+      });
 
     } catch (error: unknown) {
       console.error('🔥 Error en handlePaymentClick:', error);
       const err = error instanceof Error ? error : new Error('Error inesperado');
-      onError({
-        code: 'EXCEPTION',
-        message: err.message,
-      });
       setErrorMessage(err.message);
+      onError({ code: 'EXCEPTION', message: err.message });
     } finally {
       setLoading(false);
     }
@@ -133,12 +128,13 @@ const IzipayPaymentPopup: React.FC<IzipayPaymentPopupProps> = ({
         {loading ? 'Procesando...' : 'Pagar con Izipay'}
       </button>
 
-      <div id="izipay-modal-container" />
+      <div id="kr-form" className="mt-4" />
 
-      {errorMessage && <div className="text-red-500 mt-2 text-sm">{errorMessage}</div>}
+      {errorMessage && (
+        <div className="text-red-500 mt-2 text-sm">{errorMessage}</div>
+      )}
     </>
   );
 };
 
 export default IzipayPaymentPopup;
-
