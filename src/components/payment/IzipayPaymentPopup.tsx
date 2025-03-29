@@ -20,7 +20,7 @@ const IzipayPaymentPopup: React.FC<IzipayPaymentPopupProps> = ({
   onError,
 }) => {
   const [loading, setLoading] = useState(false);
-  
+  const [sdkLoaded, setSdkLoaded] = useState(false);  // Add SDK loaded state
 
   // =================================================================
   // 1. Cargar SDK de producción (Solo una vez)
@@ -30,8 +30,11 @@ const IzipayPaymentPopup: React.FC<IzipayPaymentPopupProps> = ({
       const script = document.createElement('script');
       script.src = 'https://static.micuentaweb.pe/static/js/krypton-client/V4.0/ext/classic.js';
       script.async = true;
-      script.onload = () => console.log('✅ Izipay SDK cargado (Producción)');
-      
+      script.onload = () => {
+        console.log('✅ Izipay SDK cargado (Producción)');
+        setSdkLoaded(true);  // Actualizar estado cuando el SDK está listo
+      };
+      script.onerror = () => setSdkLoaded(false);  // Manejar errores de carga
       document.head.appendChild(script);
     }
   }, []);
@@ -41,12 +44,13 @@ const IzipayPaymentPopup: React.FC<IzipayPaymentPopupProps> = ({
   // =================================================================
   const handlePaymentClick = async () => {
     try {
+      if (!sdkLoaded) throw new Error('SDK no está cargado');  // Validar estado SDK
       setLoading(true);
 
       // Validaciones de producción
       const validOrderId = orderId.startsWith('PROD-') 
         ? orderId 
-        : `PROD-${orderId}-${Date.now()}`;
+        : `PROD-${orderId}-${Date.now()}-${Math.floor(Math.random() * 1000)}`;  // Mejor generación de ID
 
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(customerEmail)) {
         throw new Error('Email inválido para producción');
@@ -61,10 +65,16 @@ const IzipayPaymentPopup: React.FC<IzipayPaymentPopupProps> = ({
         mode: 'PRODUCTION'
       });
 
-      // Configuración de producción
+      // Elemento DOM requerido para el popup
+      const container = document.createElement('div');
+      container.id = 'izipay-popup-container';
+      document.body.appendChild(container);
+
+      // Configuración de producción actualizada
       const iziConfig: IzipayConfig = {
         render: {
           typeForm: 'pop-up',
+          target: '#izipay-popup-container',  // Elemento crítico para el popup
           width: '450px',
           position: 'center',
           closeButton: true
@@ -76,15 +86,16 @@ const IzipayPaymentPopup: React.FC<IzipayPaymentPopupProps> = ({
         }
       };
 
-      // Instanciar checkout
       if (window.Izipay) {
         const checkout = new window.Izipay(iziConfig);
         
-
-        // Manejar respuesta de producción
+        // Manejar respuesta de producción con limpieza del DOM
         checkout.LoadForm({
           authorization: data.formToken,
           callbackResponse: (response) => {
+            // Eliminar el contenedor después de la respuesta
+            document.body.removeChild(container);
+            
             if (response.paymentStatus === 'PAID') {
               onSuccess({
                 ...response,
@@ -112,12 +123,12 @@ const IzipayPaymentPopup: React.FC<IzipayPaymentPopupProps> = ({
   };
 
   // =================================================================
-  // 3. UI de Botón de producción
+  // 3. UI de Botón de producción (Actualizada)
   // =================================================================
   return (
     <button
       onClick={handlePaymentClick}
-      disabled={loading}
+      disabled={loading || !sdkLoaded}  // Deshabilitar si el SDK no está listo
       className="izipay-production-button"
       data-testid="izipay-prod-button"
     >

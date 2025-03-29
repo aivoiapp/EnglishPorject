@@ -32,6 +32,7 @@ declare global {
 export interface IzipayConfig {
   render: {
     typeForm: 'pop-up' | 'embedded';
+    target?: string;
     width?: string;
     position?: 'center' | 'top' | 'bottom';
     closeButton?: boolean;
