@@ -26,6 +26,7 @@ const IzipayPaymentPopup: React.FC<IzipayPaymentPopupProps> = ({
   const loadIzipayScript = (): Promise<void> => {
     return new Promise((resolve, reject) => {
       if (document.querySelector('script[src*="kr-payment-form.min.js"]')) {
+        console.log('Izipay script already loaded');
         resolve();
         return;
       }
@@ -34,32 +35,10 @@ const IzipayPaymentPopup: React.FC<IzipayPaymentPopupProps> = ({
       script.src = 'https://api.micuentaweb.pe/static/js/krypton-client/V4.0/stable/kr-payment-form.min.js';
       script.async = true;
 
-      // ✅ Agregamos la clave pública para KR desde variable de entorno
-      const publicKey = import.meta.env.VITE_IZIPAY_PUBLIC_KEY;
-      if (!publicKey) {
-        console.error('❌ Error: VITE_IZIPAY_PUBLIC_KEY no está definida en el archivo .env');
-        reject(new Error('Clave pública de Izipay no configurada. Verifica la variable VITE_IZIPAY_PUBLIC_KEY en tu archivo .env'));
-        return;
-      }
-      
-      // Verificar formato de la clave pública
-      if (!publicKey.includes(':publickey_')) {
-        console.error('❌ Error: Formato incorrecto de VITE_IZIPAY_PUBLIC_KEY');
-        reject(new Error('El formato de la clave pública de Izipay es incorrecto. Debe tener el formato: SHOP_ID:publickey_XXXX'));
-        return;
-      }
-      
-      script.setAttribute('kr-public-key', publicKey);
-
-      const mode = 'PRODUCTION'; 
-      script.setAttribute('kr-mode', mode);
-      console.log(`🔧 Modo de Izipay configurado: ${mode}`);
-      
-      // Extraer el Shop ID de la clave pública para referencia
-      const shopIdFromPublicKey = publicKey.split(':')[0];
-      console.log('🔑 Usando Shop ID:', shopIdFromPublicKey);
-
-      script.onload = () => resolve();
+      script.onload = () => {
+        console.log('Izipay script loaded successfully');
+        resolve();
+      };
       script.onerror = () => reject(new Error('Error al cargar el script de Izipay'));
 
       document.head.appendChild(script);
@@ -68,13 +47,14 @@ const IzipayPaymentPopup: React.FC<IzipayPaymentPopupProps> = ({
 
   const initializePaymentForm = (formToken: string) => {
     if (window.KR) {
+      console.log('KR object is available');
       window.KR.setFormConfig({
         formToken: formToken,
         amount: amount,
         orderId: orderId,
         currency: currency,
       });
-
+  
       window.KR.onSubmit((response) => {
         if (response.status === 'SUCCESS') {
           onSuccess(response);
@@ -85,12 +65,21 @@ const IzipayPaymentPopup: React.FC<IzipayPaymentPopupProps> = ({
           });
         }
       });
-
-      // 🕐 Aseguramos que el modal tenga un pequeño retardo para cargar correctamente
-      setTimeout(() => {
-        window.KR?.openPopup();
-      }, 300);
+  
+      // Ensure KR.openPopup is a function
+      if (typeof window.KR.openPopup === 'function') {
+        setTimeout(() => {
+          window.KR?.openPopup();
+        }, 300);
+      } else {
+        console.error('KR.openPopup is not a function');
+        onError({
+          code: 'FUNCTION_NOT_AVAILABLE',
+          message: 'La función openPopup no está disponible en el objeto KR',
+        });
+      }
     } else {
+      console.error('KR object is not available');
       onError({
         code: 'SCRIPT_NOT_LOADED',
         message: 'No se pudo inicializar el formulario de pago',
