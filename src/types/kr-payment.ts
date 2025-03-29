@@ -1,52 +1,44 @@
 /**
- * Tipos para la integración con la pasarela de pagos Izipay (KR Payment)
+ * Tipos para la integración con Izipay Popup (Producción)
  */
 
-export interface KRResponse {
-  status: 'SUCCESS' | 'ERROR' | 'PENDING' | 'success' | 'error' | 'pending';
+export interface KRPaymentResponse {
+  paymentStatus: 'PAID' | 'UNPAID' | 'FAILED';
+  orderId: string;
   transactionId?: string;
-  orderDetails?: {
-    orderId: string;
-    amount: number;
-    currency: string;
-  };
-  customerDetails?: {
-    email: string;
-  };
   errorCode?: string;
   errorMessage?: string;
-  paymentMethod?: {
-    type: string;
-    brand?: string;
-    pan?: string; // Últimos 4 dígitos de la tarjeta
-  };
+  paymentMethodType?: string;
+  pan?: string;
   timestamp?: string;
 }
 
-/**
- * Configuración del formulario de pago
- */
-export interface KRFormConfig {
-  formToken: string;
-  amount?: number;
-  orderId?: string;
-  currency?: string;
-}
-
-/**
- * Interfaz para el objeto KR global
- */
 export interface KRPaymentInterface {
-  setFormConfig: (config: KRFormConfig) => void;
-  onSubmit: (callback: (response: KRResponse) => void) => void;
-  openPopup: () => void;
+  LoadForm: (config: {
+    authorization: string;
+    callbackResponse: (response: KRPaymentResponse) => void;
+  }) => void;
+  CloseForm?: () => void;
 }
 
-/**
- * Extender la interfaz Window para incluir el objeto KR
- */
 declare global {
   interface Window {
-    KR?: KRPaymentInterface;
+    Izipay?: {
+      new (config: IzipayConfig): KRPaymentInterface;
+    };
   }
+}
+
+export interface IzipayConfig {
+  render: {
+    typeForm: 'pop-up' | 'embedded';
+    width?: string;
+    position?: 'center' | 'top' | 'bottom';
+    closeButton?: boolean;
+  };
+  paymentForm: {
+    formToken: string;
+    publicKey: string;
+    language: 'es-ES' | 'en-US';
+  };
 }
