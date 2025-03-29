@@ -21,7 +21,6 @@ const IzipayPaymentPopup: React.FC<IzipayPaymentPopupProps> = ({
 }) => {
   const [loading, setLoading] = useState(false);
   const [sdkLoaded, setSdkLoaded] = useState(false);
-  const [showModal, setShowModal] = useState(false);  // State to control modal visibility
 
   useEffect(() => {
     if (typeof window !== 'undefined' && !window.Izipay) {
@@ -63,11 +62,9 @@ const IzipayPaymentPopup: React.FC<IzipayPaymentPopupProps> = ({
 
       const iziConfig: IzipayConfig = {
         render: {
-          typeForm: 'embedded',  // Change to embedded for modal
-          target: '#izipay-modal-container',  // Target the modal container
-          width: '450px',
-          position: 'center',
-          closeButton: true
+          typeForm: 'embedded',
+          container: 'izipay-modal-container',  // Ensure this matches the container ID
+          showButtonProcessForm: true
         },
         paymentForm: {
           formToken: data.formToken,
@@ -79,6 +76,7 @@ const IzipayPaymentPopup: React.FC<IzipayPaymentPopupProps> = ({
       if (window.Izipay) {
         console.log('Izipay Object:', window.Izipay);
         const checkout = new window.Izipay(iziConfig);
+        console.log('Checkout instance created:', checkout);
         
         checkout.LoadForm({
           authorization: data.formToken,
@@ -96,7 +94,6 @@ const IzipayPaymentPopup: React.FC<IzipayPaymentPopupProps> = ({
                 message: response.errorMessage || 'Pago rechazado'
               });
             }
-            setShowModal(false);  // Close modal after response
           }
         });
       }
@@ -115,7 +112,7 @@ const IzipayPaymentPopup: React.FC<IzipayPaymentPopupProps> = ({
   return (
     <>
       <button
-        onClick={() => setShowModal(true)}  // Open modal on button click
+        onClick={handlePaymentClick}
         disabled={loading || !sdkLoaded}
         className="izipay-production-button"
         data-testid="izipay-prod-button"
@@ -131,13 +128,9 @@ const IzipayPaymentPopup: React.FC<IzipayPaymentPopupProps> = ({
         )}
       </button>
 
-      {showModal && (
-        <div id="izipay-modal-container" className="modal">
-          {/* Modal content */}
-          <button onClick={handlePaymentClick}>Confirmar Pago</button>
-          <button onClick={() => setShowModal(false)}>Cerrar</button>
-        </div>
-      )}
+      <div id="izipay-modal-container" className="modal">
+        {/* This is where the embedded form will be rendered */}
+      </div>
     </>
   );
 };

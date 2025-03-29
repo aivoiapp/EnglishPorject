@@ -36,6 +36,8 @@ export interface IzipayConfig {
     width?: string;
     position?: 'center' | 'top' | 'bottom';
     closeButton?: boolean;
+    container?: string;
+    showButtonProcessForm?: boolean;
   };
   paymentForm: {
     formToken: string;
