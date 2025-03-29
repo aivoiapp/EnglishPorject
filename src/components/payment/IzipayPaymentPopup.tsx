@@ -44,13 +44,15 @@ const IzipayPaymentPopup: React.FC<IzipayPaymentPopupProps> = ({
   // =================================================================
   const handlePaymentClick = async () => {
     try {
-      if (!sdkLoaded) throw new Error('SDK no está cargado');  // Validar estado SDK
+      if (!sdkLoaded) throw new Error('SDK no está cargado');
       setLoading(true);
+      console.log('Starting payment process');
 
       // Validaciones de producción
       const validOrderId = orderId.startsWith('PROD-') 
         ? orderId 
-        : `PROD-${orderId}-${Date.now()}-${Math.floor(Math.random() * 1000)}`;  // Mejor generación de ID
+        : `PROD-${orderId}-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+      console.log('Valid Order ID:', validOrderId);
 
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(customerEmail)) {
         throw new Error('Email inválido para producción');
@@ -64,6 +66,7 @@ const IzipayPaymentPopup: React.FC<IzipayPaymentPopupProps> = ({
         customerEmail,
         mode: 'PRODUCTION'
       });
+      console.log('Form Token:', data.formToken);
 
       // Elemento DOM requerido para el popup
       const container = document.createElement('div');
@@ -74,7 +77,7 @@ const IzipayPaymentPopup: React.FC<IzipayPaymentPopupProps> = ({
       const iziConfig: IzipayConfig = {
         render: {
           typeForm: 'pop-up',
-          target: '#izipay-popup-container',  // Elemento crítico para el popup
+          target: '#izipay-popup-container',
           width: '450px',
           position: 'center',
           closeButton: true
@@ -87,15 +90,16 @@ const IzipayPaymentPopup: React.FC<IzipayPaymentPopupProps> = ({
       };
 
       if (window.Izipay) {
+        console.log('Izipay Object:', window.Izipay);
         const checkout = new window.Izipay(iziConfig);
         
         // Manejar respuesta de producción con limpieza del DOM
         checkout.LoadForm({
           authorization: data.formToken,
           callbackResponse: (response) => {
-            // Eliminar el contenedor después de la respuesta
             document.body.removeChild(container);
-            
+            console.log('Payment Response:', response);
+
             if (response.paymentStatus === 'PAID') {
               onSuccess({
                 ...response,
