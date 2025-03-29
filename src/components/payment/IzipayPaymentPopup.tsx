@@ -41,7 +41,23 @@ const IzipayPaymentPopup: React.FC<IzipayPaymentPopupProps> = ({
         reject(new Error('Clave pública de Izipay no configurada. Verifica la variable VITE_IZIPAY_PUBLIC_KEY en tu archivo .env'));
         return;
       }
-      script.setAttribute('kr-public-key', publicKey);
+      
+      // Verificar formato de la clave pública
+      if (!publicKey.includes(':publickey_')) {
+        console.error('❌ Error: Formato incorrecto de VITE_IZIPAY_PUBLIC_KEY');
+        reject(new Error('El formato de la clave pública de Izipay es incorrecto. Debe tener el formato: SHOP_ID:publickey_XXXX'));
+        return;
+      }
+      
+      script.setAttribute('kr-public-key', publicKey);           
+      script.setAttribute('kr-mode', 'PRODUCTION');
+      console.log('🔧 Modo de Izipay configurado: PRODUCTION');
+      
+      // Verificar si la clave pública corresponde al mismo Shop ID
+      const shopIdFromPublicKey = publicKey.split(':')[0];
+      if (shopIdFromPublicKey !== '76277481') {
+        console.warn('⚠️ Advertencia: El Shop ID en la clave pública no coincide con el esperado');
+      }
 
       script.onload = () => resolve();
       script.onerror = () => reject(new Error('Error al cargar el script de Izipay'));

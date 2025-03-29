@@ -10,6 +10,13 @@ const IZIPAY_API_URL = 'https://api.micuentaweb.pe/api-payment/V4/Charge/CreateP
 const SHOP_ID = process.env.IZIPAY_SHOP_ID ? process.env.IZIPAY_SHOP_ID.trim() : '';
 const SECRET_KEY = process.env.IZIPAY_SECRET_KEY ? process.env.IZIPAY_SECRET_KEY.trim() : '';
 
+// Registro de depuración para verificar las credenciales (sin mostrar la clave completa)
+console.log('🔑 Credenciales configuradas:', {
+  shopId: SHOP_ID,
+  secretKeyLength: SECRET_KEY ? SECRET_KEY.length : 0,
+  secretKeyPrefix: SECRET_KEY ? SECRET_KEY.substring(0, 5) + '...' : 'no disponible'
+});
+
 // Validación estricta al iniciar
 if (!SHOP_ID || !SECRET_KEY) {
   const missing = [];
@@ -122,7 +129,7 @@ export default async function handler(req, res) {
       amount: Math.round(parseFloat(amount)),
       currency,
       orderId,
-      formAction: 'PAYMENT',
+      formAction: 'PAYMENT',     
       ctx_mode: 'PRODUCTION',
       paymentConfig: 'SINGLE',
       customer: { 
@@ -144,6 +151,9 @@ export default async function handler(req, res) {
         timestamp: new Date().toISOString()
       }
     };
+    
+    // Registro del modo de contexto para depuración
+    console.log(`🔧 Modo de contexto: ${payload.ctx_mode}`);
 
     // 3. Configurar método de pago correctamente
     if (paymentMethod.includes('yape')) {
