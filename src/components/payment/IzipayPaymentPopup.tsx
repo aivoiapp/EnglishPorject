@@ -39,6 +39,7 @@ const IzipayPaymentPopup: React.FC<IzipayPaymentPopupProps> = ({
       script.onerror = () => {
         console.error('❌ Error al cargar el SDK de Izipay');
         setSdkLoaded(false);
+        setErrorMessage('Error al cargar el SDK de Izipay');
       };
       document.head.appendChild(script);
 
@@ -52,7 +53,6 @@ const IzipayPaymentPopup: React.FC<IzipayPaymentPopupProps> = ({
     }
 
     return () => {
-      // Cleanup script if necessary
       if (existingScript) {
         existingScript.remove();
       }
@@ -63,17 +63,16 @@ const IzipayPaymentPopup: React.FC<IzipayPaymentPopupProps> = ({
     try {
       if (!sdkLoaded) throw new Error('SDK no está cargado');
       setLoading(true);
-      setErrorMessage(null); // Clear previous error messages
-      console.log('Button clicked');
+      setErrorMessage(null);
+
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(customerEmail)) {
+        throw new Error('Email inválido para producción');
+      }
 
       const validOrderId = orderId.startsWith('PROD-') 
         ? orderId 
         : `PROD-${orderId}-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
       console.log('Valid Order ID:', validOrderId);
-
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(customerEmail)) {
-        throw new Error('Email inválido para producción');
-      }
 
       const { data } = await axios.post<{ formToken: string }>('/api/createPaymentToken', {
         amount,
@@ -85,7 +84,6 @@ const IzipayPaymentPopup: React.FC<IzipayPaymentPopupProps> = ({
 
       console.log('Form Token:', data.formToken);
 
-      // Validate formToken
       if (!data.formToken) {
         throw new Error('Form token is invalid or empty');
       }
@@ -115,17 +113,44 @@ const IzipayPaymentPopup: React.FC<IzipayPaymentPopupProps> = ({
           callbackResponse: (response) => {
             console.log('Payment Response:', response);
 
-            if (response.paymentStatus === 'PAID') {
-              onSuccess({
-                ...response,
-                transactionId: response.transactionId || `TX-${Date.now()}`
-              });
-            } else {
-              onError({
-                code: response.errorCode || 'PAYMENT_FAILED',
-                message: response.errorMessage || 'Pago rechazado'
-              });
-              setErrorMessage(response.errorMessage || 'Pago rechazado');
+            switch (response.paymentStatus) {
+              case 'PAID':
+                console.log('Payment successful');
+                onSuccess({
+                  ...response,
+                  transactionId: response.transactionId || `TX-${Date.now()}`
+                });
+                // Close the form after successful payment
+                if (checkout.CloseForm) {
+                  checkout.CloseForm();
+                }
+                break;
+
+              case 'UNPAID':
+                console.warn('Payment not completed');
+                onError({
+                  code: response.errorCode || 'PAYMENT_UNPAID',
+                  message: response.errorMessage || 'Pago no completado'
+                });
+                setErrorMessage(response.errorMessage || 'Pago no completado');
+                break;
+
+              case 'FAILED':
+                console.error('Payment failed');
+                onError({
+                  code: response.errorCode || 'PAYMENT_FAILED',
+                  message: response.errorMessage || 'Pago rechazado'
+                });
+                setErrorMessage(response.errorMessage || 'Pago rechazado');
+                break;
+
+              default:
+                console.error('Unknown payment status');
+                onError({
+                  code: 'UNKNOWN_STATUS',
+                  message: 'Estado de pago desconocido'
+                });
+                setErrorMessage('Estado de pago desconocido');
             }
           }
         });
