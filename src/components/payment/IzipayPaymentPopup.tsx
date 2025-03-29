@@ -4,7 +4,9 @@ import type { KRPaymentResponse, IzipayConfig, KRPaymentInterface } from '../../
 
 declare global {
   interface Window {
-    Izipay: new (config: IzipayConfig) => KRPaymentInterface;
+    Izipay: {
+      new (config: IzipayConfig): KRPaymentInterface;
+    };
   }
 }
 
@@ -88,21 +90,25 @@ const IzipayPaymentPopup: React.FC<IzipayPaymentPopupProps> = ({
         },
       };
 
-      const checkout = new window.Izipay(iziConfig);
+      if (window.Izipay) {
+        const checkout = new window.Izipay(iziConfig);
 
-      checkout.LoadForm({
-        authorization: formToken,
-        callbackResponse: (response: KRPaymentResponse) => {
-          if (response.paymentStatus === 'PAID') {
-            onSuccess(response);
-          } else {
-            const code = response.errorCode || 'FAILED';
-            const message = response.errorMessage || 'Pago no completado';
-            onError({ code, message });
-            setErrorMessage(message);
-          }
-        },
-      });
+        checkout.LoadForm({
+          authorization: formToken,
+          callbackResponse: (response: KRPaymentResponse) => {
+            if (response.paymentStatus === 'PAID') {
+              onSuccess(response);
+            } else {
+              const code = response.errorCode || 'FAILED';
+              const message = response.errorMessage || 'Pago no completado';
+              onError({ code, message });
+              setErrorMessage(message);
+            }
+          },
+        });
+      } else {
+        throw new Error('Izipay SDK no está disponible.');
+      }
 
     } catch (error: unknown) {
       console.error('🔥 Error en handlePaymentClick:', error);
