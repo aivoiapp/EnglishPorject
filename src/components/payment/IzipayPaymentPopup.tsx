@@ -64,14 +64,27 @@ const IzipayPaymentPopup: React.FC<IzipayPaymentPopupProps> = ({
     }
   }, []);
 
+  const waitForKR = (): Promise<void> => {
+    return new Promise((resolve, reject) => {
+      let attempts = 0;
+      const interval = setInterval(() => {
+        if (window.KR) {
+          clearInterval(interval);
+          resolve();
+        } else if (++attempts > 20) {
+          clearInterval(interval);
+          reject(new Error('Izipay SDK no está disponible tras múltiples intentos.'));
+        }
+      }, 100);
+    });
+  };
+
   const handlePaymentClick = async () => {
     try {
       setLoading(true);
       setErrorMessage(null);
 
-      if (!sdkLoaded || !window.KR) {
-        throw new Error('Izipay SDK no está disponible.');
-      }
+      await waitForKR();
 
       const res = await axios.post('/api/createPaymentToken', {
         amount,
