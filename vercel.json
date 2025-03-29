@@ -1,46 +1,22 @@
 {
   "version": 2,
   "builds": [
-    { "src": "package.json", "use": "@vercel/static-build" }
-  ],
-  "routes": [
-    { "src": "/api/(.*)", "dest": "/api/$1" },
-    { "src": "/assets/(.*)", "dest": "/assets/$1" },
-    { "src": "/(.+\\.(js|css|svg|jpg|png|ico|json))", "dest": "/$1" },
-    { "src": "/(.*)", "dest": "/index.html" }
-  ],
-  "headers": [
     {
-      "source": "/assets/(.*)",
-      "headers": [
-        {
-          "key": "Content-Type",
-          "value": "application/javascript; charset=utf-8"
-        }
-      ]
-    },
-    {
-      "source": "/(.*\\.js)",
-      "headers": [
-        {
-          "key": "Content-Type",
-          "value": "application/javascript; charset=utf-8"
-        }
-      ]
-    },
-    {
-      "source": "/(.*\\.css)",
-      "headers": [
-        {
-          "key": "Content-Type",
-          "value": "text/css; charset=utf-8"
-        }
-      ]
+      "src": "next.config.js",
+      "use": "@vercel/next"
     }
   ],
-  "build": {
-    "env": {
-      "VITE_IZIPAY_PUBLIC_KEY": "76277481:publickey_LA4CyBwP1Db5cnCtuipj9eRceTCIIgnF675BdV2EJmvlK"
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/$1.js"
+    }
+  ],
+  "functions": {
+    "api/createPaymentToken.js": {
+      "runtime": "nodejs18.x",
+      "memory": 512,
+      "maxDuration": 10
     }
   }
 }
