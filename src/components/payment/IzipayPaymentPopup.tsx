@@ -20,11 +20,9 @@ const IzipayPaymentPopup: React.FC<IzipayPaymentPopupProps> = ({
   onError,
 }) => {
   const [loading, setLoading] = useState(false);
-  const [sdkLoaded, setSdkLoaded] = useState(false);  // Add SDK loaded state
+  const [sdkLoaded, setSdkLoaded] = useState(false);
+  const [showModal, setShowModal] = useState(false);  // State to control modal visibility
 
-  // =================================================================
-  // 1. Cargar SDK de producción (Solo una vez)
-  // =================================================================
   useEffect(() => {
     if (typeof window !== 'undefined' && !window.Izipay) {
       const script = document.createElement('script');
@@ -32,23 +30,19 @@ const IzipayPaymentPopup: React.FC<IzipayPaymentPopupProps> = ({
       script.async = true;
       script.onload = () => {
         console.log('✅ Izipay SDK cargado (Producción)');
-        setSdkLoaded(true);  // Actualizar estado cuando el SDK está listo
+        setSdkLoaded(true);
       };
-      script.onerror = () => setSdkLoaded(false);  // Manejar errores de carga
+      script.onerror = () => setSdkLoaded(false);
       document.head.appendChild(script);
     }
   }, []);
 
-  // =================================================================
-  // 2. Generar token y abrir popup
-  // =================================================================
   const handlePaymentClick = async () => {
     try {
       if (!sdkLoaded) throw new Error('SDK no está cargado');
       setLoading(true);
-      console.log('Starting payment process');
+      console.log('Button clicked');
 
-      // Validaciones de producción
       const validOrderId = orderId.startsWith('PROD-') 
         ? orderId 
         : `PROD-${orderId}-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
@@ -58,7 +52,6 @@ const IzipayPaymentPopup: React.FC<IzipayPaymentPopupProps> = ({
         throw new Error('Email inválido para producción');
       }
 
-      // Obtener formToken del backend
       const { data } = await axios.post<{ formToken: string }>('/api/createPaymentToken', {
         amount,
         currency,
@@ -68,16 +61,10 @@ const IzipayPaymentPopup: React.FC<IzipayPaymentPopupProps> = ({
       });
       console.log('Form Token:', data.formToken);
 
-      // Elemento DOM requerido para el popup
-      const container = document.createElement('div');
-      container.id = 'izipay-popup-container';
-      document.body.appendChild(container);
-
-      // Configuración de producción actualizada
       const iziConfig: IzipayConfig = {
         render: {
-          typeForm: 'pop-up',
-          target: '#izipay-popup-container',
+          typeForm: 'embedded',  // Change to embedded for modal
+          target: '#izipay-modal-container',  // Target the modal container
           width: '450px',
           position: 'center',
           closeButton: true
@@ -93,11 +80,9 @@ const IzipayPaymentPopup: React.FC<IzipayPaymentPopupProps> = ({
         console.log('Izipay Object:', window.Izipay);
         const checkout = new window.Izipay(iziConfig);
         
-        // Manejar respuesta de producción con limpieza del DOM
         checkout.LoadForm({
           authorization: data.formToken,
           callbackResponse: (response) => {
-            document.body.removeChild(container);
             console.log('Payment Response:', response);
 
             if (response.paymentStatus === 'PAID') {
@@ -111,6 +96,7 @@ const IzipayPaymentPopup: React.FC<IzipayPaymentPopupProps> = ({
                 message: response.errorMessage || 'Pago rechazado'
               });
             }
+            setShowModal(false);  // Close modal after response
           }
         });
       }
@@ -126,26 +112,33 @@ const IzipayPaymentPopup: React.FC<IzipayPaymentPopupProps> = ({
     }
   };
 
-  // =================================================================
-  // 3. UI de Botón de producción (Actualizada)
-  // =================================================================
   return (
-    <button
-      onClick={handlePaymentClick}
-      disabled={loading || !sdkLoaded}  // Deshabilitar si el SDK no está listo
-      className="izipay-production-button"
-      data-testid="izipay-prod-button"
-    >
-      {loading ? (
-        <div className="spinner">
-          <span className="spinner-dot"></span>
-          <span className="spinner-dot"></span>
-          <span className="spinner-dot"></span>
+    <>
+      <button
+        onClick={() => setShowModal(true)}  // Open modal on button click
+        disabled={loading || !sdkLoaded}
+        className="izipay-production-button"
+        data-testid="izipay-prod-button"
+      >
+        {loading ? (
+          <div className="spinner">
+            <span className="spinner-dot"></span>
+            <span className="spinner-dot"></span>
+            <span className="spinner-dot"></span>
+          </div>
+        ) : (
+          'Pagar con Izipay'
+        )}
+      </button>
+
+      {showModal && (
+        <div id="izipay-modal-container" className="modal">
+          {/* Modal content */}
+          <button onClick={handlePaymentClick}>Confirmar Pago</button>
+          <button onClick={() => setShowModal(false)}>Cerrar</button>
         </div>
-      ) : (
-        'Pagar con Izipay'
       )}
-    </button>
+    </>
   );
 };
 
