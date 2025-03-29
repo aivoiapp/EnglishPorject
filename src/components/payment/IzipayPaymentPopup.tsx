@@ -37,10 +37,27 @@ const IzipayPaymentPopup: React.FC<IzipayPaymentPopupProps> = ({
       // ✅ Agregamos la clave pública para KR desde variable de entorno
       const publicKey = import.meta.env.VITE_IZIPAY_PUBLIC_KEY;
       if (!publicKey) {
-        reject(new Error('kr-public-key no definida. Asegúrate de tener NEXT_PUBLIC_IZIPAY_PUBLIC_KEY configurada.'));
+        console.error('❌ Error: VITE_IZIPAY_PUBLIC_KEY no está definida en el archivo .env');
+        reject(new Error('Clave pública de Izipay no configurada. Verifica la variable VITE_IZIPAY_PUBLIC_KEY en tu archivo .env'));
         return;
       }
-      script.setAttribute('kr-public-key', publicKey);
+      
+      // Verificar formato de la clave pública
+      if (!publicKey.includes(':publickey_')) {
+        console.error('❌ Error: Formato incorrecto de VITE_IZIPAY_PUBLIC_KEY');
+        reject(new Error('El formato de la clave pública de Izipay es incorrecto. Debe tener el formato: SHOP_ID:publickey_XXXX'));
+        return;
+      }
+      
+      script.setAttribute('kr-public-key', publicKey);           
+      script.setAttribute('kr-mode', 'PRODUCTION');
+      console.log('🔧 Modo de Izipay configurado: PRODUCTION');
+      
+      // Verificar si la clave pública corresponde al mismo Shop ID
+      const shopIdFromPublicKey = publicKey.split(':')[0];
+      if (shopIdFromPublicKey !== '76277481') {
+        console.warn('⚠️ Advertencia: El Shop ID en la clave pública no coincide con el esperado');
+      }
 
       script.onload = () => resolve();
       script.onerror = () => reject(new Error('Error al cargar el script de Izipay'));
@@ -86,11 +103,33 @@ const IzipayPaymentPopup: React.FC<IzipayPaymentPopupProps> = ({
       setLoading(true);
       await loadIzipayScript();
 
+      // Generar un orderId único si no es válido
+      const validOrderId = orderId && orderId !== 'provided' 
+        ? orderId 
+        : `ORD-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+      
+      // Validar el email del cliente
+      const validEmail = customerEmail && customerEmail !== 'provided' && customerEmail.includes('@')
+        ? customerEmail
+        : '';
+      
+      if (!validEmail) {
+        throw new Error('Email de cliente no válido. Por favor proporcione un email válido.');
+      }
+
+      console.log('Enviando datos de pago:', {
+        amount,
+        currency,
+        orderId: validOrderId,
+        customerEmail: validEmail,
+        paymentMethod
+      });
+
       const response = await axios.post('/api/createPaymentToken', {
         amount,
         currency,
-        orderId,
-        customerEmail,
+        orderId: validOrderId,
+        customerEmail: validEmail,
         paymentMethod,
       });
 

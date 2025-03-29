@@ -271,10 +271,11 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ onFormSubmit, initialData = {
             <IzipayPaymentPopup
   amount={Math.round(formData.amount * 100)}
   currency="PEN"
-  orderId={`ORDER-${Date.now()}`}
-  customerEmail={formData.email}
+  orderId={`ORDER-${Date.now()}-${Math.floor(Math.random() * 1000)}`}
+  customerEmail={formData.email || ''}
   paymentMethod={formData.paymentMethod}
   onSuccess={(response) => {
+    console.log('Pago exitoso:', response);
     setFormData(prev => ({
       ...prev,
       operationNumber: response.transactionId || '',
@@ -283,6 +284,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ onFormSubmit, initialData = {
     onFormSubmit(formData);
   }}
   onError={(error) => {
+    console.error('Error en el pago:', error);
     alert(`Error en el pago: ${error.message}`);
   }}
 />

@@ -5,15 +5,31 @@ import axios from 'axios';
 // Configuración Inicial
 // ======================
 const IZIPAY_API_URL = 'https://api.micuentaweb.pe/api-payment/V4/Charge/CreatePayment';
-const SHOP_ID = process.env.IZIPAY_SHOP_ID?.trim();
-const SECRET_KEY = process.env.IZIPAY_SECRET_KEY?.trim();
+
+// Obtener y limpiar las credenciales desde variables de entorno de Vercel
+const SHOP_ID = process.env.IZIPAY_SHOP_ID ? process.env.IZIPAY_SHOP_ID.trim() : '';
+const SECRET_KEY = process.env.IZIPAY_SECRET_KEY ? process.env.IZIPAY_SECRET_KEY.trim() : '';
+
+// Registro de depuración para verificar las credenciales (sin mostrar la clave completa)
+console.log('🔑 Credenciales configuradas:', {
+  shopId: SHOP_ID,
+  secretKeyLength: SECRET_KEY ? SECRET_KEY.length : 0,
+  secretKeyPrefix: SECRET_KEY ? SECRET_KEY.substring(0, 5) + '...' : 'no disponible'
+});
 
 // Validación estricta al iniciar
 if (!SHOP_ID || !SECRET_KEY) {
   const missing = [];
   if (!SHOP_ID) missing.push('IZIPAY_SHOP_ID');
   if (!SECRET_KEY) missing.push('IZIPAY_SECRET_KEY');
-  throw new Error(`❌ Faltan variables de entorno: ${missing.join(', ')}`);
+  console.error(`❌ ERROR CRÍTICO: Faltan variables de entorno: ${missing.join(', ')}`);
+  throw new Error(`❌ Faltan variables de entorno: ${missing.join(', ')}. Verifica las variables de entorno en el panel de Vercel.`);
+}
+
+// Verificación adicional de formato
+if (SHOP_ID.includes('tu_shop_id_aqui') || SECRET_KEY.includes('tu_secret_key_aqui')) {
+  console.error('❌ ERROR: Las credenciales de Izipay parecen ser valores de ejemplo');
+  throw new Error('Las credenciales de Izipay no han sido configuradas correctamente. Reemplaza los valores de ejemplo con tus credenciales reales en el panel de Vercel.');
 }
 
 // ======================
@@ -21,7 +37,15 @@ if (!SHOP_ID || !SECRET_KEY) {
 // ======================
 const generateSignature = (payload, secretKey) => {
   try {
-    const contentToSign = JSON.stringify(payload);
+    // Versión mejorada que ordena las claves del payload
+    const orderedPayload = Object.keys(payload)
+      .sort()
+      .reduce((obj, key) => {
+        obj[key] = payload[key];
+        return obj;
+      }, {});
+    
+    const contentToSign = JSON.stringify(orderedPayload);
     return crypto
       .createHmac('sha256', secretKey)
       .update(contentToSign)
@@ -40,7 +64,12 @@ const validatePaymentData = (data) => {
   if (!amount || isNaN(amount) || amount <= 0) errors.push('Monto inválido');
   if (!currency || currency.length !== 3) errors.push('Moneda inválida (ej: PEN)');
   if (!orderId?.trim()) errors.push('OrderID requerido');
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(customerEmail)) errors.push('Email inválido');
+  
+  // Validación estricta de email
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!customerEmail || !emailRegex.test(customerEmail)) {
+    errors.push('Email inválido');
+  }
   
   // Validación de métodos de pago
   const allowedMethods = ['yape-pasarela', 'yape-izipay', 'tarjeta'];
@@ -72,46 +101,62 @@ export default async function handler(req, res) {
   }
 
   try {
-    // 1. Validar datos de entrada
+    // 1. Validar y registrar datos de entrada REALES
+    const { amount, currency, orderId, customerEmail, paymentMethod } = req.body;
+    
+    // Validar que no se reciban valores 'provided'
+    if (orderId === 'provided' || customerEmail === 'provided') {
+      return res.status(400).json({
+        success: false,
+        error: 'Datos inválidos',
+        details: 'Los valores "provided" no son válidos para orderId o customerEmail',
+        code: 'INVALID_DATA'
+      });
+    }
+    
     console.log('📦 Datos recibidos:', { 
-      amount: req.body.amount,
-      currency: req.body.currency,
-      orderId: req.body.orderId ? 'provided' : 'missing',
-      customerEmail: req.body.customerEmail ? 'provided' : 'missing',
-      paymentMethod: req.body.paymentMethod || 'no especificado'
+      amount,
+      currency,
+      orderId,
+      customerEmail: customerEmail ? customerEmail.substring(0, 3) + '...@...' + (customerEmail.includes('@') ? customerEmail.split('@')[1] : 'invalid') : 'missing',
+      paymentMethod: paymentMethod || 'no especificado'
     });
 
     validatePaymentData(req.body);
 
-    // 2. Construir payload
+    // 2. Construir payload con datos reales
     const payload = {
-      amount: Math.round(parseFloat(req.body.amount)),
-      currency: req.body.currency,
-      orderId: req.body.orderId,
-      formAction: 'PAYMENT',
+      amount: Math.round(parseFloat(amount)),
+      currency,
+      orderId,
+      formAction: 'PAYMENT',     
       ctx_mode: 'PRODUCTION',
       paymentConfig: 'SINGLE',
       customer: { 
-        email: req.body.customerEmail,
+        email: customerEmail,
         billingDetails: {
-          language: 'es' // Campo adicional útil
+          language: 'es'
         }
       },
       transactionOptions: {
         cardOptions: { 
           paymentSource: 'INTERNET',
-          captureDelay: 0 // Para captura inmediata
+          captureDelay: 0
         }
       },
       shopId: SHOP_ID,
       metadata: {
         source: 'React Popup',
-        integrationVersion: '2.0'
+        integrationVersion: '2.0',
+        timestamp: new Date().toISOString()
       }
     };
+    
+    // Registro del modo de contexto para depuración
+    console.log(`🔧 Modo de contexto: ${payload.ctx_mode}`);
 
-    // 3. Configurar método de pago
-    if (req.body.paymentMethod.includes('yape')) {
+    // 3. Configurar método de pago correctamente
+    if (paymentMethod.includes('yape')) {
       payload.paymentMethods = { 
         specificPaymentMethods: ['YAPE'],
         paymentMethodType: 'WALLET'
@@ -123,66 +168,80 @@ export default async function handler(req, res) {
       };
     }
 
-    // 4. Generar firma
+    // 4. Generar firma con payload ordenado
     console.log('🔐 Generando firma de seguridad...');
     const signature = generateSignature(payload, SECRET_KEY);
 
-    // 5. Llamar a Izipay
+    // 5. Llamar a Izipay con headers completos
     console.log('🚀 Enviando solicitud a Izipay...');
     const response = await axios.post(IZIPAY_API_URL, payload, {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': signature,
         'Accept': 'application/json',
-        'X-API-Version': '2021-08-01' // Header adicional recomendado
+        'X-API-Version': '2021-08-01'
       },
       timeout: 10000
     });
 
-    // 6. Validar respuesta
+    // 6. Validar respuesta exhaustivamente
     if (!response.data?.formToken) {
       console.error('❌ Respuesta inesperada:', response.data);
       throw new Error('FormToken no recibido en la respuesta');
     }
 
-    console.log('✅ Transacción creada exitosamente');
+    console.log('✅ Transacción creada exitosamente para orderId:', orderId);
     return res.status(200).json({
       success: true,
       formToken: response.data.formToken,
-      orderId: req.body.orderId,
+      orderId,
       timestamp: new Date().toISOString(),
-      paymentMethod: req.body.paymentMethod
+      paymentMethod
     });
 
   } catch (error) {
-    // Manejo detallado de errores
-    console.error('💥 Error en el proceso:', {
-      message: error.message,
-      stack: error.stack,
-      responseData: error.response?.data
-    });
-
-    // Respuesta al cliente
-    const errorResponse = {
+    // Manejo profesional de errores
+    const errorData = {
       success: false,
       error: error.message,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
+      details: null,
+      code: null
     };
 
-    // Caso especial: Error de autenticación
+    // Error de autenticación específico
     if (error.response?.data?.answer?.errorCode === 'INT_905') {
-      errorResponse.error = 'Error de autenticación con Izipay';
-      errorResponse.details = 'Verifique SHOP_ID y SECRET_KEY';
-      errorResponse.code = 'AUTH_ERROR';
-      return res.status(401).json(errorResponse);
+      console.error('🔐 Error de autenticación con Izipay', {
+        status: error.response.status,
+        shopId: SHOP_ID ? `****${SHOP_ID.slice(-4)}` : 'undefined',
+        errorDetails: error.response.data.answer
+      });
+
+      errorData.error = 'Error de autenticación con Izipay';
+      errorData.details = 'Verifique que las credenciales (Shop ID y Secret Key) estén correctamente configuradas en las variables de entorno de Vercel. Este error suele ocurrir cuando las credenciales son inválidas o no coinciden con el entorno actual (TEST/PRODUCTION).';
+      errorData.code = 'AUTH_ERROR';
+      
+      // Verificación adicional para ayudar en la depuración
+      if (SHOP_ID.length < 5 || SECRET_KEY.length < 10) {
+        errorData.details += ' Las credenciales parecen estar incompletas o malformadas.';
+      }
+      
+      return res.status(401).json(errorData);
     }
 
-    // Otros errores de Izipay
+    // Otros errores de API
     if (error.response?.data) {
-      errorResponse.details = error.response.data.answer?.errorMessage;
-      errorResponse.code = error.response.data.answer?.errorCode;
+      errorData.details = error.response.data.answer?.errorMessage;
+      errorData.code = error.response.data.answer?.errorCode;
+      console.error('❌ Error de Izipay:', {
+        status: error.response.status,
+        code: errorData.code,
+        message: errorData.details
+      });
+    } else {
+      console.error('💥 Error interno:', error.stack);
     }
 
-    return res.status(error.response?.status || 500).json(errorResponse);
+    return res.status(error.response?.status || 500).json(errorData);
   }
 }
