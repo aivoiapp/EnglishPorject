@@ -55,10 +55,11 @@ const IzipayPaymentPopup: React.FC<IzipayPaymentPopupProps> = ({
       };
       document.head.appendChild(script);
 
-      const link = document.createElement('link');
-      link.rel = 'stylesheet';
-      link.href = 'https://static.micuentaweb.pe/static/css/krypton-client/V4.0/ext/classic-reset.css';
-      document.head.appendChild(link);
+      // Temporarily remove the stylesheet link to test SDK initialization
+      // const link = document.createElement('link');
+      // link.rel = 'stylesheet';
+      // link.href = 'https://static.micuentaweb.pe/static/css/krypton-client/V4.0/ext/classic-reset.css';
+      // document.head.appendChild(link);
     } else {
       setSdkLoaded(true);
     }
@@ -71,7 +72,7 @@ const IzipayPaymentPopup: React.FC<IzipayPaymentPopupProps> = ({
         if (window.KR) {
           clearInterval(interval);
           resolve();
-        } else if (++attempts > 50) { // Increased attempts for longer wait
+        } else if (++attempts > 100) { // Further increased attempts for longer wait
           clearInterval(interval);
           reject(new Error('Izipay SDK no está disponible tras múltiples intentos.'));
         }
