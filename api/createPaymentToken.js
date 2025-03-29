@@ -4,7 +4,7 @@ import axios from 'axios';
 // ======================
 // Configuración Inicial
 // ======================
-const IZIPAY_API_URL = 'https://api.micuentaweb.pe/api-payment/V4/Charge/CreatePayment';
+const IZIPAY_API_URL = 'https://api.micuentaweb.pe/api-payment/V4/Charge/CreateToken';
 
 // Obtener y limpiar las credenciales desde variables de entorno de Vercel
 const SHOP_ID = process.env.IZIPAY_SHOP_ID ? process.env.IZIPAY_SHOP_ID.trim() : '';
@@ -128,40 +128,20 @@ export default async function handler(req, res) {
 
     validatePaymentData(req.body);
 
-    // 2. Construir payload con datos reales
-    // Creamos un objeto base y luego filtramos propiedades undefined
-    const payloadBase = {
-      amount: Math.round(parseFloat(amount)),
+    // 2. Construir payload simplificado según el ejemplo proporcionado
+    // El payload para CreateToken es mucho más simple que para CreatePayment
+    const payload = {
       currency,
-      orderId,
-      formAction: 'PAYMENT',     
-      ctx_mode: 'PRODUCTION', // Forzamos el modo a PRODUCTION para entorno de producción
-      paymentConfig: 'SINGLE',
-      customer: { 
-        email: customerEmail,
-        billingDetails: {
-          language: 'es'
-        }
+      customer: {
+        email: customerEmail
       },
-      transactionOptions: {
-        cardOptions: { 
-          paymentSource: 'INTERNET',
-          captureDelay: 0
-        }
-      },
-      shopId: SHOP_ID,
-      metadata: {
-        source: 'React Popup',
-        integrationVersion: '2.0',
-        timestamp: new Date().toISOString()
-      }
+      orderId
     };
     
-    // Filtrar propiedades undefined para asegurar un JSON bien formateado
-    const payload = JSON.parse(JSON.stringify(payloadBase));
+    // Registro del payload para depuración
+    console.log('📦 Payload preparado:', JSON.stringify(payload, null, 2));
     
-    // Registro del modo de contexto para depuración
-    console.log(`🔧 Modo de contexto: ${payload.ctx_mode}`);
+    // Nota: Ya no necesitamos configurar métodos de pago específicos para CreateToken
 
     // 3. Configurar método de pago correctamente
     if (paymentMethod.includes('yape')) {
@@ -176,26 +156,26 @@ export default async function handler(req, res) {
       };
     }
 
-    // 4. Generar firma con payload ordenado
-    console.log('🔐 Generando firma de seguridad...');
-    const signature = generateSignature(payload, SECRET_KEY);
+    // 4. Preparar autenticación Basic Auth
+    console.log('🔐 Preparando autenticación Basic Auth...');
+    // Crear credenciales en formato Basic Auth (shopId:secretKey)
+    const authString = `${SHOP_ID}:${SECRET_KEY}`;
+    const base64Auth = Buffer.from(authString).toString('base64');
 
     // 5. Llamar a Izipay con headers completos
     console.log('🚀 Enviando solicitud a Izipay...');
-    // Solo enviamos el payload y la firma en el encabezado de autorización
-    // No incluimos public key, clave REST o username
+    // Enviamos el payload con autenticación Basic
     const response = await axios.post(IZIPAY_API_URL, payload, {
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': signature, // Solo la firma en el encabezado de autorización
-        'Accept': 'application/json',
-        'X-API-Version': '2021-08-01'
+        'Authorization': `Basic ${base64Auth}`,
+        'Accept': 'application/json'
       },
       timeout: 10000
     });
 
     // 6. Validar respuesta exhaustivamente
-    if (!response.data?.formToken) {
+    if (!response.data?.answer?.formToken) {
       console.error('❌ Respuesta inesperada:', response.data);
       throw new Error('FormToken no recibido en la respuesta');
     }
@@ -203,7 +183,7 @@ export default async function handler(req, res) {
     console.log('✅ Transacción creada exitosamente para orderId:', orderId);
     return res.status(200).json({
       success: true,
-      formToken: response.data.formToken,
+      formToken: response.data.answer.formToken,
       orderId,
       timestamp: new Date().toISOString(),
       paymentMethod
@@ -220,7 +200,7 @@ export default async function handler(req, res) {
     };
 
     // Error de autenticación específico
-    if (error.response?.data?.answer?.errorCode === 'INT_905') {
+    if (error.response?.data?.status === 'ERROR' || error.response?.data?.answer?.errorCode === 'INT_905') {
       console.error('🔐 Error de autenticación con Izipay', {
         status: error.response.status,
         shopId: SHOP_ID ? `****${SHOP_ID.slice(-4)}` : 'undefined',

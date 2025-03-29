@@ -52,8 +52,8 @@ const IzipayPaymentPopup: React.FC<IzipayPaymentPopupProps> = ({
       script.setAttribute('kr-public-key', publicKey);
       
       // Configurar el modo según el entorno
-      // En producción usar PRODUCTION, en desarrollo TEST
-      const mode = 'PRODUCTION'; // Forzamos el modo a PRODUCTION para coincidir con el backend
+      // Según el ejemplo proporcionado, debemos usar TEST
+      const mode = 'TEST'; // Configuramos el modo a TEST para coincidir con el ejemplo exitoso
       script.setAttribute('kr-mode', mode);
       console.log(`🔧 Modo de Izipay configurado: ${mode}`);
       
