@@ -135,7 +135,7 @@ export default async function handler(req, res) {
       currency,
       orderId,
       formAction: 'PAYMENT',     
-      ctx_mode: process.env.NODE_ENV === 'production' ? 'PRODUCTION' : 'TEST', // Configuramos el modo según el entorno
+      ctx_mode: 'PRODUCTION', // Forzamos el modo a PRODUCTION para entorno de producción
       paymentConfig: 'SINGLE',
       customer: { 
         email: customerEmail,
