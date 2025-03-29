@@ -1,15 +1,9 @@
 {
   "version": 2,
-  "builds": [
-    { "src": "package.json", "use": "@vercel/static-build" }
-  ],
-  "routes": [
-    { "src": "/api/(.*)", "dest": "/api/$1" },
-    { "src": "/(.*)", "dest": "/index.html" }
-  ],
-  "build": {
-    "env": {
-      "VITE_IZIPAY_PUBLIC_KEY": "76277481:publickey_LA4CyBwP1Db5cnCtuipj9eRceTCIIgnF675BdV2EJmvlK"
+  "functions": {
+    "api/createPaymentToken.js": {
+      "memory": 512,
+      "maxDuration": 10
     }
   }
 }

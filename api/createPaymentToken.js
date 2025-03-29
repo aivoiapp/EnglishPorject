@@ -13,7 +13,8 @@ const SECRET_KEY = process.env.IZIPAY_SECRET_KEY ? process.env.IZIPAY_SECRET_KEY
 // Registro de depuración para verificar las credenciales (sin mostrar la clave completa)
 console.log('🔑 Credenciales configuradas:', {
   shopId: SHOP_ID ? '****' + SHOP_ID.substring(SHOP_ID.length - 4) : 'no disponible',
-  secretKeyConfigured: SECRET_KEY ? 'Sí' : 'No'
+  secretKeyConfigured: SECRET_KEY ? 'Sí' : 'No',
+  environment: process.env.NODE_ENV || 'development'
 });
 
 // Validación estricta al iniciar
@@ -134,7 +135,7 @@ export default async function handler(req, res) {
       currency,
       orderId,
       formAction: 'PAYMENT',     
-      ctx_mode: 'PRODUCTION', // Aseguramos que sea exactamente 'PRODUCTION' en mayúsculas
+      ctx_mode: process.env.NODE_ENV === 'production' ? 'PRODUCTION' : 'TEST', // Configuramos el modo según el entorno
       paymentConfig: 'SINGLE',
       customer: { 
         email: customerEmail,
@@ -227,7 +228,7 @@ export default async function handler(req, res) {
       });
 
       errorData.error = 'Error de autenticación con Izipay';
-      errorData.details = 'Verifique que las credenciales (Shop ID y Secret Key) estén correctamente configuradas en las variables de entorno de Vercel. Este error suele ocurrir cuando las credenciales son inválidas o no coinciden con el entorno actual (TEST/PRODUCTION).';
+      errorData.details = `Verifique que las credenciales (Shop ID y Secret Key) estén correctamente configuradas en las variables de entorno de Vercel. Este error suele ocurrir cuando las credenciales son inválidas o no coinciden con el entorno actual (${payload.ctx_mode}). Asegúrese de que está utilizando las credenciales correctas para el entorno ${payload.ctx_mode}.`;
       errorData.code = 'AUTH_ERROR';
       
       // Verificación adicional para ayudar en la depuración

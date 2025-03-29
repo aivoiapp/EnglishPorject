@@ -49,9 +49,13 @@ const IzipayPaymentPopup: React.FC<IzipayPaymentPopupProps> = ({
         return;
       }
       
-      script.setAttribute('kr-public-key', publicKey);           
-      script.setAttribute('kr-mode', 'PRODUCTION');
-      console.log('🔧 Modo de Izipay configurado: PRODUCTION');
+      script.setAttribute('kr-public-key', publicKey);
+      
+      // Configurar el modo según el entorno
+      // En producción usar PRODUCTION, en desarrollo TEST
+      const mode = import.meta.env.PROD ? 'PRODUCTION' : 'TEST';
+      script.setAttribute('kr-mode', mode);
+      console.log(`🔧 Modo de Izipay configurado: ${mode}`);
       
       // Extraer el Shop ID de la clave pública para referencia
       const shopIdFromPublicKey = publicKey.split(':')[0];
