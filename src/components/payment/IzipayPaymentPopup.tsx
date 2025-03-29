@@ -53,11 +53,9 @@ const IzipayPaymentPopup: React.FC<IzipayPaymentPopupProps> = ({
       script.setAttribute('kr-mode', 'PRODUCTION');
       console.log('🔧 Modo de Izipay configurado: PRODUCTION');
       
-      // Verificar si la clave pública corresponde al mismo Shop ID
+      // Extraer el Shop ID de la clave pública para referencia
       const shopIdFromPublicKey = publicKey.split(':')[0];
-      if (shopIdFromPublicKey !== '76277481') {
-        console.warn('⚠️ Advertencia: El Shop ID en la clave pública no coincide con el esperado');
-      }
+      console.log('🔑 Usando Shop ID:', shopIdFromPublicKey);
 
       script.onload = () => resolve();
       script.onerror = () => reject(new Error('Error al cargar el script de Izipay'));

@@ -7,10 +7,6 @@
     { "src": "/api/(.*)", "dest": "/api/$1" },
     { "src": "/(.*)", "dest": "/index.html" }
   ],
-  "env": {
-    "IZIPAY_SHOP_ID": "@izipay_shop_id",
-    "IZIPAY_SECRET_KEY": "@izipay_secret_key"
-  },
   "build": {
     "env": {
       "VITE_IZIPAY_PUBLIC_KEY": "76277481:publickey_LA4CyBwP1Db5cnCtuipj9eRceTCIIgnF675BdV2EJmvlK"

@@ -12,9 +12,8 @@ const SECRET_KEY = process.env.IZIPAY_SECRET_KEY ? process.env.IZIPAY_SECRET_KEY
 
 // Registro de depuración para verificar las credenciales (sin mostrar la clave completa)
 console.log('🔑 Credenciales configuradas:', {
-  shopId: SHOP_ID,
-  secretKeyLength: SECRET_KEY ? SECRET_KEY.length : 0,
-  secretKeyPrefix: SECRET_KEY ? SECRET_KEY.substring(0, 5) + '...' : 'no disponible'
+  shopId: SHOP_ID ? '****' + SHOP_ID.substring(SHOP_ID.length - 4) : 'no disponible',
+  secretKeyConfigured: SECRET_KEY ? 'Sí' : 'No'
 });
 
 // Validación estricta al iniciar
@@ -38,10 +37,14 @@ if (SHOP_ID.includes('tu_shop_id_aqui') || SECRET_KEY.includes('tu_secret_key_aq
 const generateSignature = (payload, secretKey) => {
   try {
     // Versión mejorada que ordena las claves del payload
-    const orderedPayload = Object.keys(payload)
+    // Creamos una copia del payload sin el shopId para la firma
+    const payloadForSignature = { ...payload };
+    delete payloadForSignature.shopId; // Eliminamos shopId de la firma
+    
+    const orderedPayload = Object.keys(payloadForSignature)
       .sort()
       .reduce((obj, key) => {
-        obj[key] = payload[key];
+        obj[key] = payloadForSignature[key];
         return obj;
       }, {});
     
@@ -125,12 +128,13 @@ export default async function handler(req, res) {
     validatePaymentData(req.body);
 
     // 2. Construir payload con datos reales
-    const payload = {
+    // Creamos un objeto base y luego filtramos propiedades undefined
+    const payloadBase = {
       amount: Math.round(parseFloat(amount)),
       currency,
       orderId,
       formAction: 'PAYMENT',     
-      ctx_mode: 'PRODUCTION',
+      ctx_mode: 'PRODUCTION', // Aseguramos que sea exactamente 'PRODUCTION' en mayúsculas
       paymentConfig: 'SINGLE',
       customer: { 
         email: customerEmail,
@@ -151,6 +155,9 @@ export default async function handler(req, res) {
         timestamp: new Date().toISOString()
       }
     };
+    
+    // Filtrar propiedades undefined para asegurar un JSON bien formateado
+    const payload = JSON.parse(JSON.stringify(payloadBase));
     
     // Registro del modo de contexto para depuración
     console.log(`🔧 Modo de contexto: ${payload.ctx_mode}`);
@@ -174,10 +181,12 @@ export default async function handler(req, res) {
 
     // 5. Llamar a Izipay con headers completos
     console.log('🚀 Enviando solicitud a Izipay...');
+    // Solo enviamos el payload y la firma en el encabezado de autorización
+    // No incluimos public key, clave REST o username
     const response = await axios.post(IZIPAY_API_URL, payload, {
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': signature,
+        'Authorization': signature, // Solo la firma en el encabezado de autorización
         'Accept': 'application/json',
         'X-API-Version': '2021-08-01'
       },
