@@ -7,8 +7,8 @@ import axios from 'axios';
 const IZIPAY_API_URL = 'https://api.micuentaweb.pe/api-payment/V4/Charge/CreateToken';
 
 // Credenciales PRODUCCIÓN (deben estar en variables de entorno de Vercel)
-const SHOP_ID = process.env.IZIPAY_SHOP_ID_PROD?.trim() || '';
-const SECRET_KEY = process.env.IZIPAY_SECRET_KEY_PROD?.trim() || '';
+const SHOP_ID = process.env.IZIPAY_SHOP_ID?.trim() || '';
+const SECRET_KEY = process.env.IZIPAY_SECRET_KEY?.trim() || '';
 
 // Validación estricta
 if (!SHOP_ID || !SECRET_KEY) {
