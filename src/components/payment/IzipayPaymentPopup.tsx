@@ -71,7 +71,7 @@ const IzipayPaymentPopup: React.FC<IzipayPaymentPopupProps> = ({
         if (window.KR) {
           clearInterval(interval);
           resolve();
-        } else if (++attempts > 20) {
+        } else if (++attempts > 50) { // Increased attempts for longer wait
           clearInterval(interval);
           reject(new Error('Izipay SDK no está disponible tras múltiples intentos.'));
         }
