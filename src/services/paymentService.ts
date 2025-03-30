@@ -5,7 +5,7 @@
 import { jsPDF } from 'jspdf';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
-import { PaymentFormData } from '../components/payment/PaymentForm';
+import { PaymentFormData } from '../components/payment/paymentTypes';
 
 // Almacenamiento temporal de la información del pago actual
 let currentPaymentData: PaymentFormData | null = null;

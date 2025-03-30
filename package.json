@@ -1,5 +1,5 @@
 {
-  "name": "vite-react-typescript-starter",
+  "name": "english-academy",
   "private": true,
   "version": "1.0.0",
   "type": "module",
@@ -13,7 +13,6 @@
     "deploy": "vercel --prod"
   },
   "dependencies": {
-    "@lyracom/embedded-form-glue": "^1.4.2",
     "@radix-ui/react-accordion": "^1.1.2",
     "@radix-ui/react-dialog": "^1.0.5",
     "@radix-ui/react-slot": "^1.0.2",
@@ -22,6 +21,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
     "date-fns": "^4.1.0",
+    "framer-motion": "^12.6.2",
     "jspdf": "^3.0.1",
     "libphonenumber-js": "^1.12.6",
     "lucide-react": "^0.294.0",

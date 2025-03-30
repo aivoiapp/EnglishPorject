@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Download } from 'lucide-react';
-import IzipayPaymentPopup from './payment/IzipayPaymentPopup'; // Import the component
-import type { PaymentFormData } from './payment/PaymentForm';
+import type { PaymentFormData } from './payment/paymentTypes';
 import { storePaymentData, generatePaymentReceipt, getCurrentPaymentData} from '../services/paymentService';
 import { sendPaymentFormData } from '../services/makeService';
 import { format } from 'date-fns';
@@ -144,25 +143,7 @@ const PaymentSection: React.FC<PaymentSectionProps> = ({ name, email, phone }) =
                 </div>
               )}
 
-              {/* Conditionally render IzipayPaymentPopup */}
-              {paymentData?.paymentMethod === 'tarjeta' && (
-                <IzipayPaymentPopup
-                  paymentMethod={paymentData.paymentMethod}
-                  amount={Math.round(paymentData.amount * 100)}
-                  currency="PEN"
-                  orderId={`ORD-${Date.now()}-${Math.floor(Math.random() * 1000)}`}
-                  customerEmail={paymentData.email || ''}
-                  onSuccess={(res) => {
-                    console.log('Pago exitoso', res);
-                    // Mostrar mensaje de éxito
-                    setReceiptGenerated(true);
-                  }}
-                  onError={(err) => {
-                    console.error('Error en el pago', err);
-                    alert(`Error en el pago: ${err.message}`);
-                  }}
-                />
-              )}
+              {/* El componente IzipayPaymentPopup ha sido eliminado */}
 
               <div className="space-y-4 mt-6">
                 <div className="flex flex-col sm:flex-row gap-3">
