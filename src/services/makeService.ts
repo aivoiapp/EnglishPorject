@@ -4,7 +4,7 @@
  */
 
 import axios from 'axios';
-import { PaymentFormData } from '../components/payment/PaymentForm';
+import { PaymentFormData } from '../components/payment/paymentTypes';
 
 // Interfaz para la respuesta de Make.com
 interface MakeWebhookResponse {

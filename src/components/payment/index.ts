@@ -3,5 +3,5 @@
  */
 
 export { default as PaymentForm } from './PaymentForm';
-export type { PaymentFormData } from './PaymentForm';
-export { default as IzipayPaymentPopup } from './IzipayPaymentPopup';
+export { usePaymentContext } from './paymentTypes';
+export type { PaymentMethodType, PaymentFormData } from './paymentTypes';
