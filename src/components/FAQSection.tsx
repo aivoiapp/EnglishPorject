@@ -21,7 +21,7 @@ const FAQSection = () => (
           <h3 className="text-xl font-semibold mb-2 dark:text-white">¿Puedo tomar solo un mes?</h3>
           <p className="text-gray-600 dark:text-gray-300">
             Sí, ofrecemos modalidad mensual. Sin embargo recomendamos un mínimo de 
-            <strong> 3 meses</strong> para lograr un progreso significativo en tu inglés.
+            <strong> 6 meses</strong> para lograr un progreso significativo en tu inglés.
           </p>
         </div>
 
