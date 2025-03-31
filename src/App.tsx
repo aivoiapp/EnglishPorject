@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Book } from 'lucide-react';
-import { ScheduleSection, HeroSection, ContactSection, PaymentSection, FAQSection, PlacementSection, BenefitsSection, AudienceSection, CurriculumSection, ProfessorsSection } from './components';
+import { ScheduleSection, HeroSection, PaymentSection, FAQSection, PlacementSection, BenefitsSection, AudienceSection, CurriculumSection, ProfessorsSection, FloatingContactButton } from './components';
 import ThemeToggle from './components/ThemeToggle';
 
 function App() {
@@ -60,7 +60,6 @@ function App() {
               <a href="#horarios" className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400">Horarios</a>
               <a href="#faq" className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400">FAQ</a>
               <a href="#evaluacion" className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400">Placement Test</a>
-              <a href="#contacto" className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400">Contacto</a>
             </nav>
 
             <div className="flex items-center gap-4">
@@ -79,7 +78,7 @@ function App() {
         <ScheduleSection />
         <FAQSection />
         <PlacementSection />
-        <ContactSection onNameChange={handleNameChange} />
+        <FloatingContactButton onNameChange={handleNameChange} />
         <PaymentSection 
           name={userData.name} 
           email={userData.email} 

@@ -11,7 +11,7 @@ import { TestQuestionWithAnswer, PlacementTestResult } from '../types';
  * @returns Grupo recomendado
  */
 export const getRecommendedGroup = (age: number): string => {
-  if (age >= 7 && age <= 12) return "Niños (7-12 años)";
+  if (age >= 7 && age <= 12) return "Niños (8-12 años)";
   if (age >= 13 && age <= 17) return "Adolescentes (13-17 años)";
   return "Adultos (18+ años)";
 };

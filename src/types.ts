@@ -11,13 +11,13 @@ export interface Agent {
 }
 
 export const agents: Agent[] = [
-  { name: "Cyril O.", phone: "51926328988" },
-  { name: "Maricielo C.", phone: "51955402309" }
+  { name: "Agente 1.", phone: "51926328988" },
+  { name: "Agente 2", phone: "51906089930" }
 ];
 
 export const schedules: Schedule[] = [
   {
-    group: "Niños (7-12 años)",
+    group: "Niños (8-12 años)",
     times: [
       "Lunes y Miércoles 4:00 PM - 5:00 PM (Intermedios: B1-B2)", 
       "Martes y Jueves 4:00 PM - 5:00 PM (Principiantes: A0-A1-A2)"

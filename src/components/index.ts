@@ -10,3 +10,4 @@ export { default as AudienceSection } from './AudienceSection.tsx';
 export { default as CurriculumSection } from './CurriculumSection.tsx';
 export { default as PricingSection } from './PricingSection.tsx';
 export { default as ProfessorsSection } from './ProfessorsSection.tsx';
+export { default as FloatingContactButton } from './FloatingContactButton.tsx';

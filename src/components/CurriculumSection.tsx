@@ -13,6 +13,30 @@ const CurriculumSection = () => {
           <div className="space-y-6">
             <div className="flex items-start space-x-4">
               <div className="bg-pink-500 p-2 rounded-full flex-shrink-0">
+                <MessageCircle className="w-6 h-6 text-white" /> {/* Conversation icon */}
+              </div>
+              <div>
+                <h3 className="text-xl font-semibold mb-2 text-gray-800 dark:text-white">Participar en conversaciones</h3>
+                <p className="text-gray-600 dark:text-gray-300">
+                  Aprende a participar activamente en conversaciones en inglés, mejorando tu fluidez y confianza.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-start space-x-4">
+              <div className="bg-pink-500 p-2 rounded-full flex-shrink-0">
+                <Volume2 className="w-6 h-6 text-white" /> {/* Pronunciation icon */}
+              </div>
+              <div>
+                <h3 className="text-xl font-semibold mb-2 text-gray-800 dark:text-white">Practicar la pronunciación</h3>
+                <p className="text-gray-600 dark:text-gray-300">
+                  Perfecciona tu pronunciación para hablar inglés con confianza y ser entendido por hablantes nativos.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-start space-x-4">
+              <div className="bg-pink-500 p-2 rounded-full flex-shrink-0">
                 <BookOpen className="w-6 h-6 text-white" /> {/* Grammar icon */}
               </div>
               <div>
@@ -34,7 +58,10 @@ const CurriculumSection = () => {
                 </p>
               </div>
             </div>
+          </div>
 
+          {/* Columna derecha */}
+          <div className="space-y-6">
             <div className="flex items-start space-x-4">
               <div className="bg-pink-500 p-2 rounded-full flex-shrink-0">
                 <Layout className="w-6 h-6 text-white" /> {/* Reading icon */}
@@ -49,39 +76,12 @@ const CurriculumSection = () => {
 
             <div className="flex items-start space-x-4">
               <div className="bg-pink-500 p-2 rounded-full flex-shrink-0">
-                <Volume2 className="w-6 h-6 text-white" /> {/* Pronunciation icon */}
-              </div>
-              <div>
-                <h3 className="text-xl font-semibold mb-2 text-gray-800 dark:text-white">Practicar la pronunciación</h3>
-                <p className="text-gray-600 dark:text-gray-300">
-                  Perfecciona tu pronunciación para hablar inglés con confianza y ser entendido por hablantes nativos.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Columna derecha */}
-          <div className="space-y-6">
-            <div className="flex items-start space-x-4">
-              <div className="bg-pink-500 p-2 rounded-full flex-shrink-0">
                 <Headphones className="w-6 h-6 text-white" /> {/* Listening icon */}
               </div>
               <div>
                 <h3 className="text-xl font-semibold mb-2 text-gray-800 dark:text-white">Mejorar la comprensión auditiva</h3>
                 <p className="text-gray-600 dark:text-gray-300">
                   Desarrolla la habilidad de entender el inglés hablado en diferentes acentos y contextos.
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-start space-x-4">
-              <div className="bg-pink-500 p-2 rounded-full flex-shrink-0">
-                <MessageCircle className="w-6 h-6 text-white" /> {/* Conversation icon */}
-              </div>
-              <div>
-                <h3 className="text-xl font-semibold mb-2 text-gray-800 dark:text-white">Participar en conversaciones</h3>
-                <p className="text-gray-600 dark:text-gray-300">
-                  Aprende a participar activamente en conversaciones en inglés, mejorando tu fluidez y confianza.
                 </p>
               </div>
             </div>
@@ -116,7 +116,7 @@ const CurriculumSection = () => {
           <div className="inline-block bg-white dark:bg-gray-700 p-6 rounded-lg shadow-lg">
             <h3 className="text-xl font-semibold mb-3 text-gray-800 dark:text-white">Certificación Internacional</h3>
             <p className="text-gray-600 dark:text-gray-300">
-              Aquellos estudiantes que completen exitosamente un nivel estarán preparados para presentar 
+              Aquellos estudiantes que completen exitosamente el programa de estudios estarán preparados para presentar 
               las pruebas oficiales de Cambridge de reconocimiento internacional, abriendo puertas 
               a oportunidades académicas y profesionales en todo el mundo.
             </p>

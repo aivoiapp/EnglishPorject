@@ -36,7 +36,7 @@ const PaymentCourseInfo: React.FC = () => {
               required
             >
               <option value="">Selecciona un grupo</option>
-              <option value="Niños (7-12 años)">Niños (7-12 años)</option>
+              <option value="Niños (8-12 años)">Niños (8-12 años)</option>
               <option value="Adolescentes (13-17 años)">Adolescentes (13-17 años)</option>
               <option value="Adultos (18+ años)">Adultos (18+ años)</option>
             </select>

@@ -79,7 +79,7 @@ const ContactSection: React.FC<ContactSectionProps> = ({ onNameChange }) => {
                 required
               >
                 <option value="">Selecciona un grupo</option>
-                <option value="niños">Niños (7-12 años)</option>
+                <option value="niños">Niños (8-12 años)</option>
                 <option value="adolescentes">Adolescentes (13-17 años)</option>
                 <option value="adultos">Adultos (18+ años)</option>
               </select>
