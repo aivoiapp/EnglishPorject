@@ -211,6 +211,187 @@ const PaymentMethods: React.FC = () => {
                   <option value="Otro">Otro</option>
                 </select>
               </div>
+              
+              {/* Guías específicas para cada banco */}
+              {formData.bank && (
+                <div className="md:col-span-2 mt-2 mb-4">
+                  <div className="bg-white dark:bg-gray-700 border border-green-200 dark:border-green-800 rounded-lg p-4 shadow-sm">
+                    <h5 className="font-medium text-md mb-3 text-green-700 dark:text-green-300 flex items-center">
+                      <span className="mr-2">¿Cómo lo hago?</span>
+                    </h5>
+                    
+                    {formData.bank === 'BCP' && (
+                      <div className="space-y-3">
+                        <div className="flex items-start">
+                          <div className="bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-200 font-bold rounded-full w-6 h-6 flex items-center justify-center mr-2 flex-shrink-0">1</div>
+                          <p className="text-gray-700 dark:text-gray-300">Abrir la app de tu banco.</p>
+                        </div>
+                        <div className="flex items-start">
+                          <div className="bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-200 font-bold rounded-full w-6 h-6 flex items-center justify-center mr-2 flex-shrink-0">2</div>
+                          <div>
+                            <p className="text-gray-700 dark:text-gray-300">Ir a:</p>
+                            <p className="text-green-700 dark:text-green-300 font-medium">Pago de servicios → Buscar: Ligo (TARJETA LIGO - TARJETA LA MÁGICA)</p>
+                          </div>
+                        </div>
+                        <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 p-3 rounded-lg">
+                          <p className="text-blue-800 dark:text-blue-300 text-sm flex items-center">
+                            <span className="mr-2">⏰</span>
+                            Te recomendamos realizar tu recarga de lunes a viernes desde las 9:00am hasta las 8:00pm y los sábados desde las 9:00am hasta 1:30pm. Recuerda que no se podrá realizar recargas fuera de estos horarios.
+                          </p>
+                        </div>
+                        <div className="flex items-start">
+                          <div className="bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-200 font-bold rounded-full w-6 h-6 flex items-center justify-center mr-2 flex-shrink-0">3</div>
+                          <p className="text-gray-700 dark:text-gray-300">Ingresar el monto a recargar (soles o dólares).</p>
+                        </div>
+                        <div className="flex items-start">
+                          <div className="bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-200 font-bold rounded-full w-6 h-6 flex items-center justify-center mr-2 flex-shrink-0">4</div>
+                          <p className="text-gray-700 dark:text-gray-300">Ingresar el DNI de tu cuenta Ligo.</p>
+                        </div>
+                        <div className="flex items-start">
+                          <div className="bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-200 font-bold rounded-full w-6 h-6 flex items-center justify-center mr-2 flex-shrink-0">5</div>
+                          <p className="text-gray-700 dark:text-gray-300">Escoger la tarjeta de crédito o débito como el medio de pago.</p>
+                        </div>
+                      </div>
+                    )}
+                    
+                    {formData.bank === 'Interbank' && (
+                      <div className="space-y-3">
+                        <div className="flex items-start">
+                          <div className="bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-200 font-bold rounded-full w-6 h-6 flex items-center justify-center mr-2 flex-shrink-0">1</div>
+                          <p className="text-gray-700 dark:text-gray-300">Abrir la app de tu banco.</p>
+                        </div>
+                        <div className="flex items-start">
+                          <div className="bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-200 font-bold rounded-full w-6 h-6 flex items-center justify-center mr-2 flex-shrink-0">2</div>
+                          <div>
+                            <p className="text-gray-700 dark:text-gray-300">Ir a:</p>
+                            <p className="text-green-700 dark:text-green-300 font-medium">Operaciones → Pagos → Pagos de servicios → Buscar: Ligo (TARJETA LIGO - TARJETA LA MÁGICA)</p>
+                          </div>
+                        </div>
+                        <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 p-3 rounded-lg">
+                          <p className="text-blue-800 dark:text-blue-300 text-sm flex items-center">
+                            <span className="mr-2">⏰</span>
+                            Te sugerimos realizar tu recarga durante las 9 am y 11 pm para verlo reflejado el mismo día caso contrario se visualizará el día siguiente.
+                          </p>
+                        </div>
+                        <div className="flex items-start">
+                          <div className="bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-200 font-bold rounded-full w-6 h-6 flex items-center justify-center mr-2 flex-shrink-0">3</div>
+                          <p className="text-gray-700 dark:text-gray-300">Ingresar el monto a recargar (soles o dólares).</p>
+                        </div>
+                        <div className="flex items-start">
+                          <div className="bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-200 font-bold rounded-full w-6 h-6 flex items-center justify-center mr-2 flex-shrink-0">4</div>
+                          <p className="text-gray-700 dark:text-gray-300">Ingresar el DNI de tu cuenta Ligo.</p>
+                        </div>
+                        <div className="flex items-start">
+                          <div className="bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-200 font-bold rounded-full w-6 h-6 flex items-center justify-center mr-2 flex-shrink-0">5</div>
+                          <p className="text-gray-700 dark:text-gray-300">Escoger la tarjeta de crédito o débito como el medio de pago.</p>
+                        </div>
+                      </div>
+                    )}
+                    
+                    {formData.bank === 'BBVA' && (
+                      <div className="space-y-3">
+                        <div className="flex items-start">
+                          <div className="bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-200 font-bold rounded-full w-6 h-6 flex items-center justify-center mr-2 flex-shrink-0">1</div>
+                          <p className="text-gray-700 dark:text-gray-300">Abrir la app de tu banco.</p>
+                        </div>
+                        <div className="flex items-start">
+                          <div className="bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-200 font-bold rounded-full w-6 h-6 flex items-center justify-center mr-2 flex-shrink-0">2</div>
+                          <div>
+                            <p className="text-gray-700 dark:text-gray-300">Ir a:</p>
+                            <p className="text-green-700 dark:text-green-300 font-medium">Pagar servicio → Nuevo Servicio → Buscar: Ligo (TARJETA LIGO - TARJETA LA MÁGICA)</p>
+                          </div>
+                        </div>
+                        <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 p-3 rounded-lg">
+                          <p className="text-blue-800 dark:text-blue-300 text-sm flex items-center">
+                            <span className="mr-2">⏰</span>
+                            Te recomendamos realizar tu recarga de lunes a domingo desde las 9:00am hasta las 9:00pm.
+                          </p>
+                        </div>
+                        <div className="flex items-start">
+                          <div className="bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-200 font-bold rounded-full w-6 h-6 flex items-center justify-center mr-2 flex-shrink-0">3</div>
+                          <p className="text-gray-700 dark:text-gray-300">Ingresar el monto a recargar (soles o dólares).</p>
+                        </div>
+                        <div className="flex items-start">
+                          <div className="bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-200 font-bold rounded-full w-6 h-6 flex items-center justify-center mr-2 flex-shrink-0">4</div>
+                          <p className="text-gray-700 dark:text-gray-300">Ingresar el DNI de tu cuenta Ligo.</p>
+                        </div>
+                        <div className="flex items-start">
+                          <div className="bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-200 font-bold rounded-full w-6 h-6 flex items-center justify-center mr-2 flex-shrink-0">5</div>
+                          <p className="text-gray-700 dark:text-gray-300">Escoger la tarjeta de crédito o débito como el medio de pago.</p>
+                        </div>
+                      </div>
+                    )}
+                    
+                    {formData.bank === 'Scotiabank' && (
+                      <div className="space-y-3">
+                        <div className="flex items-start">
+                          <div className="bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-200 font-bold rounded-full w-6 h-6 flex items-center justify-center mr-2 flex-shrink-0">1</div>
+                          <p className="text-gray-700 dark:text-gray-300">Abrir la app de tu banco.</p>
+                        </div>
+                        <div className="flex items-start">
+                          <div className="bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-200 font-bold rounded-full w-6 h-6 flex items-center justify-center mr-2 flex-shrink-0">2</div>
+                          <div>
+                            <p className="text-gray-700 dark:text-gray-300">Ir a:</p>
+                            <p className="text-green-700 dark:text-green-300 font-medium">Pagar o recargar → Otras empresas e instituciones → Otros → Buscar: Ligo (TARJETA LIGO - TARJETA LA MÁGICA)</p>
+                          </div>
+                        </div>
+                        <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 p-3 rounded-lg">
+                          <p className="text-blue-800 dark:text-blue-300 text-sm flex items-center">
+                            <span className="mr-2">⏰</span>
+                            Te recomendamos realizar tu recarga de lunes a domingo desde las 9:00am hasta las 9:00pm.
+                          </p>
+                        </div>
+                        <div className="flex items-start">
+                          <div className="bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-200 font-bold rounded-full w-6 h-6 flex items-center justify-center mr-2 flex-shrink-0">3</div>
+                          <p className="text-gray-700 dark:text-gray-300">Ingresar el monto a recargar (soles o dólares).</p>
+                        </div>
+                        <div className="flex items-start">
+                          <div className="bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-200 font-bold rounded-full w-6 h-6 flex items-center justify-center mr-2 flex-shrink-0">4</div>
+                          <p className="text-gray-700 dark:text-gray-300">Ingresar el DNI de tu cuenta Ligo.</p>
+                        </div>
+                        <div className="flex items-start">
+                          <div className="bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-200 font-bold rounded-full w-6 h-6 flex items-center justify-center mr-2 flex-shrink-0">5</div>
+                          <p className="text-gray-700 dark:text-gray-300">Escoger la tarjeta de crédito o débito como el medio de pago.</p>
+                        </div>
+                      </div>
+                    )}
+                    
+                    {formData.bank === 'Otro' && (
+                      <div className="space-y-3">
+                        <p className="text-gray-700 dark:text-gray-300">Para otros bancos, sigue estos pasos generales:</p>
+                        <div className="flex items-start">
+                          <div className="bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-200 font-bold rounded-full w-6 h-6 flex items-center justify-center mr-2 flex-shrink-0">1</div>
+                          <p className="text-gray-700 dark:text-gray-300">Abrir la app de tu banco.</p>
+                        </div>
+                        <div className="flex items-start">
+                          <div className="bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-200 font-bold rounded-full w-6 h-6 flex items-center justify-center mr-2 flex-shrink-0">2</div>
+                          <div>
+                            <p className="text-gray-700 dark:text-gray-300">Buscar la sección de pagos o servicios.</p>
+                            <p className="text-green-700 dark:text-green-300 font-medium">Buscar: Ligo (TARJETA LIGO - TARJETA LA MÁGICA)</p>
+                          </div>
+                        </div>
+                        <div className="flex items-start">
+                          <div className="bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-200 font-bold rounded-full w-6 h-6 flex items-center justify-center mr-2 flex-shrink-0">3</div>
+                          <p className="text-gray-700 dark:text-gray-300">Ingresar el monto a recargar (soles o dólares).</p>
+                        </div>
+                        <div className="flex items-start">
+                          <div className="bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-200 font-bold rounded-full w-6 h-6 flex items-center justify-center mr-2 flex-shrink-0">4</div>
+                          <p className="text-gray-700 dark:text-gray-300">Ingresar el DNI de tu cuenta Ligo.</p>
+                        </div>
+                        <div className="flex items-start">
+                          <div className="bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-200 font-bold rounded-full w-6 h-6 flex items-center justify-center mr-2 flex-shrink-0">5</div>
+                          <p className="text-gray-700 dark:text-gray-300">Escoger la tarjeta de crédito o débito como el medio de pago.</p>
+                        </div>
+                      </div>
+                    )}
+                    
+                    <div className="mt-4 text-center">
+                      <p className="text-green-600 dark:text-green-400 font-medium">¡LISTO!</p>
+                    </div>
+                  </div>
+                </div>
+              )}
+              
               <div className="md:col-span-2">
                 <label htmlFor="operationNumber" className="block text-gray-700 dark:text-gray-300 mb-2 font-medium">
                   Número de Operación
