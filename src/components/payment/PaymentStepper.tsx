@@ -7,6 +7,10 @@ import PaymentCourseInfo from './PaymentCourseInfo';
 import PaymentDetails from './PaymentDetails';
 import PaymentMethods from './PaymentMethods';
 import { format } from 'date-fns';
+import { es } from 'date-fns/locale';
+import { jsPDF } from 'jspdf';
+import { storePaymentData, generatePaymentReceipt } from '../../services/paymentService';
+import { sendPaymentFormData } from '../../services/makeService';
 
 // Define MotivationalMessage component
 const MotivationalMessage: React.FC<{step: number}> = ({ step }) => {
@@ -35,6 +39,8 @@ const PaymentStepper: React.FC<{onFormSubmit: (data: PaymentFormData) => void}> 
   const { formData } = usePaymentContext();
   const [currentStep, setCurrentStep] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [receiptGenerated, setReceiptGenerated] = useState(false);
 
   // Define completion check functions
   const isPersonalInfoComplete = () => {
@@ -83,11 +89,71 @@ const PaymentStepper: React.FC<{onFormSubmit: (data: PaymentFormData) => void}> 
     }
   };
 
-  const handleFormSubmit = (e: React.FormEvent) => {
+  const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (isPersonalInfoComplete() && isCourseInfoComplete() && 
         isPaymentDetailsComplete() && isPaymentMethodComplete()) {
-      onFormSubmit(formData);
+      try {
+        setIsSubmitting(true);
+        
+        // Almacenar los datos del pago
+        storePaymentData(formData);
+        
+        // Generar el PDF
+        const doc = new jsPDF();
+        const currentDate = format(new Date(), 'dd/MM/yyyy');
+        const currentMonth = format(new Date(), 'MMMM yyyy');
+
+        doc.setFontSize(20);
+        doc.text('Recibo de Pago', 105, 20, { align: 'center' });
+        
+        doc.setFontSize(12);
+        doc.text(`Fecha: ${currentDate}`, 20, 40);
+        doc.text(`Nombre: ${formData.fullName}`, 20, 50);
+        doc.text(`Email: ${formData.email}`, 20, 60);
+        doc.text(`Teléfono: ${formData.phone}`, 20, 70);
+        
+        doc.text('Detalles del Curso:', 20, 100);
+        doc.text(`Nivel: ${formData.courseLevel}`, 30, 110);
+        doc.text(`Horario: ${formData.courseSchedule}`, 30, 120);
+        
+        doc.text('Detalles del Pago:', 20, 140);
+        if (formData.paymentType === 'monthly') {
+          doc.text(`Tipo: Mensual (${formData.monthsCount} ${formData.monthsCount > 1 ? 'meses' : 'mes'})`, 30, 150);
+        } else {
+          doc.text('Tipo: Nivel Completo (6 meses con 10% descuento)', 30, 150);
+        }
+        
+        if (formData.startDate && formData.endDate) {
+          doc.text(`Período: ${format(formData.startDate, 'MMMM yyyy', { locale: es })} a ${format(formData.endDate, 'MMMM yyyy', { locale: es })}`, 30, 160);
+          doc.text(`Monto: S/. ${formData.amount.toFixed(2)}`, 30, 170);
+          doc.text(`Método de pago: ${formData.paymentMethod}`, 30, 180);
+        }
+        
+        doc.setFontSize(10);
+        doc.text('English Academy - Comprobante de Pago', 105, 285, { align: 'center' });
+        
+        const fileName = `recibo-${currentMonth}-${formData.fullName.replace(/ /g, '-')}.pdf`;
+        doc.save(fileName);
+        
+        // Enviar datos y PDF a Make.com
+        const pdfBlob = doc.output('blob');
+        await sendPaymentFormData(formData, pdfBlob);
+        
+        // Mostrar mensaje de confirmación
+        setReceiptGenerated(true);
+        
+        // Llamar a la función onFormSubmit para completar el proceso
+        onFormSubmit(formData);
+      } catch (error) {
+        console.error('Error al generar o enviar el comprobante:', error);
+        // En caso de error, usar la función del servicio como respaldo
+        generatePaymentReceipt(formData, formData.paymentMethod);
+        setReceiptGenerated(true);
+        onFormSubmit(formData);
+      } finally {
+        setIsSubmitting(false);
+      }
     } else {
       const firstIncompleteStep = stepCompletionStatus.findIndex(complete => !complete);
       if (firstIncompleteStep !== -1) {
@@ -169,12 +235,36 @@ const PaymentStepper: React.FC<{onFormSubmit: (data: PaymentFormData) => void}> 
             </button>
           )}
           {currentStep === 4 && (
-            <button
-              type="submit"
-              className="flex items-center px-6 py-3 rounded-lg bg-green-600 text-white hover:bg-green-700"
-            >
-              Confirmar y Enviar <FaCheck className="ml-2" />
-            </button>
+            <div className="flex flex-col">
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className={`flex items-center px-6 py-3 rounded-lg ${isSubmitting ? 'bg-gray-400 cursor-not-allowed' : 'bg-green-600 hover:bg-green-700'} text-white`}
+              >
+                {isSubmitting ? (
+                  <>
+                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Procesando...
+                  </>
+                ) : (
+                  <>
+                    Confirmar y Enviar <FaCheck className="ml-2" />
+                  </>
+                )}
+              </button>
+              {receiptGenerated && (
+                <motion.div 
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="mt-4 p-3 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-lg text-center"
+                >
+                  <p>¡Comprobante generado y descargado correctamente!</p>
+                </motion.div>
+              )}
+            </div>
           )}
         </div>
       </div>

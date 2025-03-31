@@ -43,7 +43,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onFormSubmit }) => {
                 Domina el inglés para <span className="text-yellow-400">tu crecimiento personal y profesional</span>
               </h1>
               <p className="text-xl md:text-2xl mb-6">
-                Aprende con profesores calificados y con metodología internacionales
+              Aprende con profesores calificados y metodología de nivel internacional
               </p>
               <div className="inline-block bg-yellow-400 text-blue-900 px-6 py-2 rounded-full text-lg font-bold animate-bounce mb-6">
                 50% de Descuento - Hasta el 24 de marzo
