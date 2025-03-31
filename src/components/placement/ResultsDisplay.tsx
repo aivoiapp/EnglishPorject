@@ -42,9 +42,8 @@ const ResultsDisplay = ({
           />
         </div>
         <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400">
-          <span>Principiante</span>
-          <span>Intermedio</span>
-          <span>Avanzado</span>
+          <span>Principiantes (A0-A1-A2)</span>
+          <span>Intermedios (B1-B2)</span>
         </div>
       </div>
       

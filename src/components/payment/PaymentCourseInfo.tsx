@@ -20,9 +20,8 @@ const PaymentCourseInfo: React.FC = () => {
               className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
               required
             >
-              <option value="Básico">Básico (A1-A2)</option>
-              <option value="Intermedio">Intermedio (B1-B2)</option>
-              <option value="Avanzado">Avanzado (C1-C2)</option>
+              <option value="Principiantes">Principiantes (A0-A1-A2)</option>
+              <option value="Intermedios">Intermedios (B1-B2)</option>
             </select>
           </div>
           

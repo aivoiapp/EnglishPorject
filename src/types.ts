@@ -18,15 +18,24 @@ export const agents: Agent[] = [
 export const schedules: Schedule[] = [
   {
     group: "Niños (7-12 años)",
-    times: ["Lunes y Miércoles 3:00 PM - 4:30 PM", "Martes y Jueves 4:00 PM - 5:30 PM"]
+    times: [
+      "Lunes y Miércoles 4:00 PM - 5:00 PM (Intermedios: B1-B2)", 
+      "Martes y Jueves 4:00 PM - 5:00 PM (Principiantes: A0-A1-A2)"
+    ]
   },
   {
     group: "Adolescentes (13-17 años)",
-    times: ["Lunes y Miércoles 5:00 PM - 6:30 PM", "Martes y Jueves 6:00 PM - 7:30 PM"]
+    times: [
+      "Lunes y Miércoles 5:00 PM - 6:00 PM (Intermedios: B1-B2)", 
+      "Martes y Jueves 5:00 PM - 6:00 PM (Principiantes: A0-A1-A2)"
+    ]
   },
   {
     group: "Adultos (18+ años)",
-    times: ["Lunes y Miércoles 7:00 PM - 8:30 PM", "Martes y Jueves 8:00 PM - 9:30 PM"]
+    times: [
+      "Lunes y Miércoles 7:00 PM - 8:00 PM (Intermedios: B1-B2)", 
+      "Martes y Jueves 7:00 PM - 8:00 PM (Principiantes: A0-A1-A2)"
+    ]
   }
 ];
 
