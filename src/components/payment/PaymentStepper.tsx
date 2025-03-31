@@ -127,7 +127,19 @@ const PaymentStepper: React.FC<{onFormSubmit: (data: PaymentFormData) => void}> 
         if (formData.startDate && formData.endDate) {
           doc.text(`Período: ${format(formData.startDate, 'MMMM yyyy', { locale: es })} a ${format(formData.endDate, 'MMMM yyyy', { locale: es })}`, 30, 160);
           doc.text(`Monto: S/. ${formData.amount.toFixed(2)}`, 30, 170);
-          doc.text(`Método de pago: ${formData.paymentMethod}`, 30, 180);
+          
+          // Mostrar el método de pago con un nombre más descriptivo
+          const paymentMethodName = formData.paymentMethod === 'transferencia' ? 'Transferencia Bancaria' : 
+                                  formData.paymentMethod === 'yape-qr' ? 'Yape con QR' : 
+                                  formData.paymentMethod === 'tarjeta' ? 'Tarjeta de Crédito/Débito' : formData.paymentMethod;
+          
+          doc.text(`Método de pago: ${paymentMethodName}`, 30, 180);
+          doc.text(`Número de operación: ${formData.operationNumber}`, 30, 190);
+          
+          // Si el método de pago es tarjeta, mostrar el banco
+          if (formData.paymentMethod === 'tarjeta' && formData.bank) {
+            doc.text(`Banco: ${formData.bank}`, 30, 200);
+          }
         }
         
         doc.setFontSize(10);
@@ -162,28 +174,46 @@ const PaymentStepper: React.FC<{onFormSubmit: (data: PaymentFormData) => void}> 
     }
   };
 
-  const stepIcons = [
-    <FaUser />,
-    <FaBook />,
-    <FaMoneyBillWave />,
-    <FaCreditCard />,
-    <FaCheck />
+  // Iconos con colores personalizados para cada paso
+  const stepIconColors = [
+    'text-indigo-500 dark:text-indigo-400',  // Datos Personales
+    'text-blue-500 dark:text-blue-400',     // Datos del Curso
+    'text-green-500 dark:text-green-400',   // Detalles de Pago
+    'text-purple-500 dark:text-purple-400', // Método de Pago
+    'text-teal-500 dark:text-teal-400'      // Resumen de Pago
   ];
 
   return (
     <form onSubmit={handleFormSubmit} className="max-w-[1200px] w-full mx-auto">
       <div className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md mb-6 space-y-8">
-        <div className="relative w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+        <div className="relative w-full h-3 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
           <div
-            className="absolute top-0 left-0 h-full bg-blue-600 dark:bg-blue-400 transition-all duration-300"
+            className="absolute top-0 left-0 h-full bg-blue-600 dark:bg-blue-400 transition-all duration-500"
             style={{ width: `${(currentStep / 4) * 100}%` }}
           ></div>
         </div>
-        <div className="flex justify-between mt-2">
+        <div className="flex justify-between mt-4">
           {['Datos Personales', 'Datos del Curso', 'Detalles de Pago', 'Método de Pago', 'Resumen de Pago'].map((title, index) => (
-            <div key={index} className={`flex items-center text-xs ${currentStep === index ? 'text-blue-600 dark:text-blue-400' : 'text-gray-600 dark:text-gray-400'}`}>
-              {stepIcons[index]} <span className="ml-1">{title}</span>
-            </div>
+            <motion.div 
+              key={index} 
+              className={`flex flex-col items-center ${currentStep === index ? 'scale-110' : ''}`}
+              whileHover={{ scale: 1.1 }}
+              transition={{ type: 'spring', stiffness: 300 }}
+            >
+              <motion.div 
+                className={`flex items-center justify-center p-3 rounded-full mb-2 ${currentStep === index ? `${stepIconColors[index]} bg-${stepIconColors[index].split('-')[1]}-100 dark:bg-${stepIconColors[index].split('-')[1]}-900/30 border-2 border-${stepIconColors[index].split('-')[1]}-300 dark:border-${stepIconColors[index].split('-')[1]}-700` : 'bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400'}`}
+                initial={{ scale: 1 }}
+                animate={currentStep === index ? { scale: [1, 1.2, 1] } : { scale: 1 }}
+                transition={{ duration: 0.5, repeat: currentStep === index ? Infinity : 0, repeatDelay: 5 }}
+              >
+                {index === 0 && <FaUser className="text-2xl" />}
+                {index === 1 && <FaBook className="text-2xl" />}
+                {index === 2 && <FaMoneyBillWave className="text-2xl" />}
+                {index === 3 && <FaCreditCard className="text-2xl" />}
+                {index === 4 && <FaCheck className="text-2xl" />}
+              </motion.div>
+              <span className={`text-xs font-medium text-center ${currentStep === index ? stepIconColors[index] : 'text-gray-600 dark:text-gray-400'}`}>{title}</span>
+            </motion.div>
           ))}
         </div>
 
@@ -209,9 +239,14 @@ const PaymentStepper: React.FC<{onFormSubmit: (data: PaymentFormData) => void}> 
                 <p>Nivel: {formData.courseLevel}</p>
                 <p>Grupo: {formData.studentGroup}</p>
                 <p>Horario: {formData.courseSchedule}</p>
-                <p>Tipo de pago: {formData.paymentType}</p>
-                <p>Período de pago: {format(formData.startDate, 'MMMM yyyy')} a {format(formData.endDate, 'MMMM yyyy')}</p>
+                <p>Tipo de pago: {formData.paymentType === 'monthly' ? 'Mensual' : 'Nivel Completo'}</p>
+                <p>Período de pago: {format(formData.startDate, 'MMMM yyyy', { locale: es })} a {format(formData.endDate, 'MMMM yyyy', { locale: es })}</p>
                 <p>Monto a pagar: S/. {formData.amount.toFixed(2)}</p>
+                <p>Método de pago: {formData.paymentMethod === 'transferencia' ? 'Transferencia Bancaria' : 
+                                   formData.paymentMethod === 'yape-qr' ? 'Yape con QR' : 
+                                   formData.paymentMethod === 'tarjeta' ? 'Tarjeta de Crédito/Débito' : formData.paymentMethod}</p>
+                <p>Número de operación: {formData.operationNumber}</p>
+                {formData.paymentMethod === 'tarjeta' && formData.bank && <p>Banco: {formData.bank}</p>}
               </div>
             )}
           </motion.div>
