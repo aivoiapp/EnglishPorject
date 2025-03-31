@@ -251,7 +251,7 @@ const PaymentStepper: React.FC<{onFormSubmit: (data: PaymentFormData) => void}> 
                   </>
                 ) : (
                   <>
-                    Confirmar y Enviar <FaCheck className="ml-2" />
+                    Confirmar y descargar comprobante <FaCheck className="ml-2" />
                   </>
                 )}
               </button>
