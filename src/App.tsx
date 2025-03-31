@@ -45,7 +45,7 @@ function App() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white dark:from-gray-900 dark:to-gray-800 dark:text-white">
-      <header className="bg-white dark:bg-gray-800 shadow-lg">
+      <header className="bg-white dark:bg-gray-800 shadow-lg fixed w-full z-10">
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center">
@@ -69,7 +69,7 @@ function App() {
         </div>
       </header>
 
-      <main>
+      <main className="pt-20"> {/* Add padding to prevent content from being hidden behind the fixed header */}
         <HeroSection onFormSubmit={handleHeroFormSubmit} />
         <BenefitsSection />
         <AudienceSection />
