@@ -8,7 +8,6 @@ import PaymentDetails from './PaymentDetails';
 import PaymentMethods from './PaymentMethods';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
-import { jsPDF } from 'jspdf';
 import { storePaymentData, generatePaymentReceipt } from '../../services/paymentService';
 import { sendPaymentFormData } from '../../services/makeService';
 
@@ -99,57 +98,17 @@ const PaymentStepper: React.FC<{onFormSubmit: (data: PaymentFormData) => void}> 
         // Almacenar los datos del pago
         storePaymentData(formData);
         
-        // Generar el PDF
-        const doc = new jsPDF();
-        const currentDate = format(new Date(), 'dd/MM/yyyy');
-        const currentMonth = format(new Date(), 'MMMM yyyy');
-
-        doc.setFontSize(20);
-        doc.text('Recibo de Pago', 105, 20, { align: 'center' });
+        // Generar el PDF usando el servicio mejorado
+        const { pdfDoc } = generatePaymentReceipt(
+          formData,
+          formData.paymentMethod,
+          undefined // No hay ID de transacción en este punto
+        );
         
-        doc.setFontSize(12);
-        doc.text(`Fecha: ${currentDate}`, 20, 40);
-        doc.text(`Nombre: ${formData.fullName}`, 20, 50);
-        doc.text(`Email: ${formData.email}`, 20, 60);
-        doc.text(`Teléfono: ${formData.phone}`, 20, 70);
-        
-        doc.text('Detalles del Curso:', 20, 100);
-        doc.text(`Nivel: ${formData.courseLevel}`, 30, 110);
-        doc.text(`Horario: ${formData.courseSchedule}`, 30, 120);
-        
-        doc.text('Detalles del Pago:', 20, 140);
-        if (formData.paymentType === 'monthly') {
-          doc.text(`Tipo: Mensual (${formData.monthsCount} ${formData.monthsCount > 1 ? 'meses' : 'mes'})`, 30, 150);
-        } else {
-          doc.text('Tipo: Nivel Completo (6 meses con 10% descuento)', 30, 150);
-        }
-        
-        if (formData.startDate && formData.endDate) {
-          doc.text(`Período: ${format(formData.startDate, 'MMMM yyyy', { locale: es })} a ${format(formData.endDate, 'MMMM yyyy', { locale: es })}`, 30, 160);
-          doc.text(`Monto: S/. ${formData.amount.toFixed(2)}`, 30, 170);
-          
-          // Mostrar el método de pago con un nombre más descriptivo
-          const paymentMethodName = formData.paymentMethod === 'transferencia' ? 'Transferencia Bancaria' : 
-                                  formData.paymentMethod === 'yape-qr' ? 'Yape con QR' : 
-                                  formData.paymentMethod === 'tarjeta' ? 'Tarjeta de Crédito/Débito' : formData.paymentMethod;
-          
-          doc.text(`Método de pago: ${paymentMethodName}`, 30, 180);
-          doc.text(`Número de operación: ${formData.operationNumber}`, 30, 190);
-          
-          // Si el método de pago es tarjeta, mostrar el banco
-          if (formData.paymentMethod === 'tarjeta' && formData.bank) {
-            doc.text(`Banco: ${formData.bank}`, 30, 200);
-          }
-        }
-        
-        doc.setFontSize(10);
-        doc.text('English Academy - Comprobante de Pago', 105, 285, { align: 'center' });
-        
-        const fileName = `recibo-${currentMonth}-${formData.fullName.replace(/ /g, '-')}.pdf`;
-        doc.save(fileName);
+        // Obtener el blob del PDF para enviarlo a Make.com
+        const pdfBlob = pdfDoc.output('blob');
         
         // Enviar datos y PDF a Make.com
-        const pdfBlob = doc.output('blob');
         await sendPaymentFormData(formData, pdfBlob);
         
         // Mostrar mensaje de confirmación
@@ -160,7 +119,8 @@ const PaymentStepper: React.FC<{onFormSubmit: (data: PaymentFormData) => void}> 
       } catch (error) {
         console.error('Error al generar o enviar el comprobante:', error);
         // En caso de error, usar la función del servicio como respaldo
-        generatePaymentReceipt(formData, formData.paymentMethod);
+        const { pdfDoc } = generatePaymentReceipt(formData, formData.paymentMethod, undefined);
+        pdfDoc.save(`recibo-${formData.fullName.replace(/ /g, '-')}.pdf`);
         setReceiptGenerated(true);
         onFormSubmit(formData);
       } finally {
