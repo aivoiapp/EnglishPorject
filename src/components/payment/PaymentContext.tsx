@@ -13,7 +13,7 @@ export const PaymentProvider: React.FC<PaymentProviderProps> = ({ children, init
     fullName: '',
     email: '',
     phone: '',
-    courseLevel: 'Básico',
+    courseLevel: 'Principiantes',
     courseSchedule: '',
     studentGroup: '',
     paymentType: 'monthly',

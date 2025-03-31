@@ -36,7 +36,7 @@ const PaymentSection: React.FC<PaymentSectionProps> = ({ name, email, phone }) =
               fullName: paymentData?.fullName || name || '',
               email: paymentData?.email || email || '',
               phone: paymentData?.phone || phone || '',
-              courseLevel: paymentData?.courseLevel || 'Básico',
+              courseLevel: paymentData?.courseLevel || 'Principiantes',
               studentGroup: paymentData?.studentGroup || '',
               courseSchedule: paymentData?.courseSchedule || '',
               paymentType: paymentData?.paymentType || 'monthly',
