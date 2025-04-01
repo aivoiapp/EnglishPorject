@@ -79,20 +79,22 @@ const QuestionDisplay = ({
           <img src={question.image} alt="Question visual" className="mb-4 w-full h-auto rounded-lg" />
         )}
 
-        <div className="flex items-center gap-2">
-          <h3 className="text-xl font-semibold flex-grow text-gray-900 dark:text-gray-100">
-            {question.question}
-          </h3>
-          <button 
-            onClick={() => readText(question.question)}
-            className="p-2 text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 rounded-full 
-                      hover:bg-blue-100 dark:hover:bg-blue-800/30 transition-colors"
-            title="Escuchar pregunta"
-            type="button"
-            aria-label="Escuchar pregunta en voz alta"
-          >
-            <Volume2 className="h-5 w-5" />
-          </button>
+        <div className="mb-6 bg-blue-50 dark:bg-blue-900/20 p-5 rounded-lg border border-blue-100 dark:border-blue-800">
+          <div className="flex items-center gap-2">
+            <h3 className="text-xl font-semibold flex-grow text-gray-900 dark:text-gray-100">
+              {question.question}
+            </h3>
+            <button 
+              onClick={() => readText(question.question)}
+              className="p-2 text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 rounded-full 
+                        hover:bg-blue-100 dark:hover:bg-blue-800/30 transition-colors"
+              title="Escuchar pregunta"
+              type="button"
+              aria-label="Escuchar pregunta en voz alta"
+            >
+              <Volume2 className="h-5 w-5" />
+            </button>
+          </div>
         </div>
       </div>
 
@@ -102,23 +104,28 @@ const QuestionDisplay = ({
             <button
               onClick={() => onAnswer(option)}
               disabled={feedbackState !== null}
-              className={`w-full text-left p-4 border rounded-lg transition-colors
+              className={`w-full text-left p-4 border rounded-lg transition-all duration-300 transform
                         ${
                           feedbackState !== null 
                             ? 'cursor-not-allowed'
-                            : 'hover:bg-blue-50 dark:hover:bg-gray-800/50'
+                            : 'hover:bg-blue-50 dark:hover:bg-gray-800/50 hover:shadow-md hover:-translate-y-0.5'
                         }
                         ${
                           feedbackState === 'correct' && option === question.correctAnswer
-                            ? 'border-green-500 bg-green-50 dark:bg-green-900/40 dark:border-green-600'
+                            ? 'border-green-500 bg-green-50 dark:bg-green-900/40 dark:border-green-600 shadow-md shadow-green-100 dark:shadow-green-900/20'
                             : feedbackState === 'incorrect' 
                               ? option === question.correctAnswer
-                                ? 'border-green-500 bg-green-50 dark:bg-green-900/40 dark:border-green-600'
-                                : 'border-red-300 bg-red-50 dark:bg-red-900/40 dark:border-red-500'
+                                ? 'border-green-500 bg-green-50 dark:bg-green-900/40 dark:border-green-600 shadow-md shadow-green-100 dark:shadow-green-900/20'
+                                : 'border-red-300 bg-red-50 dark:bg-red-900/40 dark:border-red-500 shadow-md shadow-red-100 dark:shadow-red-900/20'
                               : 'border-gray-300 dark:border-gray-600'
                         }`}
             >
-              {option}
+              <div className="flex items-center">
+                <span className="w-8 h-8 flex items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 mr-3 font-medium">
+                  {String.fromCharCode(65 + index)}
+                </span>
+                <span className="flex-grow">{option}</span>
+              </div>
             </button>
           </div>
         ))}
