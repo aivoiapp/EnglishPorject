@@ -22,10 +22,10 @@ const Loader = ({
   
   // Consejos y mensajes para mostrar durante la carga
   const tips = [
-    "¿Sabías que el inglés es el idioma más estudiado del mundo?",
-    "Aprender inglés mejora tus oportunidades laborales en un 50%",
-    "Estudiar 20 minutos diarios es mejor que 2 horas una vez por semana",
-    "El inglés tiene más de 170,000 palabras en uso",
+    "¿Sabías que el inglés es el idioma más estudiado del mundo? Empieza con nosotros y sé parte de quienes ya están avanzando.",
+    "Nuestras clases te preparan para aprovechar oportunidades laborables reales.",
+    "Dos sesiones por semana bien aprovechadas te llevan más lejos de lo que imaginas.",
+    " Te ayudamos a dominar las palabras que realmente necesitas para comunicarte.",
     "Escuchar música en inglés mejora tu comprensión auditiva"
   ];
 
@@ -119,7 +119,7 @@ const Loader = ({
           <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
             <h3 className="text-xl font-semibold mb-6 dark:text-white flex items-center">
               <Zap className="mr-2 h-5 w-5 text-yellow-500" />
-              Evaluando tus respuestas
+              Creando una experiencia de evaluación hecha a tu medida
             </h3>
             
             <div className="space-y-4">
@@ -159,7 +159,7 @@ const Loader = ({
             {/* Consejos que cambian automáticamente */}
             <div className="mt-8 p-4 bg-yellow-50 dark:bg-yellow-900/10 border border-yellow-100 dark:border-yellow-800 rounded-lg">
               <p className="text-sm text-yellow-800 dark:text-yellow-300 italic">
-                <span className="font-semibold">Mientras esperas:</span> {tips[currentTip]}
+                <span className="font-semibold"></span> {tips[currentTip]}
               </p>
             </div>
           </div>
@@ -205,7 +205,7 @@ const Loader = ({
         </div>
       </div>
       
-      <h3 className="text-lg font-semibold mb-4 dark:text-white">Evaluando tus respuestas</h3>
+      <h3 className="text-lg font-semibold mb-4 dark:text-white">Preparando una evaluación personalizada según tu nivel</h3>
       
       <div className="space-y-3">
         {evaluationMessages.map((message, index) => (

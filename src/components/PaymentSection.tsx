@@ -27,7 +27,7 @@ const PaymentSection: React.FC<PaymentSectionProps> = ({ name, email, phone }) =
   return (
     <section id="payment" className="py-16 bg-gray-50 dark:bg-gray-900">
       <div className="container mx-auto px-6">
-        <h2 className="text-3xl font-bold text-center mb-12 dark:text-white">Realiza tu pago</h2>
+        <h2 className="text-3xl font-bold text-center mb-12 dark:text-white">Hazlo oficial: inscríbete y asegura tu progreso</h2>
         
         <div className="max-w-4xl mx-auto">
           <PaymentForm 
