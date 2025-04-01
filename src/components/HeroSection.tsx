@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { Sparkles, CheckCircle2, BookOpen, Clock, Award } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import PrivacyPolicyModal from './PrivacyPolicyModal';
 import { sendHeroFormData } from '../services/makeService';
 import CustomPhoneInput from './CustomPhoneInput';
+import { useLanguage } from '../context/useLanguage';
 import '../phone-input.css';
 
 interface HeroSectionProps {
@@ -10,6 +12,8 @@ interface HeroSectionProps {
 }
 
 const HeroSection: React.FC<HeroSectionProps> = ({ onFormSubmit }) => {
+  const { t } = useTranslation();
+  const { language } = useLanguage();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
@@ -19,7 +23,8 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onFormSubmit }) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!privacyAccepted) {
-      alert('Debes aceptar el aviso de privacidad para continuar');
+      const message = language === 'es' ? 'Debes aceptar el aviso de privacidad para continuar' : 'You must accept the privacy policy to continue';
+      alert(message);
       return;
     }
     console.log('Enviando datos del formulario:', { name, email, phone, privacyAccepted });
@@ -47,34 +52,34 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onFormSubmit }) => {
           <div className="space-y-8">
             <div>
               <h1 className="text-4xl md:text-5xl font-bold mb-4">
-                Domina el inglés para <span className="text-yellow-400">tu crecimiento personal y profesional</span>
+                {t('hero.title')} <span className="text-yellow-400">{t('hero.titleHighlight')}</span>
               </h1>
               <p className="text-xl md:text-2xl mb-6">
-              Aprende con profesores calificados y metodología de nivel internacional
+                {t('hero.subtitle')}
               </p>
               <div className="inline-block bg-yellow-400 text-blue-900 px-6 py-2 rounded-full text-lg font-bold animate-bounce mb-6">
-                50% de Descuento - Hasta el 24 de marzo
+                {t('hero.discount')}
               </div>
             </div>
 
             <div className="space-y-4">
-              <h3 className="text-2xl font-semibold">¿Por qué elegirnos?</h3>
+              <h3 className="text-2xl font-semibold">{t('hero.whyChooseUs')}</h3>
               <ul className="space-y-3">
                 <li className="flex items-center">
                   <CheckCircle2 className="w-5 h-5 text-green-400 mr-2" />
-                  <span>Clases virtuales en vivo con profesores expertos</span>
+                  <span>{t('hero.benefits.liveClasses')}</span>
                 </li>
                 <li className="flex items-center">
                   <CheckCircle2 className="w-5 h-5 text-green-400 mr-2" />
-                  <span>2 sesiones semanales de 60 minutos</span>
+                  <span>{t('hero.benefits.sessions')}</span>
                 </li>
                 <li className="flex items-center">
                   <CheckCircle2 className="w-5 h-5 text-green-400 mr-2" />
-                  <span>Aprendizaje centrado en el estudiante</span>
+                  <span>{t('hero.benefits.studentCentered')}</span>
                 </li>
                 <li className="flex items-center">
                   <CheckCircle2 className="w-5 h-5 text-green-400 mr-2" />
-                  <span>Clases participativas y dinámicas</span>
+                  <span>{t('hero.benefits.dynamicClasses')}</span>
                 </li>
               </ul>
             </div>
@@ -82,26 +87,26 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onFormSubmit }) => {
             <div className="flex flex-wrap gap-6">
               <div className="flex items-center">
                 <BookOpen className="w-6 h-6 text-yellow-400 mr-2" />
-                <span>Todos los niveles</span>
+                <span>{t('hero.features.allLevels')}</span>
               </div>
               <div className="flex items-center">
                 <Clock className="w-6 h-6 text-yellow-400 mr-2" />
-                <span>6 meses por nivel</span>
+                <span>{t('hero.features.duration')}</span>
               </div>
               <div className="flex items-center">
                 <Award className="w-6 h-6 text-yellow-400 mr-2" />
-                <span>Enfoque alineado y diseñado a certificaciones internacionales</span>
+                <span>{t('hero.features.certifications')}</span>
               </div>
             </div>
 
             <div className="flex items-center gap-4">
               <div className="flex flex-col">
-                <span className="text-4xl font-bold line-through text-gray-400">S/. 200</span>
-                <span className="text-5xl font-bold text-yellow-400">S/. 100</span>
-                <span className="text-gray-300">/mes</span>
+                <span className="text-4xl font-bold line-through text-gray-400">{t('hero.pricing.oldPrice')}</span>
+                <span className="text-5xl font-bold text-yellow-400">{t('hero.pricing.newPrice')}</span>
+                <span className="text-gray-300">{t('hero.pricing.perMonth')}</span>
               </div>
               <div className="bg-red-500 text-white px-4 py-2 rounded-lg font-bold">
-                ¡OFERTA LIMITADA!
+                {t('hero.pricing.limitedOffer')}
               </div>
             </div>
           </div>
@@ -109,13 +114,13 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onFormSubmit }) => {
           {/* Columna derecha - Formulario */}
           <div className="bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 rounded-xl shadow-2xl overflow-hidden p-8">
             <div className="text-center mb-6">
-              <h2 className="text-2xl font-bold text-blue-800 dark:text-blue-400">Inscríbete al curso</h2>
-              <p className="text-gray-600 dark:text-gray-400">Inicio: 01 de Mayo | Cupos: limitados</p>
+              <h2 className="text-2xl font-bold text-blue-800 dark:text-blue-400">{t('hero.form.title')}</h2>
+              <p className="text-gray-600 dark:text-gray-400">{t('hero.form.startDate')}</p>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="block text-gray-700 dark:text-gray-300 mb-2">Nombre completo</label>
+                <label className="block text-gray-700 dark:text-gray-300 mb-2">{t('hero.form.fullName')}</label>
                 <input
                   type="text"
                   value={name}
@@ -126,7 +131,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onFormSubmit }) => {
               </div>
               
               <div>
-                <label className="block text-gray-700 dark:text-gray-300 mb-2">Email</label>
+                <label className="block text-gray-700 dark:text-gray-300 mb-2">{t('hero.form.email')}</label>
                 <input
                   type="email"
                   value={email}
@@ -138,7 +143,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onFormSubmit }) => {
 
               <div>
                 <CustomPhoneInput
-                  label="WhatsApp"
+                  label={t('hero.form.whatsapp')}
                   defaultCountry="PE"
                   value={phone}
                   onChange={(value) => setPhone(value || '')}
@@ -157,12 +162,12 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onFormSubmit }) => {
                   required
                 />
                 <label htmlFor="privacy-policy" className="ml-2 block text-sm text-gray-700 dark:text-gray-300">
-                  He leído y acepto el <button 
+                  {t('hero.form.privacyPolicy')} <button 
                     type="button"
                     onClick={() => setIsPrivacyModalOpen(true)}
                     className="text-blue-600 dark:text-blue-400 underline font-medium hover:text-blue-800 dark:hover:text-blue-300"
                   >
-                    Aviso de privacidad
+                    {t('hero.form.privacyPolicyLink')}
                   </button>
                 </label>
               </div>
@@ -173,7 +178,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onFormSubmit }) => {
                 className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center mt-6 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <Sparkles className="mr-2 h-5 w-5" />
-                ¡Continuar al pago!
+                {t('hero.form.submitButton')}
               </button>
               
               <PrivacyPolicyModal 

@@ -1,0 +1,48 @@
+{
+  "common": {
+    "selectLanguage": "Seleccionar idioma"
+  },
+  "header": {
+    "title": "English Academy",
+    "audience": "Audiencia",
+    "curriculum": "Curriculum",
+    "professors": "Profesores",
+    "schedule": "Horarios",
+    "faq": "FAQ",
+    "placementTest": "Placement Test"
+  },
+  "hero": {
+    "title": "Domina el inglés para",
+    "titleHighlight": "tu crecimiento personal y profesional",
+    "subtitle": "Aprende con profesores calificados y metodología de nivel internacional",
+    "discount": "50% de Descuento - Hasta el 24 de marzo",
+    "whyChooseUs": "¿Por qué elegirnos?",
+    "benefits": {
+      "liveClasses": "Clases virtuales en vivo con profesores expertos",
+      "sessions": "2 sesiones semanales de 60 minutos",
+      "studentCentered": "Aprendizaje centrado en el estudiante",
+      "dynamicClasses": "Clases participativas y dinámicas"
+    },
+    "features": {
+      "allLevels": "Todos los niveles",
+      "duration": "6 meses por nivel",
+      "certifications": "Enfoque alineado y diseñado a certificaciones internacionales"
+    },
+    "pricing": {
+      "oldPrice": "S/. 200",
+      "newPrice": "S/. 100",
+      "perMonth": "/mes",
+      "limitedOffer": "¡OFERTA LIMITADA!"
+    },
+    "form": {
+      "title": "Inscríbete al curso",
+      "startDate": "Inicio: 01 de Mayo | Cupos: limitados",
+      "fullName": "Nombre completo",
+      "email": "Email",
+      "whatsapp": "WhatsApp",
+      "privacyPolicy": "He leído y acepto el",
+      "privacyPolicyLink": "Aviso de privacidad",
+      "submitButton": "¡Continuar al pago!"
+    }
+  }
+}

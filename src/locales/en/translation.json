@@ -1,0 +1,48 @@
+{
+  "common": {
+    "selectLanguage": "Select language"
+  },
+  "header": {
+    "title": "English Academy",
+    "audience": "Audience",
+    "curriculum": "Curriculum",
+    "professors": "Professors",
+    "schedule": "Schedule",
+    "faq": "FAQ",
+    "placementTest": "Placement Test"
+  },
+  "hero": {
+    "title": "Master English for",
+    "titleHighlight": "your personal and professional growth",
+    "subtitle": "Learn with qualified teachers and international-level methodology",
+    "discount": "50% Discount - Until March 24",
+    "whyChooseUs": "Why choose us?",
+    "benefits": {
+      "liveClasses": "Live virtual classes with expert teachers",
+      "sessions": "2 weekly sessions of 60 minutes",
+      "studentCentered": "Student-centered learning",
+      "dynamicClasses": "Participative and dynamic classes"
+    },
+    "features": {
+      "allLevels": "All levels",
+      "duration": "6 months per level",
+      "certifications": "Approach aligned and designed for international certifications"
+    },
+    "pricing": {
+      "oldPrice": "S/. 200",
+      "newPrice": "S/. 100",
+      "perMonth": "/month",
+      "limitedOffer": "LIMITED OFFER!"
+    },
+    "form": {
+      "title": "Register for the course",
+      "startDate": "Start: May 1st | Limited spots",
+      "fullName": "Full name",
+      "email": "Email",
+      "whatsapp": "WhatsApp",
+      "privacyPolicy": "I have read and accept the",
+      "privacyPolicyLink": "Privacy Policy",
+      "submitButton": "Continue to payment!"
+    }
+  }
+}
