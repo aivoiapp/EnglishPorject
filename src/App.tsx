@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { Book } from 'lucide-react';
-import { ScheduleSection, HeroSection, PaymentSection, FAQSection, PlacementSection, BenefitsSection, AudienceSection, CurriculumSection, ProfessorsSection, FloatingContactButton } from './components';
+import { ScheduleSection, HeroSection, PaymentSection, FAQSection, PlacementSection, BenefitsSection, AudienceSection, CurriculumSection, ProfessorsSection, FloatingContactButton, AdContainer } from './components';
 import ThemeToggle from './components/ThemeToggle';
+import { AdsProvider } from './context';
 
 function App() {
   // Estado para almacenar los datos del usuario
@@ -44,7 +45,8 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white dark:from-gray-900 dark:to-gray-800 dark:text-white">
+    <AdsProvider>
+      <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white dark:from-gray-900 dark:to-gray-800 dark:text-white">
       <header className="bg-white dark:bg-gray-800 shadow-lg fixed w-full z-10">
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
@@ -72,13 +74,40 @@ function App() {
       <main className="pt-20"> {/* Add padding to prevent content from being hidden behind the fixed header */}
         <HeroSection onFormSubmit={handleHeroFormSubmit} />
         <BenefitsSection />
+        
+        {/* Anuncio entre secciones (después de Benefits) */}
+        <AdContainer 
+          position="between-sections" 
+          adClient="ca-pub-XXXXXXXXXXXXXXXX" 
+          adSlot="XXXXXXXXXX" 
+          className="container mx-auto px-6" 
+        />
+        
         <AudienceSection />
         <CurriculumSection />
+        
+        {/* Anuncio entre secciones (después de Curriculum) */}
+        <AdContainer 
+          position="between-sections" 
+          adClient="ca-pub-XXXXXXXXXXXXXXXX" 
+          adSlot="XXXXXXXXXX" 
+          className="container mx-auto px-6" 
+        />
+        
         <ProfessorsSection />
         <ScheduleSection />
         <FAQSection />
         <PlacementSection />
         <FloatingContactButton onNameChange={handleNameChange} />
+        
+        {/* Anuncio antes de la sección de pago */}
+        <AdContainer 
+          position="footer" 
+          adClient="ca-pub-XXXXXXXXXXXXXXXX" 
+          adSlot="XXXXXXXXXX" 
+          className="container mx-auto px-6" 
+        />
+        
         <PaymentSection 
           name={userData.name} 
           email={userData.email} 
@@ -93,7 +122,8 @@ function App() {
           <p>&copy; 2024 English Academy. Todos los derechos reservados.</p>
         </div>
       </footer>
-    </div>
+      </div>
+    </AdsProvider>
   );
 }
 
