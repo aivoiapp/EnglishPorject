@@ -245,7 +245,7 @@ const PaymentMethods: React.FC = () => {
                         </div>
                         <div className="flex items-start">
                           <div className="bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-200 font-bold rounded-full w-6 h-6 flex items-center justify-center mr-2 flex-shrink-0">4</div>
-                          <p className="text-gray-700 dark:text-gray-300">Ingresar el DNI de tu cuenta Ligo.</p>
+                          <p className="text-gray-700 dark:text-gray-300">Ingresar el DNI de tu cuenta Ligo: 002117098.</p>
                         </div>
                         <div className="flex items-start">
                           <div className="bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-200 font-bold rounded-full w-6 h-6 flex items-center justify-center mr-2 flex-shrink-0">5</div>
@@ -279,7 +279,7 @@ const PaymentMethods: React.FC = () => {
                         </div>
                         <div className="flex items-start">
                           <div className="bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-200 font-bold rounded-full w-6 h-6 flex items-center justify-center mr-2 flex-shrink-0">4</div>
-                          <p className="text-gray-700 dark:text-gray-300">Ingresar el DNI de tu cuenta Ligo.</p>
+                          <p className="text-gray-700 dark:text-gray-300">Ingresar el DNI de tu cuenta Ligo: 002117098.</p>
                         </div>
                         <div className="flex items-start">
                           <div className="bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-200 font-bold rounded-full w-6 h-6 flex items-center justify-center mr-2 flex-shrink-0">5</div>
@@ -313,7 +313,7 @@ const PaymentMethods: React.FC = () => {
                         </div>
                         <div className="flex items-start">
                           <div className="bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-200 font-bold rounded-full w-6 h-6 flex items-center justify-center mr-2 flex-shrink-0">4</div>
-                          <p className="text-gray-700 dark:text-gray-300">Ingresar el DNI de tu cuenta Ligo.</p>
+                          <p className="text-gray-700 dark:text-gray-300">Ingresar el DNI de tu cuenta Ligo: 002117098.</p>
                         </div>
                         <div className="flex items-start">
                           <div className="bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-200 font-bold rounded-full w-6 h-6 flex items-center justify-center mr-2 flex-shrink-0">5</div>
@@ -347,7 +347,7 @@ const PaymentMethods: React.FC = () => {
                         </div>
                         <div className="flex items-start">
                           <div className="bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-200 font-bold rounded-full w-6 h-6 flex items-center justify-center mr-2 flex-shrink-0">4</div>
-                          <p className="text-gray-700 dark:text-gray-300">Ingresar el DNI de tu cuenta Ligo.</p>
+                          <p className="text-gray-700 dark:text-gray-300">Ingresar el DNI de tu cuenta Ligo: 002117098.</p>
                         </div>
                         <div className="flex items-start">
                           <div className="bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-200 font-bold rounded-full w-6 h-6 flex items-center justify-center mr-2 flex-shrink-0">5</div>
@@ -376,7 +376,7 @@ const PaymentMethods: React.FC = () => {
                         </div>
                         <div className="flex items-start">
                           <div className="bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-200 font-bold rounded-full w-6 h-6 flex items-center justify-center mr-2 flex-shrink-0">4</div>
-                          <p className="text-gray-700 dark:text-gray-300">Ingresar el DNI de tu cuenta Ligo.</p>
+                          <p className="text-gray-700 dark:text-gray-300">Ingresar el DNI de tu cuenta Ligo: 002117098.</p>
                         </div>
                         <div className="flex items-start">
                           <div className="bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-200 font-bold rounded-full w-6 h-6 flex items-center justify-center mr-2 flex-shrink-0">5</div>

@@ -1,6 +1,21 @@
+/* Import Tailwind base styles */
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
+
+/* Animaciones personalizadas para el Loader */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(200%);
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 2s infinite;
+}
 
 /* Los estilos para el modal de Izipay han sido eliminados */
 

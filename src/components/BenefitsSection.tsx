@@ -1,6 +1,12 @@
 import { Globe, Award, TrendingUp } from 'lucide-react';
+import ReactPlayer from 'react-player/youtube';
+import { useInView } from 'react-intersection-observer';
 
 const BenefitsSection = () => {
+  const { ref, inView } = useInView({
+    threshold: 0.3, // El video comenzará cuando el 30% del componente sea visible
+    triggerOnce: false // Permitir que se active cada vez que entre en la vista
+  });
   return (
     <section id="beneficios" className="py-16 bg-white dark:bg-gray-800">
       <div className="container mx-auto px-6">
@@ -59,12 +65,31 @@ const BenefitsSection = () => {
             </div>
           </div>
 
-          {/* Columna derecha - Imagen */}
-          <div className="hidden md:block">
-            <img 
-              src="https://images.unsplash.com/photo-1573164713988-8665fc963095?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400&q=80" 
-              alt="Profesionales en reunión de negocios internacional" 
-              className="w-full h-auto rounded-lg shadow-lg" 
+          {/* Columna derecha - Video */}
+          <div ref={ref} className="hidden md:block relative rounded-lg shadow-lg overflow-hidden" style={{ aspectRatio: '16/9' }}>
+            {/* Overlay para cuando el video no está en vista */}
+            {!inView && (
+              <div className="absolute inset-0 bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
+                <p className="text-gray-600 dark:text-gray-400">Desplázate para ver el video</p>
+              </div>
+            )}
+            
+            <ReactPlayer
+              url="https://www.youtube.com/watch?v=2q1AcNNYHkE"
+              playing={inView}
+              muted={true}
+              controls={true}
+              width="100%"
+              height="100%"
+              config={{
+                playerVars: {
+                  autoplay: 1,
+                  modestbranding: 1,
+                  rel: 0
+                }
+              }}
+              onReady={() => console.log('Video listo para reproducirse')}
+              onError={(e) => console.error('Error al cargar el video:', e)}
             />
           </div>
         </div>

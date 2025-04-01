@@ -29,10 +29,10 @@ const FAQSection = () => (
         <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
           <h3 className="text-xl font-semibold mb-2 dark:text-white">¿Cómo es el proceso de inscripción?</h3>
           <p className="text-gray-600 dark:text-gray-300">
-            1. Completa el formulario de contacto<br/>
+            1. Dirijete hacia el formulario de pago<br/>
             2. Elige tu horario preferido<br/>
-            3. Realiza el pago mediante Yape o tarjeta Visa<br/>
-            4. ¡Listo para comenzar!
+            3. Realiza el pago mediante tranferencia, Yape o tarjeta<br/>
+            4. Sigue las intrucciones y ¡Listo para comenzar!
           </p>
         </div>
 
@@ -47,22 +47,25 @@ const FAQSection = () => (
         </div>
 
         <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
-          <h3 className="text-xl font-semibold mb-2 dark:text-white">¿Hay certificación?</h3>
+          <h3 className="text-xl font-semibold mb-2 dark:text-white">¿Qué incluye el curso?</h3>
           <p className="text-gray-600 dark:text-gray-300">
-            Al completar cada nivel recibirás un certificado digital con validez internacional 
-            que acredita tus horas de estudio y nivel alcanzado.
+            - Incluye acceso a clases en vivo<br/> 
+            - Materiales digitales<br/>
+            - Ejercicios interactivos<br/> 
+            - Acompañamiento docente<br/>
+            - Evaluaciones periódicas para medir tu avance.
           </p>
         </div>
 
         <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
-          <h3 className="text-xl font-semibold mb-2 dark:text-white">¿Qué métodos de pago aceptan?</h3>
+          <h3 className="text-xl font-semibold mb-2 dark:text-white">¿Qué nivel de inglés necesito para comenzar?</h3>
           <p className="text-gray-600 dark:text-gray-300">
-            - Yape<br/>
-            - Tarjetas Visa/Mastercard<br/>
-            - Transferencia bancaria<br/>
-            - Pago en efectivo (coordinación previa)
+            - No necesitas experiencia previa.<br/> 
+            - Al registrarte, te ayudamos a determinar tu nivel actual para ubicarte en el grupo adecuado.<br/> 
+            - ¡Comienza tu viaje hacia el inglés hoy!
           </p>
         </div>
+        
       </div>
     </div>
   </section>

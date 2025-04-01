@@ -66,16 +66,16 @@ const UserForm = ({ onSubmit, isLoading }: UserFormProps) => {
             />
           </div>
           <div>
-            <label className="block text-gray-700 dark:text-gray-300 mb-2">Nivel de inglés actual</label>
+            <label className="block text-gray-700 dark:text-gray-300 mb-2">Elige el que consideras es tu nivel de inglés actual</label>
             <select
               value={userData.selfAssessedLevel}
               onChange={(e) => setUserData(prev => ({...prev, selfAssessedLevel: e.target.value}))}
               className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
             >
-              <option value="beginner">Principiante</option>
-              <option value="elementary">Elemental</option>
-              <option value="intermediate">Intermedio</option>
-              <option value="advanced">Avanzado</option>
+              <option value="beginner">Principiante A0</option>
+              <option value="elementary">Elemental A1-A2</option>
+              <option value="intermediate">Intermedio B1-B2</option>
+              <option value="advanced">Avanzado C1-C2</option>
             </select>
           </div>
           <div>

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Sparkles, CheckCircle2, BookOpen, Clock, Award } from 'lucide-react';
+import PrivacyPolicyModal from './PrivacyPolicyModal';
 import { sendHeroFormData } from '../services/makeService';
 import CustomPhoneInput from './CustomPhoneInput';
 import '../phone-input.css';
@@ -12,10 +13,16 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onFormSubmit }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
+  const [privacyAccepted, setPrivacyAccepted] = useState(false);
+  const [isPrivacyModalOpen, setIsPrivacyModalOpen] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Enviando datos del formulario:', { name, email, phone });
+    if (!privacyAccepted) {
+      alert('Debes aceptar el aviso de privacidad para continuar');
+      return;
+    }
+    console.log('Enviando datos del formulario:', { name, email, phone, privacyAccepted });
     
     try {
       await sendHeroFormData({
@@ -140,15 +147,39 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onFormSubmit }) => {
                 />
               </div>
 
-
+              <div className="flex items-center mt-4">
+                <input
+                  type="checkbox"
+                  id="privacy-policy"
+                  checked={privacyAccepted}
+                  onChange={(e) => setPrivacyAccepted(e.target.checked)}
+                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                  required
+                />
+                <label htmlFor="privacy-policy" className="ml-2 block text-sm text-gray-700 dark:text-gray-300">
+                  He leído y acepto el <button 
+                    type="button"
+                    onClick={() => setIsPrivacyModalOpen(true)}
+                    className="text-blue-600 dark:text-blue-400 underline font-medium hover:text-blue-800 dark:hover:text-blue-300"
+                  >
+                    Aviso de privacidad
+                  </button>
+                </label>
+              </div>
 
               <button
                 type="submit"
-                className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center mt-6"
+                disabled={!privacyAccepted}
+                className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center mt-6 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <Sparkles className="mr-2 h-5 w-5" />
                 ¡Continuar al pago!
               </button>
+              
+              <PrivacyPolicyModal 
+                isOpen={isPrivacyModalOpen} 
+                onClose={() => setIsPrivacyModalOpen(false)} 
+              />
             </form>
           </div>
         </div>
