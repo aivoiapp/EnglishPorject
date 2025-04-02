@@ -2,6 +2,7 @@ import { Volume2 } from 'lucide-react';
 import { TestQuestion } from '../../types';
 import { useEffect, useCallback, useState } from 'react';
 import { useSpeechSynthesis } from '../../hooks/useSpeechSynthesis';
+import { useTranslation } from 'react-i18next';
 
 // Ya no necesitamos declarar tipos para react-speech-kit
 // Los tipos ahora vienen de nuestro hook personalizado
@@ -46,12 +47,14 @@ const QuestionDisplay = ({
     }
   }, [question.question, isYoungChild, readText, hasReadAutomatically]);
 
+  const { t } = useTranslation();
+  
   const getSkillTranslation = (skill: string) => {
     switch (skill) {
-      case 'grammar': return 'Gramática';
-      case 'vocabulary': return 'Vocabulario';
-      case 'reading': return 'Comprensión lectora';
-      case 'listening': return 'Comprensión auditiva';
+      case 'grammar': return t('placementTest.skills.grammar', 'Gramática');
+      case 'vocabulary': return t('placementTest.skills.vocabulary', 'Vocabulario');
+      case 'reading': return t('placementTest.skills.reading', 'Comprensión lectora');
+      case 'listening': return t('placementTest.skills.listening', 'Comprensión auditiva');
       default: return skill;
     }
   };
@@ -61,7 +64,7 @@ const QuestionDisplay = ({
       <div className="mb-6">
         <div className="flex justify-between items-center mb-2">
           <span className="text-sm text-gray-500 dark:text-gray-400">
-            Pregunta {currentQuestionIndex + 1} de {totalQuestions}
+            {t('placementTest.results.question', { current: currentQuestionIndex + 1, total: totalQuestions })}
           </span>
           <span className="text-sm font-medium px-3 py-1 bg-blue-100 dark:bg-blue-800/40 text-blue-800 dark:text-blue-200 rounded-full">
             {getSkillTranslation(question.skill)}
@@ -88,9 +91,9 @@ const QuestionDisplay = ({
               onClick={() => readText(question.question)}
               className="p-2 text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 rounded-full 
                         hover:bg-blue-100 dark:hover:bg-blue-800/30 transition-colors"
-              title="Escuchar pregunta"
+              title={t('placementTest.listenQuestion', 'Escuchar pregunta')}
               type="button"
-              aria-label="Escuchar pregunta en voz alta"
+              aria-label={t('placementTest.listenQuestionAria', 'Escuchar pregunta en voz alta')}
             >
               <Volume2 className="h-5 w-5" />
             </button>

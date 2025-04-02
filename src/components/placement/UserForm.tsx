@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Info } from 'lucide-react';
-import Loader from './Loader'; // Import the unified loader component
+import { useTranslation } from 'react-i18next';
+import Loader from './Loader';
 
 interface UserFormProps {
   onSubmit: (userData: UserData) => void;
@@ -16,6 +17,7 @@ export interface UserData {
 }
 
 const UserForm = ({ onSubmit, isLoading }: UserFormProps) => {
+  const { t } = useTranslation();
   const [userData, setUserData] = useState<UserData>({
     age: '',
     selfAssessedLevel: 'beginner',
@@ -31,13 +33,13 @@ const UserForm = ({ onSubmit, isLoading }: UserFormProps) => {
 
   return (
     <div className="flex flex-col md:flex-row gap-8 items-start">
-      {isLoading && <Loader title="Preparando tu evaluación..." />} {/* Show loader when loading */}
+      {isLoading && <Loader title={t('placementTest.generating')} />}
       <div className="md:w-1/2 bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md">
-        <h3 className="text-xl font-semibold mb-4 dark:text-white">Información Personal</h3>
+        <h3 className="text-xl font-semibold mb-4 dark:text-white">{t('placementTest.personalInfo')}</h3>
         <div className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-gray-700 dark:text-gray-300 mb-2">Nombre (opcional)</label>
+              <label className="block text-gray-700 dark:text-gray-300 mb-2">{t('placementTest.name')}</label>
               <input
                 type="text"
                 value={userData.name}
@@ -46,7 +48,7 @@ const UserForm = ({ onSubmit, isLoading }: UserFormProps) => {
               />
             </div>
             <div>
-              <label className="block text-gray-700 dark:text-gray-300 mb-2">Email (opcional)</label>
+              <label className="block text-gray-700 dark:text-gray-300 mb-2">{t('placementTest.email')}</label>
               <input
                 type="email"
                 value={userData.email}
@@ -56,7 +58,7 @@ const UserForm = ({ onSubmit, isLoading }: UserFormProps) => {
             </div>
           </div>
           <div>
-            <label className="block text-gray-700 dark:text-gray-300 mb-2">Edad <span className="text-red-500">*</span></label>
+            <label className="block text-gray-700 dark:text-gray-300 mb-2">{t('placementTest.age')} <span className="text-red-500">*</span></label>
             <input
               type="number"
               value={userData.age}
@@ -66,25 +68,25 @@ const UserForm = ({ onSubmit, isLoading }: UserFormProps) => {
             />
           </div>
           <div>
-            <label className="block text-gray-700 dark:text-gray-300 mb-2">Elige el que consideras es tu nivel de inglés actual</label>
+            <label className="block text-gray-700 dark:text-gray-300 mb-2">{t('placementTest.currentLevel')}</label>
             <select
               value={userData.selfAssessedLevel}
               onChange={(e) => setUserData(prev => ({...prev, selfAssessedLevel: e.target.value}))}
               className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
             >
-              <option value="beginner">Principiante A0</option>
-              <option value="elementary">Elemental A1-A2</option>
-              <option value="intermediate">Intermedio B1-B2</option>
-              <option value="advanced">Avanzado C1-C2</option>
+              <option value="beginner">{t('placementTest.levels.beginner')}</option>
+              <option value="elementary">{t('placementTest.levels.elementary')}</option>
+              <option value="intermediate">{t('placementTest.levels.intermediate')}</option>
+              <option value="advanced">{t('placementTest.levels.advanced')}</option>
             </select>
           </div>
           <div>
-            <label className="block text-gray-700 dark:text-gray-300 mb-2">Objetivos de aprendizaje</label>
+            <label className="block text-gray-700 dark:text-gray-300 mb-2">{t('placementTest.learningGoals')}</label>
             <textarea
               value={userData.learningGoals}
               onChange={(e) => setUserData(prev => ({...prev, learningGoals: e.target.value}))}
               className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white h-32"
-              placeholder="¿Para qué quieres aprender inglés? (trabajo, viajes, estudios, etc.)"
+              placeholder={t('placementTest.learningGoalsPlaceholder')}
             />
           </div>
           <button
@@ -92,7 +94,7 @@ const UserForm = ({ onSubmit, isLoading }: UserFormProps) => {
             disabled={isLoading || !userData.age}
             className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 disabled:bg-gray-400 dark:disabled:bg-gray-600 transition-colors"
           >
-            {isLoading ? 'Generando...' : 'Comenzar Evaluación'}
+            {isLoading ? t('placementTest.generating') : t('placementTest.startButton')}
           </button>
         </div>
       </div>
@@ -100,26 +102,25 @@ const UserForm = ({ onSubmit, isLoading }: UserFormProps) => {
       <div className="md:w-1/2 bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md">
         <div className="flex items-start mb-4">
           <Info className="h-6 w-6 text-blue-600 dark:text-blue-400 mr-2 flex-shrink-0 mt-1" />
-          <h3 className="text-xl font-semibold dark:text-white">Sobre nuestra Evaluación de Nivel</h3>
+          <h3 className="text-xl font-semibold dark:text-white">{t('placementTest.aboutTitle')}</h3>
         </div>
         
         <div className="space-y-4 text-gray-700 dark:text-gray-300">
           <p>
-            Nuestra evaluación sigue los estándares del Marco Común Europeo de Referencia para las Lenguas (MCER).
+            {t('placementTest.aboutDescription')}
           </p>
           
           <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border border-blue-100 dark:border-blue-800">
-            <p className="font-semibold text-blue-800 dark:text-blue-400 mb-2">¿Cómo funciona?</p>
+            <p className="font-semibold text-blue-800 dark:text-blue-400 mb-2">{t('placementTest.howItWorksTitle')}</p>
             <ul className="list-disc pl-5 space-y-1">
-              <li>Evaluación <span className="font-semibold">gratuita</span> de 10 minutos</li>
-              <li>Preguntas adaptativas según tus respuestas</li>
-              <li>Análisis personalizado con IA</li>
-              <li>Descarga de resultados en PDF</li>
+              {(t('placementTest.howItWorksList', { returnObjects: true }) as string[]).map((item: string, index: number) => (
+                <li key={index}>{item}</li>
+              ))}
             </ul>
           </div>
           
           <p className="font-semibold dark:text-white">
-            ¡Descubre tu verdadero nivel de inglés!
+            {t('placementTest.encouragement')}
           </p>
         </div>
       </div>

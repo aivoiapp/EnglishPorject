@@ -2,6 +2,168 @@
   "common": {
     "selectLanguage": "Select language"
   },
+  "benefitsSection": {
+    "title": "Benefits of Learning English",
+    "globalOpportunitiesTitle": "Global Opportunities",
+    "globalOpportunitiesDescription": "Access job and educational opportunities worldwide. English is the global language of business and education.",
+    "betterSalariesTitle": "Better Salaries",
+    "betterSalariesDescription": "Bilingual professionals earn on average 30% more than those who speak only one language.",
+    "professionalDevelopmentTitle": "Professional Development",
+    "professionalDevelopmentDescription": "Enhance your professional profile and access international resources, research, and networking.",
+    "scrollToViewVideo": "Scroll to view video"
+  },
+  "privacyPolicy": {
+    "title": "Personal Data Protection Policy",
+    "objectiveTitle": "Policy Objective",
+    "objectiveDescription": "This document aims to establish principles, uniform practices, and responsibilities regarding the processing of personal data carried out by Cytalk.online.",
+    "scopeTitle": "Scope",
+    "scopeDescription": "This policy applies to all personal data collected through our online learning platform, including information from students, teachers, and service users. This policy must be known and complied with by all staff and collaborators of Cytalk.online.",
+    "keyTermsTitle": "Key Terms",
+    "keyTermsDescription": "Cytalk.online: Refers to our online English learning platform and all educational services associated with it.",
+    "policyDetailTitle": "Policy Details",
+    "policyDetailDescription": "Cytalk.online is committed to complying with the corresponding legislation regarding personal data protection. These regulations fundamentally require us to:",
+    "policyDetailItem1": "The collection and use of personal information.",
+    "policyDetailItem2": "The quality and security of information.",
+    "policyDetailItem3": "The rights of individuals regarding information about themselves.",
+    "policyDetailConclusion": "Cytalk.online is committed to the protection, handling, and appropriate treatment of personal data of our students, teachers, and platform users.",
+    "complianceResponsibilitiesTitle": "Compliance Responsibilities",
+    "complianceResponsibilitiesDescription": "The Cytalk.online management team, along with designated staff, will be responsible for periodically reviewing this Policy and making necessary adjustments. Our technical support team will be in charge of resolving any queries related to the application and scope of this Policy.",
+    "confidentialityTitle": "Confidentiality",
+    "confidentialityDescription": "Personal data collected through our platform, including academic and contact information, may not be disclosed without the prior consent of the personal data owner, except for exceptions regulated by Law.",
+    "principlesTitle": "Principles",
+    "principlesDescription": "All Cytalk.online staff and collaborators must permanently comply with the following principles established by Law:",
+    "principleLegality": "Legality: The processing of personal data carried out by Cytalk.online will be done in accordance with the Law.",
+    "principleConsent": "Consent: Cytalk.online may not process personal data without the prior, express, unequivocal, and free consent of its owner.",
+    "principlePurpose": "Purpose: Cytalk.online will collect personal data only for educational purposes and improving the learning experience.",
+    "principleProportionality": "Proportionality: All personal data processing carried out by Cytalk.online will be adequate and relevant for the teaching-learning process.",
+    "principleQuality": "Quality: The personal data of our students and teachers will be maintained accurately and up-to-date to ensure an optimal educational experience.",
+    "principleSecurity": "Security: Cytalk.online will implement technical and organizational measures to protect the personal information of our educational community.",
+    "closeButton": "Close"
+  },
+  "professorsSection": {
+    "title": "Experts helping you speak English with confidence",
+    "labels": {
+      "vision": "Vision",
+      "methodology": "Methodology",
+      "certifications": "Certifications",
+      "specialties": "Specialties"
+    },
+    "cyril": {
+      "name": "Cyril O.",
+      "title": "Cambridge Certified Tutor",
+      "certifications": ["CAE (Certificate in Advanced English)", "CELTA (Certificate in Teaching English to Speakers of Other Languages)"],
+      "experience": "With 9 years of experience teaching English as a foreign language. Her classes are dynamic, with relevant materials and a pleasant environment. She uses a communicative method and interactive digital tools, with personalized learning plans according to student interests and goals. She speaks Spanish (native), English (C1), French (B1) and Italian (A1).",
+      "specialties": ["General English", "Academic English", "Conversation", "Exam Preparation"],
+      "vision": "As the face of cytalk.online, my mission is to inspire and guide students worldwide to achieve their linguistic goals with confidence and success.",
+      "methodology": "My approach focuses on effective communication, using interactive and personalized methods for each student. I believe in learning through constant practice and the use of innovative digital resources."
+    }
+  },
+  "scheduleSection": {
+    "title": "Available Schedules",
+    "group": "Group"
+  },
+  "faqSection": {
+    "title": "Frequently Asked Questions",
+    "cost": {
+      "question": "How much does the course cost?",
+      "answer": "Take advantage of our special offer! 50% discount, classes are only S/. 200 S/. 100 per month."
+    },
+    "duration": {
+      "question": "Can I take just one month?",
+      "answer": "Yes, we offer monthly modality. However, we recommend a minimum of 6 months to achieve significant progress in your English."
+    },
+    "registration": {
+      "question": "What is the registration process?",
+      "answer": "1. Go to the payment form\n2. Choose your preferred schedule\n3. Make the payment via transfer, Yape or card\n4. Follow the instructions and you're ready to start!"
+    },
+    "requirements": {
+      "question": "What technical requirements do I need?",
+      "answer": "- Computer or laptop with webcam\n- Stable internet connection\n- Functional microphone\n- Zoom installed (we will send you the access link)"
+    },
+    "courseIncludes": {
+      "question": "What does the course include?",
+      "answer": "- Access to live classes\n- Digital materials\n- Interactive exercises\n- Teacher support\n- Periodic evaluations to measure your progress."
+    },
+    "level": {
+      "question": "What level of English do I need to start?",
+      "answer": "- No previous experience needed.\n- Upon registration, we help you determine your current level to place you in the appropriate group.\n- Start your English journey today!"
+    }
+  },
+    "keyTermsDescription": "Cytalk.online: Refers to our online English learning platform and all educational services associated with it.",
+    "policyDetailTitle": "Policy Details",
+    "policyDetailDescription": "Cytalk.online is committed to complying with the corresponding legislation regarding personal data protection. These regulations fundamentally require us to:",
+    "policyDetailItem1": "The collection and use of personal information.",
+    "policyDetailItem2": "The quality and security of information.",
+    "policyDetailItem3": "The rights of individuals regarding information about themselves.",
+    "policyDetailConclusion": "Cytalk.online is committed to the protection, handling, and appropriate treatment of personal data of our students, teachers, and platform users.",
+    "complianceResponsibilitiesTitle": "Compliance Responsibilities",
+    "complianceResponsibilitiesDescription": "The Cytalk.online management team, along with designated staff, will be responsible for periodically reviewing this Policy and making necessary adjustments. Our technical support team will be in charge of resolving any queries related to the application and scope of this Policy.",
+    "confidentialityTitle": "Confidentiality",
+    "confidentialityDescription": "Personal data collected through our platform, including academic and contact information, may not be disclosed without the prior consent of the personal data owner, except for exceptions regulated by Law.",
+    "principlesTitle": "Principles",
+    "principlesDescription": "All Cytalk.online staff and collaborators must permanently comply with the following principles established by Law:",
+    "principleLegality": "Legality: The processing of personal data carried out by Cytalk.online will be done in accordance with the Law.",
+    "principleConsent": "Consent: Cytalk.online may not process personal data without the prior, express, unequivocal, and free consent of its owner.",
+    "principlePurpose": "Purpose: Cytalk.online will collect personal data only for educational purposes and improving the learning experience.",
+    "principleProportionality": "Proportionality: All personal data processing carried out by Cytalk.online will be adequate and relevant for the teaching-learning process.",
+    "principleQuality": "Quality: The personal data of our students and teachers will be maintained accurately and up-to-date to ensure an optimal educational experience.",
+    "principleSecurity": "Security: Cytalk.online will implement technical and organizational measures to protect the personal information of our educational community.",
+    "closeButton": "Close",
+  
+  "audienceSection": {
+    "title": "Who is this course for?",
+    "beginners": {
+      "title": "English Beginners",
+      "description": "People with no previous experience, interested in learning English from scratch. Ideal for those looking to develop a solid foundation in the language and want to evolve professionally."
+    },
+    "professionals": {
+      "title": "Professionals and Creatives",
+      "description": "For experienced professionals looking to refresh their knowledge, change areas, or grow within the same company. You will learn English variants in depth and be prepared to collaborate in international work teams."
+    },
+    "entrepreneurs": {
+      "title": "Entrepreneurs and Small Business Owners",
+      "description": "Business owners intending to create successful products to enhance their brand. You will master the skills to offer the best user-centered experiences. You will become a leader in coordinating international projects."
+    }
+  },
+  "curriculumSection": {
+    "title": "What will you learn?",
+    "conversation": {
+      "title": "Participate in conversations",
+      "description": "Learn to actively participate in English conversations, improving your fluency and confidence."
+    },
+    "pronunciation": {
+      "title": "Practice pronunciation",
+      "description": "Perfect your pronunciation to speak English confidently and be understood by native speakers."
+    },
+    "grammar": {
+      "title": "Improve your grammar",
+      "description": "Master English grammar rules to communicate with precision and clarity in any situation."
+    },
+    "vocabulary": {
+      "title": "Expand your vocabulary",
+      "description": "Learn new words and expressions to enrich your English communication and comprehension."
+    },
+    "reading": {
+      "title": "Develop reading skills",
+      "description": "Improve your ability to read and understand English texts, from articles to literature."
+    },
+    "listening": {
+      "title": "Improve listening comprehension",
+      "description": "Develop the ability to understand spoken English in different accents and contexts."
+    },
+    "examPrep": {
+      "title": "Exam preparation",
+      "description": "Prepare for internationally recognized English exams, such as TOEFL and IELTS."
+    },
+    "culture": {
+      "title": "Culture and context",
+      "description": "Learn about the culture and context of English-speaking countries for more effective communication."
+    },
+    "certification": {
+      "title": "International Certification",
+      "description": "Students who successfully complete the study program will be prepared to take Cambridge's official international recognition tests, opening doors to academic and professional opportunities worldwide."
+    }
+  },
   "header": {
     "title": "English Academy",
     "audience": "Audience",
@@ -11,6 +173,183 @@
     "faq": "FAQ",
     "placementTest": "Placement Test"
   },
+  "loader": {
+    "processing": "Processing...",
+    "pleaseWait": "Please wait a few seconds",
+    "estimatedProgress": "Estimated progress",
+    "creatingExperience": "Creating a personalized evaluation experience",
+    "preparingEvaluation": "Preparing a personalized evaluation based on your level",
+    "tips": {
+      "tip1": "Did you know that English is the most studied language in the world? Start with us and be part of those who are already advancing.",
+      "tip2": "Our classes prepare you for real job opportunities.",
+      "tip3": "Two well-used sessions per week take you further than you imagine.",
+      "tip4": "We help you master the words you really need to communicate.",
+      "tip5": "Listening to music in English improves your listening comprehension"
+    }
+  },
+  "evaluation": {
+    "analyzing": "Analyzing your answers...",
+    "evaluatingGrammar": "Evaluating your grammar level...",
+    "calculatingVocabulary": "Calculating your vocabulary level...",
+    "determiningStrengths": "Determining your strengths and weaknesses...",
+    "preparingRecommendations": "Preparing personalized recommendations...",
+    "generatingReport": "Generating your detailed report..."
+  },
+  "placementTest": {
+    "title": "Level Assessment",
+    "personalInfo": "Personal Information",
+    "listenQuestion": "Listen to question",
+    "listenQuestionAria": "Listen to question aloud",
+    "skills": {
+      "grammar": "Grammar",
+      "vocabulary": "Vocabulary",
+      "reading": "Reading Comprehension",
+      "listening": "Listening Comprehension"
+    },
+    "name": "Name (optional)",
+    "email": "Email (optional)",
+    "age": "Age",
+    "currentLevel": "Choose what you consider to be your current English level",
+    "learningGoals": "Learning Goals",
+    "learningGoalsPlaceholder": "Why do you want to learn English? (work, travel, studies, etc.)",
+    "startButton": "Start Assessment",
+    "generating": "Generating...",
+    "aboutTitle": "About our Level Assessment",
+    "aboutDescription": "Our assessment follows the standards of the Common European Framework of Reference for Languages (CEFR).",
+    "howItWorksTitle": "How does it work?",
+    "howItWorksList": [
+      "FREE 10-minute assessment",
+      "Adaptive questions based on your answers",
+      "AI-powered personalized analysis",
+      "Download results in PDF"
+    ],
+    "encouragement": "Discover your true English level!",
+    "levels": {
+      "beginner": "Beginner A0",
+      "elementary": "Elementary A1-A2",
+      "intermediate": "Intermediate B1-B2",
+      "advanced": "Advanced C1-C2"
+    },
+    "results": {
+      "title": "Your Assessment Results",
+      "date": "Date",
+      "score": "Score",
+      "officialDocument": "This document is an official report of your level assessment",
+      "pageInfo": "Page {{page}} of {{totalPages}} | Generated on: {{date}}",
+      "congratulations": "Congratulations",
+      "completionMessage": "You have completed the level assessment.",
+      "level": "Level",
+      "beginnerLevels": "Beginners (A0-A1-A2)",
+      "intermediateLevels": "Intermediate (B1-B2)",
+      "recommendedGroup": "Recommended Group",
+      "availableSchedules": "Available Schedules",
+      "noSchedules": "No schedules available for this group",
+      "strengths": "Strengths",
+      "weaknesses": "Areas for Improvement",
+      "recommendation": "Recommendation",
+      "nextSteps": "Next Steps",
+      "downloadPDF": "Download PDF",
+      "takeAnother": "Take Another Assessment"
+    }
+  },
+
+  "payment": {
+    "title": "Make it official: register and secure your progress",
+    "stepper": {
+      "personalInfo": "Personal Information",
+      "courseInfo": "Course Information",
+      "paymentDetails": "Payment Details",
+      "paymentMethod": "Payment Method",
+      "paymentSummary": "Payment Summary"
+    },
+    "motivationalMessages": {
+      "step0": "Let's get started! We just need some basic information.",
+      "step1": "Excellent! Now tell us about the course you're interested in.",
+      "step2": "You're doing great! Let's define the payment details.",
+      "step3": "Choose how you prefer to make your payment.",
+      "step4": "Ready! Review the details and confirm your payment."
+    },
+    "personalInfo": {
+      "title": "Personal Information",
+      "fullName": "Full Name",
+      "email": "Email",
+      "phone": "Phone"
+    },
+    "courseInfo": {
+      "title": "Course Information",
+      "level": "Level",
+      "beginners": "Beginners (A0-A1-A2)",
+      "intermediate": "Intermediate (B1-B2)",
+      "group": "Interest Group",
+      "selectGroup": "Select a group",
+      "children": "Children (8-12 years)",
+      "teenagers": "Teenagers (13-17 years)",
+      "adults": "Adults (18+ years)",
+      "schedule": "Schedule",
+      "selectSchedule": "Select a schedule"
+    },
+    "paymentDetails": {
+      "title": "Payment Details",
+      "paymentType": "Payment Type",
+      "monthly": "Monthly",
+      "fullLevel": "Full Level (6 months with 10% discount)",
+      "monthsCount": "Number of Months",
+      "startMonth": "Start Month",
+      "paymentPeriod": "Payment Period",
+      "from": "From",
+      "to": "To",
+      "amountToPay": "Amount to pay",
+      "discountIncluded": "Includes 10% discount for full level payment",
+      "generateReceipt": "I want a receipt to be generated",
+      "enterRuc": "Enter your RUC to issue the receipt"
+    },
+    "paymentMethods": {
+      "title": "Select your payment method",
+      "bankTransfer": "Bank Transfer",
+      "bankTransferDesc": "Transfer from your banking app",
+      "yapeQr": "Yape with QR",
+      "yapeQrDesc": "Scan the QR code with your app",
+      "creditCard": "Credit/Debit Card",
+      "creditCardDesc": "Pay with your bank card",
+      "selectPaymentMethod": "Select a payment method to continue",
+      "bankTransferInstructions": "Bank Transfer Instructions",
+      "bcpAccount": "BCP bank account",
+      "bbvaAccount": "BBVA bank account",
+      "operationCode": "Operation Code",
+      "operationCodeDesc": "Once the transfer is completed, return to this space and enter the transaction number or operation code in the corresponding field",
+      "enterOperationCode": "Enter the operation code",
+      "yapeInstructions": "Instructions for Yape with QR",
+      "scanQrCode": "Scan the following QR code with the Yape app",
+      "operationNumber": "Operation Number",
+      "enterYapeOperation": "Enter the Yape operation number",
+      "cardInstructions": "Instructions for Card Payment",
+      "completeCardData": "Complete your credit or debit card information",
+      "issuerBank": "Issuing Bank",
+      "selectBank": "Select a bank",
+      "enterCardOperation": "Enter your card operation number"
+    },
+    "summary": {
+      "title": "Payment Summary",
+      "student": "Student",
+      "level": "Level",
+      "group": "Group",
+      "schedule": "Schedule",
+      "paymentType": "Payment Type",
+      "months": "Months",
+      "period": "Period",
+      "amount": "Amount",
+      "paymentMethod": "Payment Method",
+      "operationNumber": "Operation Number",
+      "bank": "Bank",
+      "confirmPayment": "Confirm Payment",
+      "processingPayment": "Processing payment...",
+      "paymentSuccess": "Payment processed successfully!",
+      "receiptGenerated": "Your receipt has been generated and sent to your email",
+      "downloadReceipt": "Download Receipt",
+      "returnToHome": "Return to Home"
+    }
+  },
+  
   "hero": {
     "title": "Master English for",
     "titleHighlight": "your personal and professional growth",
@@ -29,10 +368,14 @@
       "certifications": "Approach aligned and designed for international certifications"
     },
     "pricing": {
-      "oldPrice": "S/. 200",
-      "newPrice": "S/. 100",
+      "oldPrice": "200",
+      "newPrice": "100",
       "perMonth": "/month",
-      "limitedOffer": "LIMITED OFFER!"
+      "limitedOffer": "LIMITED OFFER!",
+      "currency": {
+        "PEN": "S/.",
+        "USD": "$"
+      }
     },
     "form": {
       "title": "Register for the course",

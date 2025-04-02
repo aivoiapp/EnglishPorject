@@ -15,29 +15,59 @@ export const agents: Agent[] = [
   { name: "Agente 2", phone: "51906089930" }
 ];
 
-export const schedules: Schedule[] = [
-  {
-    group: "Niños (8-12 años)",
-    times: [
-      "Lunes y Miércoles 4:00 PM - 5:00 PM (Intermedios: B1-B2)", 
-      "Martes y Jueves 4:00 PM - 5:00 PM (Principiantes: A0-A1-A2)"
-    ]
-  },
-  {
-    group: "Adolescentes (13-17 años)",
-    times: [
-      "Lunes y Miércoles 5:00 PM - 6:00 PM (Intermedios: B1-B2)", 
-      "Martes y Jueves 5:00 PM - 6:00 PM (Principiantes: A0-A1-A2)"
-    ]
-  },
-  {
-    group: "Adultos (18+ años)",
-    times: [
-      "Lunes y Miércoles 7:00 PM - 8:00 PM (Intermedios: B1-B2)", 
-      "Martes y Jueves 7:00 PM - 8:00 PM (Principiantes: A0-A1-A2)"
-    ]
-  }
-];
+export interface ScheduleTranslations {
+  es: Schedule[];
+  en: Schedule[];
+}
+
+export const schedules: ScheduleTranslations = {
+  es: [
+    {
+      group: "Niños (8-12 años)",
+      times: [
+        "Lunes y Miércoles 4:00 PM - 5:00 PM (Intermedios: B1-B2)", 
+        "Martes y Jueves 4:00 PM - 5:00 PM (Principiantes: A0-A1-A2)"
+      ]
+    },
+    {
+      group: "Adolescentes (13-17 años)",
+      times: [
+        "Lunes y Miércoles 5:00 PM - 6:00 PM (Intermedios: B1-B2)", 
+        "Martes y Jueves 5:00 PM - 6:00 PM (Principiantes: A0-A1-A2)"
+      ]
+    },
+    {
+      group: "Adultos (18+ años)",
+      times: [
+        "Lunes y Miércoles 7:00 PM - 8:00 PM (Intermedios: B1-B2)", 
+        "Martes y Jueves 7:00 PM - 8:00 PM (Principiantes: A0-A1-A2)"
+      ]
+    }
+  ],
+  en: [
+    {
+      group: "Children (8-12 years)",
+      times: [
+        "Monday and Wednesday 4:00 PM - 5:00 PM (Intermediate: B1-B2)", 
+        "Tuesday and Thursday 4:00 PM - 5:00 PM (Beginners: A0-A1-A2)"
+      ]
+    },
+    {
+      group: "Teenagers (13-17 years)",
+      times: [
+        "Monday and Wednesday 5:00 PM - 6:00 PM (Intermediate: B1-B2)", 
+        "Tuesday and Thursday 5:00 PM - 6:00 PM (Beginners: A0-A1-A2)"
+      ]
+    },
+    {
+      group: "Adults (18+ years)",
+      times: [
+        "Monday and Wednesday 7:00 PM - 8:00 PM (Intermediate: B1-B2)", 
+        "Tuesday and Thursday 7:00 PM - 8:00 PM (Beginners: A0-A1-A2)"
+      ]
+    }
+  ]
+};
 
 // Add to existing types
 export interface PlacementTestResult {

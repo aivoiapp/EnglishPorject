@@ -1,11 +1,13 @@
 import { BookOpen, Users, Layout, Volume2, Lightbulb, Headphones, MessageCircle, Users2 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 const CurriculumSection = () => {
+  const { t } = useTranslation();
   return (
     <section id="curriculum" className="py-16 bg-white dark:bg-gray-800">
       <div className="container mx-auto px-6">
         <h2 className="text-4xl font-bold text-center mb-12 text-blue-800 dark:text-blue-400">
-          ¿Qué aprenderás?
+          {t('curriculumSection.title')}
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -16,9 +18,9 @@ const CurriculumSection = () => {
                 <MessageCircle className="w-6 h-6 text-white" /> {/* Conversation icon */}
               </div>
               <div>
-                <h3 className="text-xl font-semibold mb-2 text-gray-800 dark:text-white">Participar en conversaciones</h3>
+                <h3 className="text-xl font-semibold mb-2 text-gray-800 dark:text-white">{t('curriculumSection.conversation.title')}</h3>
                 <p className="text-gray-600 dark:text-gray-300">
-                  Aprende a participar activamente en conversaciones en inglés, mejorando tu fluidez y confianza.
+                  {t('curriculumSection.conversation.description')}
                 </p>
               </div>
             </div>
@@ -28,9 +30,9 @@ const CurriculumSection = () => {
                 <Volume2 className="w-6 h-6 text-white" /> {/* Pronunciation icon */}
               </div>
               <div>
-                <h3 className="text-xl font-semibold mb-2 text-gray-800 dark:text-white">Practicar la pronunciación</h3>
+                <h3 className="text-xl font-semibold mb-2 text-gray-800 dark:text-white">{t('curriculumSection.pronunciation.title')}</h3>
                 <p className="text-gray-600 dark:text-gray-300">
-                  Perfecciona tu pronunciación para hablar inglés con confianza y ser entendido por hablantes nativos.
+                  {t('curriculumSection.pronunciation.description')}
                 </p>
               </div>
             </div>
@@ -40,9 +42,9 @@ const CurriculumSection = () => {
                 <BookOpen className="w-6 h-6 text-white" /> {/* Grammar icon */}
               </div>
               <div>
-                <h3 className="text-xl font-semibold mb-2 text-gray-800 dark:text-white">Mejora tu gramática</h3>
+                <h3 className="text-xl font-semibold mb-2 text-gray-800 dark:text-white">{t('curriculumSection.grammar.title')}</h3>
                 <p className="text-gray-600 dark:text-gray-300">
-                  Domina las reglas gramaticales del inglés para comunicarte con precisión y claridad en cualquier situación.
+                  {t('curriculumSection.grammar.description')}
                 </p>
               </div>
             </div>
@@ -52,9 +54,9 @@ const CurriculumSection = () => {
                 <Users className="w-6 h-6 text-white" /> {/* Vocabulary icon */}
               </div>
               <div>
-                <h3 className="text-xl font-semibold mb-2 text-gray-800 dark:text-white">Ampliar tu vocabulario</h3>
+                <h3 className="text-xl font-semibold mb-2 text-gray-800 dark:text-white">{t('curriculumSection.vocabulary.title')}</h3>
                 <p className="text-gray-600 dark:text-gray-300">
-                  Aprende nuevas palabras y expresiones para enriquecer tu comunicación y comprensión del inglés.
+                  {t('curriculumSection.vocabulary.description')}
                 </p>
               </div>
             </div>
@@ -67,9 +69,9 @@ const CurriculumSection = () => {
                 <Layout className="w-6 h-6 text-white" /> {/* Reading icon */}
               </div>
               <div>
-                <h3 className="text-xl font-semibold mb-2 text-gray-800 dark:text-white">Desarrollar habilidades de lectura</h3>
+                <h3 className="text-xl font-semibold mb-2 text-gray-800 dark:text-white">{t('curriculumSection.reading.title')}</h3>
                 <p className="text-gray-600 dark:text-gray-300">
-                  Mejora tu capacidad para leer y comprender textos en inglés, desde artículos hasta literatura.
+                  {t('curriculumSection.reading.description')}
                 </p>
               </div>
             </div>
@@ -79,9 +81,9 @@ const CurriculumSection = () => {
                 <Headphones className="w-6 h-6 text-white" /> {/* Listening icon */}
               </div>
               <div>
-                <h3 className="text-xl font-semibold mb-2 text-gray-800 dark:text-white">Mejorar la comprensión auditiva</h3>
+                <h3 className="text-xl font-semibold mb-2 text-gray-800 dark:text-white">{t('curriculumSection.listening.title')}</h3>
                 <p className="text-gray-600 dark:text-gray-300">
-                  Desarrolla la habilidad de entender el inglés hablado en diferentes acentos y contextos.
+                  {t('curriculumSection.listening.description')}
                 </p>
               </div>
             </div>
@@ -91,9 +93,9 @@ const CurriculumSection = () => {
                 <Users2 className="w-6 h-6 text-white" /> {/* Exam preparation icon */}
               </div>
               <div>
-                <h3 className="text-xl font-semibold mb-2 text-gray-800 dark:text-white">Preparación para exámenes</h3>
+                <h3 className="text-xl font-semibold mb-2 text-gray-800 dark:text-white">{t('curriculumSection.examPrep.title')}</h3>
                 <p className="text-gray-600 dark:text-gray-300">
-                  Prepárate para exámenes de inglés reconocidos internacionalmente, como TOEFL y IELTS.
+                  {t('curriculumSection.examPrep.description')}
                 </p>
               </div>
             </div>
@@ -103,9 +105,9 @@ const CurriculumSection = () => {
                 <Lightbulb className="w-6 h-6 text-white" /> {/* Culture and context icon */}
               </div>
               <div>
-                <h3 className="text-xl font-semibold mb-2 text-gray-800 dark:text-white">Cultura y contexto</h3>
+                <h3 className="text-xl font-semibold mb-2 text-gray-800 dark:text-white">{t('curriculumSection.culture.title')}</h3>
                 <p className="text-gray-600 dark:text-gray-300">
-                  Aprende sobre la cultura y el contexto de los países de habla inglesa para una comunicación más efectiva.
+                  {t('curriculumSection.culture.description')}
                 </p>
               </div>
             </div>
@@ -114,11 +116,9 @@ const CurriculumSection = () => {
 
         <div className="mt-12 text-center">
           <div className="inline-block bg-white dark:bg-gray-700 p-6 rounded-lg shadow-lg">
-            <h3 className="text-xl font-semibold mb-3 text-gray-800 dark:text-white">Certificación Internacional</h3>
+            <h3 className="text-xl font-semibold mb-3 text-gray-800 dark:text-white">{t('curriculumSection.certification.title')}</h3>
             <p className="text-gray-600 dark:text-gray-300">
-              Aquellos estudiantes que completen exitosamente el programa de estudios estarán preparados para presentar 
-              las pruebas oficiales de Cambridge de reconocimiento internacional, abriendo puertas 
-              a oportunidades académicas y profesionales en todo el mundo.
+              {t('curriculumSection.certification.description')}
             </p>
           </div>
         </div>

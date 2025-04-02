@@ -10,15 +10,17 @@ import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 import { storePaymentData, generatePaymentReceipt } from '../../services/paymentService';
 import { sendPaymentFormData } from '../../services/makeService';
+import { useTranslation } from 'react-i18next';
 
 // Define MotivationalMessage component
 const MotivationalMessage: React.FC<{step: number}> = ({ step }) => {
+  const { t } = useTranslation();
   const messages = [
-    "¡Comencemos! Solo necesitamos algunos datos básicos.",
-    "¡Excelente! Ahora cuéntanos sobre el curso que te interesa.",
-    "¡Vas muy bien! Definamos los detalles del pago.",
-    "Elige cómo prefieres realizar tu pago.",
-    "¡Listo! Revisa los detalles y confirma tu pago."
+    t('payment.motivationalMessages.step0', '¡Comencemos! Solo necesitamos algunos datos básicos.'),
+    t('payment.motivationalMessages.step1', '¡Excelente! Ahora cuéntanos sobre el curso que te interesa.'),
+    t('payment.motivationalMessages.step2', '¡Vas muy bien! Definamos los detalles del pago.'),
+    t('payment.motivationalMessages.step3', 'Elige cómo prefieres realizar tu pago.'),
+    t('payment.motivationalMessages.step4', '¡Listo! Revisa los detalles y confirma tu pago.')
   ];
 
   return (
@@ -35,6 +37,7 @@ const MotivationalMessage: React.FC<{step: number}> = ({ step }) => {
 };
 
 const PaymentStepper: React.FC<{onFormSubmit: (data: PaymentFormData) => void}> = ({ onFormSubmit }) => {
+  const { t } = useTranslation();
   const { formData } = usePaymentContext();
   const [currentStep, setCurrentStep] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
@@ -153,7 +156,13 @@ const PaymentStepper: React.FC<{onFormSubmit: (data: PaymentFormData) => void}> 
           ></div>
         </div>
         <div className="flex justify-between mt-4">
-          {['Datos Personales', 'Datos del Curso', 'Detalles de Pago', 'Método de Pago', 'Resumen de Pago'].map((title, index) => (
+          {[
+            t('payment.stepper.personalInfo', 'Datos Personales'), 
+            t('payment.stepper.courseInfo', 'Datos del Curso'), 
+            t('payment.stepper.paymentDetails', 'Detalles de Pago'), 
+            t('payment.stepper.paymentMethod', 'Método de Pago'), 
+            t('payment.stepper.paymentSummary', 'Resumen de Pago')
+          ].map((title, index) => (
             <motion.div 
               key={index} 
               className={`flex flex-col items-center ${currentStep === index ? 'scale-110' : ''}`}
@@ -194,19 +203,25 @@ const PaymentStepper: React.FC<{onFormSubmit: (data: PaymentFormData) => void}> 
             {currentStep === 3 && <PaymentMethods />}
             {currentStep === 4 && (
               <div className="space-y-2">
-                <h3 className="text-lg font-semibold">Resumen de pago</h3>
-                <p>Estudiante: {formData.fullName}</p>
+                <h3 className="text-lg font-semibold">{t('payment.summary.title', 'Resumen de pago')}</h3>
+                <p>{t('payment.summary.student', 'Estudiante')}: {formData.fullName}</p>
                 <p>Nivel: {formData.courseLevel}</p>
                 <p>Grupo: {formData.studentGroup}</p>
-                <p>Horario: {formData.courseSchedule}</p>
-                <p>Tipo de pago: {formData.paymentType === 'monthly' ? 'Mensual' : 'Nivel Completo'}</p>
-                <p>Período de pago: {format(formData.startDate, 'MMMM yyyy', { locale: es })} a {format(formData.endDate, 'MMMM yyyy', { locale: es })}</p>
-                <p>Monto a pagar: S/. {formData.amount.toFixed(2)}</p>
-                <p>Método de pago: {formData.paymentMethod === 'transferencia' ? 'Transferencia Bancaria' : 
-                                   formData.paymentMethod === 'yape-qr' ? 'Yape con QR' : 
-                                   formData.paymentMethod === 'tarjeta' ? 'Tarjeta de Crédito/Débito' : formData.paymentMethod}</p>
-                <p>Número de operación: {formData.operationNumber}</p>
-                {formData.paymentMethod === 'tarjeta' && formData.bank && <p>Banco: {formData.bank}</p>}
+                <p>{t('payment.summary.schedule', 'Horario')}: {formData.courseSchedule}</p>
+                <p>{t('payment.summary.paymentType', 'Tipo de pago')}: {formData.paymentType === 'monthly' ? t('payment.paymentDetails.monthly', 'Mensual') : t('payment.paymentDetails.fullLevel', 'Nivel Completo')}</p>
+                <p>{t('payment.summary.period', 'Período de pago')}: {format(formData.startDate, 'MMMM yyyy', { locale: es })} a {format(formData.endDate, 'MMMM yyyy', { locale: es })}</p>
+                <p>{t('payment.summary.amount', 'Monto a pagar')}: S/. {formData.amount.toFixed(2)}</p>
+                <p>{t('payment.summary.paymentMethod', 'Método de pago')}: {
+                  formData.paymentMethod === 'transferencia' 
+                    ? t('payment.paymentMethods.bankTransfer', 'Transferencia Bancaria') 
+                    : formData.paymentMethod === 'yape-qr' 
+                      ? t('payment.paymentMethods.yapeQr', 'Yape con QR') 
+                      : formData.paymentMethod === 'tarjeta' 
+                        ? t('payment.paymentMethods.creditCard', 'Tarjeta de Crédito/Débito') 
+                        : formData.paymentMethod
+                }</p>
+                <p>{t('payment.summary.operationNumber', 'Número de operación')}: {formData.operationNumber}</p>
+                {formData.paymentMethod === 'tarjeta' && formData.bank && <p>{t('payment.summary.bank', 'Banco')}: {formData.bank}</p>}
               </div>
             )}
           </motion.div>
@@ -242,11 +257,11 @@ const PaymentStepper: React.FC<{onFormSubmit: (data: PaymentFormData) => void}> 
                       <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                       <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                     </svg>
-                    Procesando...
+                    {t('payment.summary.processing', 'Procesando...')}
                   </>
                 ) : (
                   <>
-                    Confirmar y descargar comprobante <FaCheck className="ml-2" />
+                    {t('payment.summary.confirmAndDownload', 'Confirmar y descargar comprobante')} <FaCheck className="ml-2" />
                   </>
                 )}
               </button>
@@ -256,7 +271,7 @@ const PaymentStepper: React.FC<{onFormSubmit: (data: PaymentFormData) => void}> 
                   animate={{ opacity: 1, y: 0 }}
                   className="mt-4 p-3 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-lg text-center"
                 >
-                  <p>¡Comprobante generado y descargado correctamente!</p>
+                  <p>{t('payment.summary.receiptGeneratedSuccess', '¡Comprobante generado y descargado correctamente!')}</p>
                 </motion.div>
               )}
             </div>

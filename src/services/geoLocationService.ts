@@ -105,6 +105,6 @@ export const detectPreferredLanguage = async (): Promise<string> => {
   }
     catch (error) {
     console.error('Error al detectar el idioma preferido:', error);
-    return 'en';
+    return 'es';
   }
 };

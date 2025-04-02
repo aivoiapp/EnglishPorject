@@ -14,12 +14,15 @@ import { format } from 'date-fns';
  * @param userData Datos del usuario
  * @returns Nombre del archivo generado
  */
-export const generatePlacementTestPDF = (result: PlacementTestResult, userData: UserData): string => {
+// Eliminar el componente de ejemplo innecesario y la importación redundante
+export const generatePlacementTestPDF = (result: PlacementTestResult, userData: UserData, t: (key: string) => string): string => {
   if (!result) return '';
 
   // Crear documento PDF
   const doc = new jsPDF();
   const currentDate = format(new Date(), 'dd/MM/yyyy');
+  
+  // Remove the line: const { t } = useTranslation();
   
   // Colores corporativos mejorados para un aspecto más profesional
   const primaryColor = [37, 99, 235]; // Azul - #2563EB
@@ -69,16 +72,16 @@ export const generatePlacementTestPDF = (result: PlacementTestResult, userData: 
   doc.setTextColor(20, 70, 180, 0.5);
   doc.setFontSize(24);
   doc.setFont('helvetica', 'bold');
-  doc.text('EVALUACIÓN DE NIVEL DE INGLÉS', 106, 21, { align: 'center' });
+  doc.text(t('placementTest.title').toUpperCase(), 106, 21, { align: 'center' });
   
   // Texto principal
   doc.setTextColor(255, 255, 255); // Blanco
-  doc.text('EVALUACIÓN DE NIVEL DE INGLÉS', 105, 20, { align: 'center' });
+  doc.text(t('placementTest.title').toUpperCase(), 105, 20, { align: 'center' });
   
   // Subtítulo con estilo
   doc.setFontSize(12);
   doc.setFont('helvetica', 'normal');
-  doc.text('English Academy', 105, 30, { align: 'center' });
+  doc.text(t('header.title'), 105, 30, { align: 'center' });
   
   // Añadir fecha en el encabezado
   doc.setFontSize(8);
@@ -91,16 +94,16 @@ export const generatePlacementTestPDF = (result: PlacementTestResult, userData: 
   doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
   doc.setFontSize(14);
   doc.setFont('helvetica', 'bold');
-  doc.text('INFORMACIÓN DEL ESTUDIANTE', 25, 62);
+  doc.text(t('placementTest.personalInfo').toUpperCase(), 25, 62);
   
   // Datos del estudiante
   doc.setTextColor(textColor[0], textColor[1], textColor[2]);
   doc.setFontSize(11);
   doc.setFont('helvetica', 'bold');
-  doc.text('Fecha:', 25, 75);
-  doc.text('Nombre:', 25, 85);
-  doc.text('Email:', 25, 95);
-  doc.text('Edad:', 25, 105);
+  doc.text(t('placementTest.results.date') + ':', 25, 75);
+  doc.text(t('placementTest.name') + ':', 25, 85);
+  doc.text(t('placementTest.email') + ':', 25, 95);
+  doc.text(t('placementTest.age') + ':', 25, 105);
   
   doc.setFont('helvetica', 'normal');
   doc.text(currentDate, 65, 75);
@@ -115,14 +118,14 @@ export const generatePlacementTestPDF = (result: PlacementTestResult, userData: 
   doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
   doc.setFontSize(14);
   doc.setFont('helvetica', 'bold');
-  doc.text('RESULTADOS DEL TEST', 25, 132);
+  doc.text(t('placementTest.results.title').toUpperCase(), 25, 132);
   
   // Datos del resultado
   doc.setTextColor(textColor[0], textColor[1], textColor[2]);
   doc.setFontSize(11);
   doc.setFont('helvetica', 'bold');
-  doc.text('Nivel:', 25, 145);
-  doc.text('Puntuación:', 25, 155);
+  doc.text(t('placementTest.results.level') + ':', 25, 145);
+  doc.text(t('placementTest.results.score') + ':', 25, 155);
   
   // Mostrar nivel con un color que represente el nivel
   let levelColor = accentColor; // Color por defecto (indigo)
@@ -233,7 +236,7 @@ export const generatePlacementTestPDF = (result: PlacementTestResult, userData: 
     doc.setTextColor(accentColor[0], accentColor[1], accentColor[2]);
     doc.setFontSize(14);
     doc.setFont('helvetica', 'bold');
-    doc.text('GRUPO RECOMENDADO', 25, 192);
+    doc.text(t('placementTest.results.recommendedGroup').toUpperCase(), 25, 192);
     
     // Datos del grupo
     doc.setTextColor(textColor[0], textColor[1], textColor[2]);
@@ -252,7 +255,7 @@ export const generatePlacementTestPDF = (result: PlacementTestResult, userData: 
   doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
   doc.setFontSize(14);
   doc.setFont('helvetica', 'bold');
-  doc.text('FORTALEZAS', 25, strengthsY + 12);
+  doc.text(t('placementTest.results.strengths').toUpperCase(), 25, strengthsY + 12);
   
   // Listar fortalezas
   doc.setTextColor(textColor[0], textColor[1], textColor[2]);
@@ -289,7 +292,7 @@ export const generatePlacementTestPDF = (result: PlacementTestResult, userData: 
   doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
   doc.setFontSize(14);
   doc.setFont('helvetica', 'bold');
-  doc.text('ÁREAS DE MEJORA', 120, strengthsY + 12);
+  doc.text(t('placementTest.results.weaknesses').toUpperCase(), 120, strengthsY + 12);
   
   // Listar debilidades
   doc.setTextColor(textColor[0], textColor[1], textColor[2]);
@@ -334,7 +337,7 @@ const recY = strengthsY + 80;
   doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
   doc.setFontSize(14);
   doc.setFont('helvetica', 'bold');
-  doc.text('RECOMENDACIÓN PERSONALIZADA', 25, recY + 12);
+  doc.text(t('placementTest.results.recommendation').toUpperCase(), 25, recY + 12);
   
   // Texto de recomendación
   doc.setTextColor(textColor[0], textColor[1], textColor[2]);
@@ -364,7 +367,7 @@ const recY = strengthsY + 80;
     doc.setTextColor(255, 255, 255);
     doc.setFontSize(14);
     doc.setFont('helvetica', 'bold');
-    doc.text('EVALUACIÓN DE NIVEL DE INGLÉS', 105, 15, { align: 'center' });
+    doc.text(t('placementTest.title').toUpperCase(), 105, 15, { align: 'center' });
     
     // Próximos pasos en nueva página
     roundedRect(15, 30, 180, 100, 5, lightBgColor);
@@ -373,7 +376,7 @@ const recY = strengthsY + 80;
     doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
     doc.setFontSize(14);
     doc.setFont('helvetica', 'bold');
-    doc.text('PRÓXIMOS PASOS', 25, 42);
+    doc.text(t('placementTest.results.nextSteps').toUpperCase(), 25, 42);
     
     // Listar próximos pasos
     doc.setTextColor(textColor[0], textColor[1], textColor[2]);
@@ -474,15 +477,19 @@ const recY = strengthsY + 80;
     doc.setTextColor(255, 255, 255);
     doc.setFontSize(10);
     doc.setFont('helvetica', 'bold');
-    doc.text('English Academy - Evaluación de Nivel', 105, 280, { align: 'center' });
+    doc.text(`English Academy - ${t('placementTest.title')}`, 105, 280, { align: 'center' });
     
     // Texto secundario con estilo mejorado
     doc.setFontSize(8);
     doc.setFont('helvetica', 'normal');
-    doc.text('Este documento es un informe oficial de su evaluación de nivel', 105, 286, { align: 'center' });
+    doc.text(t('placementTest.results.officialDocument'), 105, 286, { align: 'center' });
     
     // Añadir número de página y fecha
-    doc.text(`Página ${i} de ${pageCount} | Generado el: ${currentDate}`, 105, 292, { align: 'center' });
+    // Corregir el formato de la clave de traducción para que sea compatible
+    const pageInfo = t('placementTest.results.pageInfo').replace('{page}', i.toString())
+      .replace('{total}', pageCount.toString())
+      .replace('{date}', currentDate);
+    doc.text(pageInfo, 105, 292, { align: 'center' });
     
     // Añadir un pequeño logo o marca de agua
     doc.setFontSize(6);
