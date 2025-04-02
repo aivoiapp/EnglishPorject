@@ -1,11 +1,14 @@
 import { Users, Palette, Briefcase } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 const AudienceSection = () => {
+  const { t } = useTranslation();
+
   return (
     <section id="audiencia" className="py-16 bg-gray-50 dark:bg-gray-900">
       <div className="container mx-auto px-6">
         <h2 className="text-3xl font-bold text-center mb-12 dark:text-white">
-          ¿A quién va dirigido este curso?
+          {t('audienceSection.title')}
         </h2>
         
         <div className="grid md:grid-cols-3 gap-8">
@@ -16,13 +19,11 @@ const AudienceSection = () => {
                 <Palette className="w-8 h-8 text-white" />
               </div>
               <h3 className="text-xl font-semibold text-center text-gray-800 dark:text-white">
-                Principiantes en inglés
+                {t('audienceSection.beginners.title')}
               </h3>
             </div>
             <p className="text-gray-600 dark:text-gray-300 text-center">
-              Personas sin experiencia previa, interesadas en aprender inglés desde cero. 
-              Ideal para quienes buscan desarrollar una base sólida en el idioma y 
-              quieren evolucionar profesionalmente.
+              {t('audienceSection.beginners.description')}
             </p>
           </div>
 
@@ -33,14 +34,11 @@ const AudienceSection = () => {
                 <Users className="w-8 h-8 text-white" />
               </div>
               <h3 className="text-xl font-semibold text-center text-gray-800 dark:text-white">
-                Profesionales y Creativos
+                {t('audienceSection.professionals.title')}
               </h3>
             </div>
             <p className="text-gray-600 dark:text-gray-300 text-center">
-              Para profesionales con experiencia, que buscan renovar sus conocimientos, 
-              cambiar de área o crecer en la misma empresa. Aprenderás en profundidad 
-              las variantes del inglés y estarás preparado para colaborar en equipos 
-              de trabajo internacionales.
+              {t('audienceSection.professionals.description')}
             </p>
           </div>
 
@@ -51,13 +49,11 @@ const AudienceSection = () => {
                 <Briefcase className="w-8 h-8 text-white" />
               </div>
               <h3 className="text-xl font-semibold text-center text-gray-800 dark:text-white">
-                Emprendedores y Microempresarios
+                {t('audienceSection.entrepreneurs.title')}
               </h3>
             </div>
             <p className="text-gray-600 dark:text-gray-300 text-center">
-              Empresarios con intención de crear productos exitosos para potenciar su marca. 
-              Dominarás las habilidades para ofrecer las mejores experiencias centradas en el usuario. 
-              Conseguirás ser un líder en la coordinación de proyectos internacionales.
+              {t('audienceSection.entrepreneurs.description')}
             </p>
           </div>
         </div>

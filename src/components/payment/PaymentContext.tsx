@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo, ReactNode } from 'react';
 import { addMonths } from 'date-fns';
 import { PaymentContext, PaymentFormData, PaymentMethodType } from './paymentTypes';
+import { useCurrency } from '../../context/useCurrency';
 
 interface PaymentProviderProps {
   children: ReactNode;
@@ -9,6 +10,8 @@ interface PaymentProviderProps {
 }
 
 export const PaymentProvider: React.FC<PaymentProviderProps> = ({ children, initialData = {}, onFormSubmit }) => {
+  const { discountedPrice } = useCurrency();
+  
   const initialFormState = useMemo<PaymentFormData>(() => ({
     fullName: '',
     email: '',
@@ -20,13 +23,13 @@ export const PaymentProvider: React.FC<PaymentProviderProps> = ({ children, init
     monthsCount: 1,
     startDate: new Date(),
     endDate: addMonths(new Date(), 1),
-    amount: 100,
+    amount: discountedPrice,
     paymentMethod: '',
     operationNumber: '',
     bank: '',
     generateReceipt: false,
     ruc: '',
-  }), []);
+  }), [discountedPrice]);
 
   const [formData, setFormData] = useState<PaymentFormData>({ 
     ...initialFormState,
@@ -40,8 +43,8 @@ export const PaymentProvider: React.FC<PaymentProviderProps> = ({ children, init
         )
       : addMonths(new Date(), 1),
     amount: initialData.paymentType === 'fullLevel' 
-      ? 100 * 6 * 0.9 
-      : 100 * (initialData.monthsCount || 1)
+      ? discountedPrice * 6 * 0.9 
+      : discountedPrice * (initialData.monthsCount || 1)
   });
 
   useEffect(() => {
@@ -62,12 +65,12 @@ export const PaymentProvider: React.FC<PaymentProviderProps> = ({ children, init
             newPaymentType === 'fullLevel' ? 6 : newMonths
           ),
           amount: newPaymentType === 'monthly' 
-            ? 100 * newMonths 
-            : 100 * 6 * 0.9
+            ? discountedPrice * newMonths 
+            : discountedPrice * 6 * 0.9
         };
       });
     }
-  }, [initialData, initialFormState]);
+  }, [initialData, initialFormState, discountedPrice]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -81,7 +84,7 @@ export const PaymentProvider: React.FC<PaymentProviderProps> = ({ children, init
           ...prev,
           paymentType,
           monthsCount,
-          amount: paymentType === 'monthly' ? 100 * monthsCount : 100 * 6 * 0.9,
+          amount: paymentType === 'monthly' ? discountedPrice * monthsCount : discountedPrice * 6 * 0.9,
           endDate: addMonths(prev.startDate, monthsCount)
         };
       }
@@ -91,7 +94,7 @@ export const PaymentProvider: React.FC<PaymentProviderProps> = ({ children, init
         return {
           ...prev,
           monthsCount,
-          amount: prev.paymentType === 'monthly' ? 100 * monthsCount : prev.amount,
+          amount: prev.paymentType === 'monthly' ? discountedPrice * monthsCount : prev.amount,
           endDate: addMonths(prev.startDate, monthsCount)
         };
       }

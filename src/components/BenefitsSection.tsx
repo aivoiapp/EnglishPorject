@@ -1,12 +1,14 @@
 import { Globe, Award, TrendingUp } from 'lucide-react';
 import ReactPlayer from 'react-player/youtube';
 import { useInView } from 'react-intersection-observer';
+import { t } from 'i18next';
 
 const BenefitsSection = () => {
   const { ref, inView } = useInView({
     threshold: 0.3, // El video comenzará cuando el 30% del componente sea visible
     triggerOnce: false // Permitir que se active cada vez que entre en la vista
   });
+  // Eliminado: const { language } = useLanguage();
   return (
     <section id="beneficios" className="py-16 bg-white dark:bg-gray-800">
       <div className="container mx-auto px-6">
@@ -15,8 +17,7 @@ const BenefitsSection = () => {
           <div className="space-y-8">
             <div>
               <h2 className="text-4xl font-bold mb-6 text-blue-800 dark:text-blue-400">
-                El inglés: la llave <br />
-                para el éxito profesional
+                {t('benefitsSection.title')}
               </h2>
             </div>
 
@@ -26,11 +27,9 @@ const BenefitsSection = () => {
                   <Globe className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold mb-2 text-gray-800 dark:text-white">Acceso a oportunidades globales</h3>
+                  <h3 className="text-xl font-semibold mb-2 text-gray-800 dark:text-white">{t('benefitsSection.globalOpportunitiesTitle')}</h3>
                   <p className="text-gray-600 dark:text-gray-300">
-                    El dominio del inglés te permite acceder a oportunidades laborales 
-                    en empresas internacionales, sin importar tu profesión. Es el idioma 
-                    universal de los negocios y la tecnología en todo el mundo.
+                    {t('benefitsSection.globalOpportunitiesDescription')}
                   </p>
                 </div>
               </div>
@@ -40,11 +39,9 @@ const BenefitsSection = () => {
                   <TrendingUp className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold mb-2 text-gray-800 dark:text-white">Mejores salarios y ascensos</h3>
+                  <h3 className="text-xl font-semibold mb-2 text-gray-800 dark:text-white">{t('benefitsSection.betterSalariesTitle')}</h3>
                   <p className="text-gray-600 dark:text-gray-300">
-                    Los profesionales que dominan el inglés ganan en promedio un 30% más 
-                    que sus colegas con el mismo nivel de experiencia. Es una habilidad 
-                    que te diferencia y te posiciona para roles de mayor responsabilidad.
+                    {t('benefitsSection.betterSalariesDescription')}
                   </p>
                 </div>
               </div>
@@ -54,11 +51,9 @@ const BenefitsSection = () => {
                   <Award className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold mb-2 text-gray-800 dark:text-white">Desarrollo profesional sin fronteras</h3>
+                  <h3 className="text-xl font-semibold mb-2 text-gray-800 dark:text-white">{t('benefitsSection.professionalDevelopmentTitle')}</h3>
                   <p className="text-gray-600 dark:text-gray-300">
-                    Con el inglés puedes acceder a formación internacional, certificaciones 
-                    reconocidas globalmente y trabajar remotamente para empresas de cualquier 
-                    parte del mundo, sin importar tu campo profesional.
+                    {t('benefitsSection.professionalDevelopmentDescription')}
                   </p>
                 </div>
               </div>
@@ -70,7 +65,7 @@ const BenefitsSection = () => {
             {/* Overlay para cuando el video no está en vista */}
             {!inView && (
               <div className="absolute inset-0 bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
-                <p className="text-gray-600 dark:text-gray-400">Desplázate para ver el video</p>
+                <p className="text-gray-600 dark:text-gray-400">{t('benefitsSection.scrollToViewVideo')}</p>
               </div>
             )}
             

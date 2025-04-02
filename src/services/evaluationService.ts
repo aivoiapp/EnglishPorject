@@ -6,18 +6,18 @@ import { TestQuestionWithAnswer } from '../types';
 import { PlacementTestResult } from '../types';
 import { UserData } from '../components/placement/UserForm';
 import { evaluateTest } from './placementService';
+import i18n from 'i18next';
 
-/**
- * Mensajes de evaluación que se muestran durante el proceso
- */
-export const evaluationMessages = [
-  "Analizando tus respuestas...",
-  "Evaluando tu nivel de gramática...",
-  "Calculando tu nivel de vocabulario...",
-  "Determinando tus fortalezas y debilidades...",
-  "Preparando recomendaciones personalizadas...",
-  "Generando tu informe detallado..."
+export const getEvaluationMessages = () => [
+  i18n.t('evaluation.analyzing'),
+  i18n.t('evaluation.evaluatingGrammar'),
+  i18n.t('evaluation.calculatingVocabulary'),
+  i18n.t('evaluation.determiningStrengths'),
+  i18n.t('evaluation.preparingRecommendations'),
+  i18n.t('evaluation.generatingReport')
 ];
+
+export const evaluationMessages = getEvaluationMessages();
 
 /**
  * Prepara los datos para la evaluación del test

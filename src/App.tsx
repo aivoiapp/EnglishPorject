@@ -2,7 +2,8 @@ import { useState } from 'react';
 import { Book } from 'lucide-react';
 import { ScheduleSection, HeroSection, PaymentSection, FAQSection, PlacementSection, BenefitsSection, AudienceSection, CurriculumSection, ProfessorsSection, FloatingContactButton, AdContainer } from './components';
 import ThemeToggle from './components/ThemeToggle';
-import { AdsProvider } from './context';
+import LanguageSelector from './components/LanguageSelector';
+import { AdsProvider, LanguageProvider, CurrencyProvider } from './context';
 
 function App() {
   // Estado para almacenar los datos del usuario
@@ -45,8 +46,10 @@ function App() {
   };
 
   return (
-    <AdsProvider>
-      <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white dark:from-gray-900 dark:to-gray-800 dark:text-white">
+    <LanguageProvider>
+      <CurrencyProvider>
+        <AdsProvider>
+          <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white dark:from-gray-900 dark:to-gray-800 dark:text-white">
       <header className="bg-white dark:bg-gray-800 shadow-lg fixed w-full z-10">
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
@@ -65,6 +68,7 @@ function App() {
             </nav>
 
             <div className="flex items-center gap-4">
+              <LanguageSelector />
               <ThemeToggle />
             </div>
           </div>
@@ -124,6 +128,8 @@ function App() {
       </footer>
       </div>
     </AdsProvider>
+      </CurrencyProvider>
+  </LanguageProvider>
   );
 }
 

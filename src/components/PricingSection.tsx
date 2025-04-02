@@ -1,6 +1,11 @@
 import { Sparkles, CheckCircle2 } from 'lucide-react';
+import { useCurrency } from '../context/useCurrency';
+import { useTranslation } from 'react-i18next';
 
-const PricingSection = () => (
+const PricingSection = () => {
+  const { t } = useTranslation();
+  const { currencySymbol, price, discountedPrice } = useCurrency();
+  return (
   <section id="precios" className="py-16 bg-gradient-to-br from-blue-600 to-blue-800 text-white">
     <div className="container mx-auto px-6">
       <div className="text-center mb-12">
@@ -20,10 +25,10 @@ const PricingSection = () => (
           <div className="p-8">
             <div className="text-center mb-6">
               <div className="flex justify-center items-center gap-2 mb-4">
-                <span className="text-4xl font-bold line-through text-gray-400 dark:text-gray-500">S/. 200</span>
-                <span className="text-5xl font-bold text-blue-600 dark:text-blue-400">S/. 100</span>
+                <span className="text-4xl font-bold line-through text-gray-400 dark:text-gray-500">{currencySymbol} {price}</span>
+                <span className="text-5xl font-bold text-blue-600 dark:text-blue-400">{currencySymbol} {discountedPrice}</span>
               </div>
-              <span className="text-gray-500 dark:text-gray-400">/mes</span>
+              <span className="text-gray-500 dark:text-gray-400">{t('hero.pricing.perMonth', '/mes')}</span>
             </div>
             <ul className="space-y-4">
               <li className="flex items-center">
@@ -55,6 +60,7 @@ const PricingSection = () => (
       </div>
     </div>
   </section>
-);
+  );
+};
 
 export default PricingSection;

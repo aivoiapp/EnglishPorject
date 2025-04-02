@@ -1,5 +1,6 @@
 import { RefreshCw, Clock, Brain, Zap, CheckCircle } from 'lucide-react';
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface LoaderProps {
   // Propiedades para personalizar el loader
@@ -10,11 +11,13 @@ interface LoaderProps {
 }
 
 const Loader = ({
-  title = "Procesando...",
-  subtitle = "Por favor espera unos segundos",
+  title = "loader.processing",
+  subtitle = "loader.pleaseWait",
   fullScreen = true,
   evaluationMessages = []
 }: LoaderProps) => {
+  const { t } = useTranslation();
+  
   // Estados para el contador y la barra de progreso
   const [elapsedTime, setElapsedTime] = useState(0);
   const [progressPercentage, setProgressPercentage] = useState(0);
@@ -22,11 +25,11 @@ const Loader = ({
   
   // Consejos y mensajes para mostrar durante la carga
   const tips = [
-    "¿Sabías que el inglés es el idioma más estudiado del mundo? Empieza con nosotros y sé parte de quienes ya están avanzando.",
-    "Nuestras clases te preparan para aprovechar oportunidades laborables reales.",
-    "Dos sesiones por semana bien aprovechadas te llevan más lejos de lo que imaginas.",
-    " Te ayudamos a dominar las palabras que realmente necesitas para comunicarte.",
-    "Escuchar música en inglés mejora tu comprensión auditiva"
+    t('loader.tips.tip1'),
+    t('loader.tips.tip2'),
+    t('loader.tips.tip3'),
+    t('loader.tips.tip4'),
+    t('loader.tips.tip5')
   ];
 
   // Efecto para actualizar el contador cada segundo
@@ -86,7 +89,7 @@ const Loader = ({
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-2xl font-bold text-gray-800 dark:text-white flex items-center">
               <Brain className="mr-2 h-6 w-6 text-blue-600 dark:text-blue-400" />
-              {title}
+              {t(title)}
             </h2>
             <div className="flex items-center bg-blue-50 dark:bg-blue-900/30 px-3 py-1 rounded-full">
               <Clock className="h-4 w-4 text-blue-600 dark:text-blue-400 mr-1" />
@@ -99,7 +102,7 @@ const Loader = ({
           {/* Barra de progreso animada */}
           <div className="mb-8">
             <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400 mb-2">
-              <span>Progreso estimado</span>
+              <span>{t('loader.estimatedProgress')}</span>
               <span>{Math.round(progressPercentage)}%</span>
             </div>
             <div className="w-full h-3 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
@@ -119,7 +122,7 @@ const Loader = ({
           <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
             <h3 className="text-xl font-semibold mb-6 dark:text-white flex items-center">
               <Zap className="mr-2 h-5 w-5 text-yellow-500" />
-              Creando una experiencia de evaluación hecha a tu medida
+              {t('loader.creatingExperience')}
             </h3>
             
             <div className="space-y-4">
@@ -151,7 +154,7 @@ const Loader = ({
                     <div className="h-2 w-2 bg-blue-600 dark:bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
                     <div className="h-2 w-2 bg-blue-600 dark:bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '0.4s' }}></div>
                   </div>
-                  <span className="text-sm text-gray-500 dark:text-gray-400">Procesando...</span>
+                  <span className="text-sm text-gray-500 dark:text-gray-400">{t('loader.processing')}</span>
                 </div>
               )}
             </div>
@@ -166,7 +169,7 @@ const Loader = ({
           
           {/* Mensaje de pie */}
           <p className="text-center text-gray-500 dark:text-gray-400 mt-6 text-sm">
-            {subtitle}
+            {t(subtitle)}
           </p>
         </div>
       </div>
@@ -205,7 +208,7 @@ const Loader = ({
         </div>
       </div>
       
-      <h3 className="text-lg font-semibold mb-4 dark:text-white">Preparando una evaluación personalizada según tu nivel</h3>
+      <h3 className="text-lg font-semibold mb-4 dark:text-white">{t('loader.preparingEvaluation')}</h3>
       
       <div className="space-y-3">
         {evaluationMessages.map((message, index) => (
