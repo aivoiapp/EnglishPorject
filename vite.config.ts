@@ -4,7 +4,7 @@ import { resolve } from 'path';
 
 export default defineConfig({
   plugins: [react()],
-  base: './', // Usar rutas relativas en lugar de absolutas
+  base: './', // Ensure this is correct for your deployment environment
   resolve: {
     alias: {
       '@': resolve(__dirname, 'src')
