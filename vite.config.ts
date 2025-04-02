@@ -4,7 +4,7 @@ import { resolve } from 'path';
 
 export default defineConfig({
   plugins: [react()],
-  base: './', // Ensure this is correct for your deployment environment
+  base: '/', // Usar rutas absolutas para mejor compatibilidad con Vercel
   resolve: {
     alias: {
       '@': resolve(__dirname, 'src')
