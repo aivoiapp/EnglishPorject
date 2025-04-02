@@ -2,7 +2,7 @@
   "version": 2,
   "routes": [
     { "src": "/assets/(.*)", "dest": "/assets/$1" },
-    { "src": "/(.*)\.(js|css|svg|jpg|jpeg|png|ico|json)", "dest": "/$1.$2" },
+    { "src": "/(.*)\\.(js|css|svg|jpg|jpeg|png|ico|json)", "dest": "/$1.$2" },
     { "handle": "filesystem" },
     { "src": "/(.*)", "dest": "/index.html" }
   ],
