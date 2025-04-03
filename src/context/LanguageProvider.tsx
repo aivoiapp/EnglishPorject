@@ -41,8 +41,6 @@ interface LanguageProviderProps {
 
 const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) => {
   const [language, setLanguage] = useState(i18n.language);
-  const [isDetectingLocation, setIsDetectingLocation] = useState(false);
-  const [isLoading, setIsLoading] = useState(true); // Add loading state
 
   // Function to change language
   const changeLanguage = (lang: string) => {
@@ -51,62 +49,34 @@ const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) => {
     localStorage.setItem('i18nextLng', lang);
   };
 
-  // Detect language based on user's location on app load
+  // Detect language based on user's location asynchronously
   useEffect(() => {
     const detectLanguageByIP = async () => {
       const savedLanguage = localStorage.getItem('i18nextLng');
-      if (!savedLanguage || savedLanguage.startsWith('en-') || savedLanguage.startsWith('es-')) {
-        setIsDetectingLocation(true);
-        localStorage.setItem('detecting_language', 'true');
-        try {
-          const detectedLanguage = await detectPreferredLanguage();
-          if (detectedLanguage && detectedLanguage !== i18n.language) {
-            console.log(`Detected language by IP: ${detectedLanguage}`);
-            i18n.changeLanguage(detectedLanguage);
-            setLanguage(detectedLanguage);
-          }
-        } catch (error) {
-          console.error('Error detecting language by IP:', error);
-          // Fallback to default language
-          i18n.changeLanguage('en');
-          setLanguage('en');
-        } finally {
-          setIsDetectingLocation(false);
-          setIsLoading(false); // Set loading to false after detection
-          localStorage.setItem('detecting_language', 'false');
+
+      // If a language is already saved, do nothing
+      if (savedLanguage) return;
+
+      try {
+        const detectedLanguage = await detectPreferredLanguage();
+        if (detectedLanguage && detectedLanguage !== i18n.language) {
+          i18n.changeLanguage(detectedLanguage);
+          setLanguage(detectedLanguage);
         }
-      } else {
-        setIsLoading(false); // Set loading to false if language is already set
+      } catch (error) {
+        console.error('Error detecting language by IP:', error);
       }
     };
 
     detectLanguageByIP();
   }, []);
 
-  // Update state when language changes in i18n
-  useEffect(() => {
-    const handleLanguageChanged = () => {
-      setLanguage(i18n.language);
-    };
-
-    i18n.on('languageChanged', handleLanguageChanged);
-
-    return () => {
-      i18n.off('languageChanged', handleLanguageChanged);
-    };
-  }, []);
-
   // Context value
   const contextValue: LanguageContextType = {
     language,
     changeLanguage,
-    isDetectingLocation
+    isDetectingLocation: false // No need for a loading state
   };
-
-  // Render loading state if still detecting language
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
 
   return (
     <LanguageContext.Provider value={contextValue}>
