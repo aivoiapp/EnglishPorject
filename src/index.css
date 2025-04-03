@@ -1,7 +1,7 @@
-/* Import Tailwind base styles */
-@import 'tailwindcss/base';
-@import 'tailwindcss/components';
-@import 'tailwindcss/utilities';
+/* Tailwind base styles */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 /* Animaciones personalizadas para el Loader */
 @keyframes shimmer {
