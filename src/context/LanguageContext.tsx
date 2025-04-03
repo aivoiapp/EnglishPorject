@@ -4,7 +4,6 @@ import { createContext } from 'react';
 export interface LanguageContextType {
   language: string;
   changeLanguage: (lang: string) => void;
-  isDetectingLocation: boolean;
 }
 
 // Creación del contexto con un valor inicial undefined
