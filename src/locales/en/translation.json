@@ -88,28 +88,7 @@
       "question": "What level of English do I need to start?",
       "answer": "- No previous experience needed.\n- Upon registration, we help you determine your current level to place you in the appropriate group.\n- Start your English journey today!"
     }
-  },
-    "keyTermsDescription": "Cytalk.online: Refers to our online English learning platform and all educational services associated with it.",
-    "policyDetailTitle": "Policy Details",
-    "policyDetailDescription": "Cytalk.online is committed to complying with the corresponding legislation regarding personal data protection. These regulations fundamentally require us to:",
-    "policyDetailItem1": "The collection and use of personal information.",
-    "policyDetailItem2": "The quality and security of information.",
-    "policyDetailItem3": "The rights of individuals regarding information about themselves.",
-    "policyDetailConclusion": "Cytalk.online is committed to the protection, handling, and appropriate treatment of personal data of our students, teachers, and platform users.",
-    "complianceResponsibilitiesTitle": "Compliance Responsibilities",
-    "complianceResponsibilitiesDescription": "The Cytalk.online management team, along with designated staff, will be responsible for periodically reviewing this Policy and making necessary adjustments. Our technical support team will be in charge of resolving any queries related to the application and scope of this Policy.",
-    "confidentialityTitle": "Confidentiality",
-    "confidentialityDescription": "Personal data collected through our platform, including academic and contact information, may not be disclosed without the prior consent of the personal data owner, except for exceptions regulated by Law.",
-    "principlesTitle": "Principles",
-    "principlesDescription": "All Cytalk.online staff and collaborators must permanently comply with the following principles established by Law:",
-    "principleLegality": "Legality: The processing of personal data carried out by Cytalk.online will be done in accordance with the Law.",
-    "principleConsent": "Consent: Cytalk.online may not process personal data without the prior, express, unequivocal, and free consent of its owner.",
-    "principlePurpose": "Purpose: Cytalk.online will collect personal data only for educational purposes and improving the learning experience.",
-    "principleProportionality": "Proportionality: All personal data processing carried out by Cytalk.online will be adequate and relevant for the teaching-learning process.",
-    "principleQuality": "Quality: The personal data of our students and teachers will be maintained accurately and up-to-date to ensure an optimal educational experience.",
-    "principleSecurity": "Security: Cytalk.online will implement technical and organizational measures to protect the personal information of our educational community.",
-    "closeButton": "Close",
-  
+  },      
   "audienceSection": {
     "title": "Who is this course for?",
     "beginners": {

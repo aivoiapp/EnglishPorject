@@ -5,11 +5,11 @@ import LanguageDetector from 'i18next-browser-languagedetector';
 import LanguageContext, { LanguageContextType } from './LanguageContext';
 import { detectPreferredLanguage } from '../services/geoLocationService';
 
-// Importar archivos de traducción
+// Import translation files
 import translationEN from '../locales/en/translation.json';
 import translationES from '../locales/es/translation.json';
 
-// Configuración de recursos de i18next
+// i18next resources configuration
 const resources = {
   en: {
     translation: translationEN
@@ -19,19 +19,19 @@ const resources = {
   }
 };
 
-// Inicializar i18next
+// Initialize i18next
 i18n
-  .use(LanguageDetector) // Detecta el idioma del navegador
-  .use(initReactI18next) // Pasa i18n a react-i18next
+  .use(LanguageDetector)
+  .use(initReactI18next)
   .init({
     resources,
-    fallbackLng: 'es', // Idioma por defecto si no se detecta ninguno
+    fallbackLng: 'es', // Default language if none is detected
     detection: {
       order: ['localStorage', 'navigator', 'htmlTag', 'path'],
       caches: ['localStorage']
     },
     interpolation: {
-      escapeValue: false // No es necesario para React
+      escapeValue: false
     }
   });
 
@@ -42,44 +42,48 @@ interface LanguageProviderProps {
 const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) => {
   const [language, setLanguage] = useState(i18n.language);
   const [isDetectingLocation, setIsDetectingLocation] = useState(false);
+  const [isLoading, setIsLoading] = useState(true); // Add loading state
 
-  // Función para cambiar el idioma
+  // Function to change language
   const changeLanguage = (lang: string) => {
     i18n.changeLanguage(lang);
     setLanguage(lang);
-    // Guardar la preferencia del usuario en localStorage
     localStorage.setItem('i18nextLng', lang);
   };
 
-  // Detectar el idioma basado en la ubicación del usuario al cargar la aplicación
+  // Detect language based on user's location on app load
   useEffect(() => {
     const detectLanguageByIP = async () => {
-      // Solo detectar si no hay una preferencia guardada en localStorage
       const savedLanguage = localStorage.getItem('i18nextLng');
       if (!savedLanguage || savedLanguage.startsWith('en-') || savedLanguage.startsWith('es-')) {
         setIsDetectingLocation(true);
-        // Guardar el estado de detección en localStorage para que el LanguageSelector pueda mostrarlo
         localStorage.setItem('detecting_language', 'true');
         try {
           const detectedLanguage = await detectPreferredLanguage();
           if (detectedLanguage && detectedLanguage !== i18n.language) {
-            console.log(`Idioma detectado por IP: ${detectedLanguage}`);
+            console.log(`Detected language by IP: ${detectedLanguage}`);
             i18n.changeLanguage(detectedLanguage);
             setLanguage(detectedLanguage);
           }
         } catch (error) {
-          console.error('Error al detectar el idioma por IP:', error);
+          console.error('Error detecting language by IP:', error);
+          // Fallback to default language
+          i18n.changeLanguage('en');
+          setLanguage('en');
         } finally {
           setIsDetectingLocation(false);
+          setIsLoading(false); // Set loading to false after detection
           localStorage.setItem('detecting_language', 'false');
         }
+      } else {
+        setIsLoading(false); // Set loading to false if language is already set
       }
     };
 
     detectLanguageByIP();
   }, []);
 
-  // Actualizar el estado cuando cambia el idioma en i18n
+  // Update state when language changes in i18n
   useEffect(() => {
     const handleLanguageChanged = () => {
       setLanguage(i18n.language);
@@ -92,12 +96,17 @@ const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) => {
     };
   }, []);
 
-  // Valor del contexto
+  // Context value
   const contextValue: LanguageContextType = {
     language,
     changeLanguage,
     isDetectingLocation
   };
+
+  // Render loading state if still detecting language
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <LanguageContext.Provider value={contextValue}>
