@@ -232,6 +232,18 @@
     }
   },
 
+  "contact": {
+    "title": "Contact Us",
+    "fullName": "Full Name",
+    "interestGroup": "Interest Group",
+    "selectGroup": "Select a group",
+    "children": "Children (8-12 years)",
+    "teenagers": "Teenagers (13-17 years)",
+    "adults": "Adults (18+ years)",
+    "consultWith": "Consult with",
+    "contactViaWhatsapp": "Contact via WhatsApp",
+    "whatsappMessage": "Hello ${selectedAgent.name}, I'm interested in taking English classes. My name is ${name} and I would like more information about the ${selectedGroup} group."
+  },
   "payment": {
     "title": "Make it official: register and secure your progress",
     "stepper": {
@@ -305,6 +317,18 @@
       "completeCardData": "Complete your credit or debit card information",
       "issuerBank": "Issuing Bank",
       "selectBank": "Select a bank",
+      "other": "Other",
+      "howDoIDoIt": "How do I do it?",
+      "openBankApp": "Open your bank app.",
+      "goTo": "Go to:",
+      "bcpRechargeRecommendation": "We recommend making your recharge from Monday to Friday from 9:00am to 8:00pm and Saturdays from 9:00am to 1:30pm. Remember that recharges cannot be made outside these hours.",
+      "enterRechargeAmount": "Enter the amount to recharge (soles or dollars).",
+      "enterLigoDNI": "Enter your Ligo account DNI: 002117098.",
+      "selectCreditDebitCard": "Choose credit or debit card as the payment method.",
+      "interbankRechargeRecommendation": "We suggest making your recharge between 9 am and 11 pm to see it reflected the same day, otherwise it will be displayed the next day.",
+      "bbvaRechargeRecommendation": "We recommend making your recharge from Monday to Sunday from 9:00am to 9:00pm.",
+      "otherBanksInstructions": "For other banks, follow these general steps:",
+      "ready": "READY!",
       "enterCardOperation": "Enter your card operation number"
     },
     "summary": {
