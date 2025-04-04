@@ -35,7 +35,7 @@ i18n
   .use(initReactI18next)
   .init({
     resources,
-    fallbackLng: 'es', // Default language if none is detected
+    fallbackLng: 'en', // Default language if none is detected
     detection: {
       order: ['localStorage', 'navigator', 'htmlTag'],
       caches: ['localStorage'],
@@ -63,16 +63,16 @@ const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) => {
   // Initialize language based on browser settings
   useEffect(() => {
     // Get browser language and simplify it (e.g., 'en-US' → 'en')
-    const browserLang = i18n.language.split('-')[0] as SupportedLanguages;
+    const browserLang = i18n.language.split('-')[0];
     
-    // If browser language is not supported, default to Spanish
-    // Otherwise use the browser language
-    if (!Object.keys(resources).includes(browserLang)) {
+    // Si el idioma del navegador es español, usar español
+    // Para cualquier otro idioma, usar inglés
+    if (browserLang === 'es') {
       i18n.changeLanguage('es');
       setLanguage('es');
     } else {
-      i18n.changeLanguage(browserLang);
-      setLanguage(browserLang);
+      i18n.changeLanguage('en');
+      setLanguage('en');
     }
   }, []);
 

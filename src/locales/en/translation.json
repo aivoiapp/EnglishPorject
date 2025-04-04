@@ -231,7 +231,15 @@
       "recommendation": "Recommendation",
       "nextSteps": "Next Steps",
       "downloadPDF": "Download PDF",
-      "takeAnother": "Take Another Assessment"
+      "takeAnother": "Take Another Assessment",
+      "question": "Question {{current}} of {{total}}",
+      "performance": "Performance",
+      "performanceByLevel": "Performance by level",
+      "filePrefix": "english-assessment",
+      "defaultUser": "user"
+    },
+    "errors": {
+      "generatingQuestions": "Error generating questions. Please try again."
     }
   },
 

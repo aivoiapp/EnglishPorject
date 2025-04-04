@@ -94,7 +94,14 @@ export const evaluateTest = async (
     
     const recommendedGroup = getRecommendedGroup(parseInt(userData.age));
     
-    const promptContent = `Evaluate these English test answers and provide a detailed assessment IN SPANISH.\n\nUser profile:\n- Name: ${userData.name}\n- Age: ${userData.age}\n- Self-assessed level: ${userData.selfAssessedLevel}\n- Learning goals: ${userData.learningGoals}\n\nAnswers: ${JSON.stringify(answersWithQuestions)}\n\nReturn ONLY a JSON object with ALL TEXT VALUES IN SPANISH:\n{\n  "level": "A1/A2/B1/B2/C1/C2",\n  "score": 0-100,\n  "strengths": ["array of strengths in Spanish"],\n  "weaknesses": ["array of weaknesses in Spanish"],\n  "areasToImprove": ["array in Spanish"],\n  "recommendation": "text in Spanish",\n  "nextSteps": ["array of next steps in Spanish"],\n  "recommendedGroup": "${recommendedGroup}"\n}`;
+    // Obtener el idioma actual de la aplicación
+    const currentLanguage = localStorage.getItem('i18nextLng') || 'es';
+    const languageForPrompt = currentLanguage.split('-')[0]; // Simplificar 'en-US' a 'en'
+    
+    // Determinar el idioma para la respuesta
+    const responseLanguage = languageForPrompt === 'en' ? 'ENGLISH' : 'SPANISH';
+    
+    const promptContent = `Evaluate these English test answers and provide a detailed assessment IN ${responseLanguage}.\n\nUser profile:\n- Name: ${userData.name}\n- Age: ${userData.age}\n- Self-assessed level: ${userData.selfAssessedLevel}\n- Learning goals: ${userData.learningGoals}\n\nAnswers: ${JSON.stringify(answersWithQuestions)}\n\nReturn ONLY a JSON object with ALL TEXT VALUES IN ${responseLanguage}:\n{\n  "level": "A1/A2/B1/B2/C1/C2",\n  "score": 0-100,\n  "strengths": ["array of strengths in ${responseLanguage}"],\n  "weaknesses": ["array of weaknesses in ${responseLanguage}"],\n  "areasToImprove": ["array in ${responseLanguage}"],\n  "recommendation": "text in ${responseLanguage}",\n  "nextSteps": ["array of next steps in ${responseLanguage}"],\n  "recommendedGroup": "${recommendedGroup}"\n}`;
     
     const data = await callDeepSeekApi(promptContent);
     const evaluation = parseApiResponse<PlacementTestResult>(data);
