@@ -348,6 +348,13 @@
       "interbankRechargeRecommendation": "We suggest making your recharge between 9 am and 11 pm to see it reflected the same day, otherwise it will be displayed the next day.",
       "bbvaRechargeRecommendation": "We recommend making your recharge from Monday to Sunday from 9:00am to 9:00pm.",
       "otherBanksInstructions": "For other banks, follow these general steps:",
+      "selectYourBank": "Select your bank",
+      "searchPaymentsSection": "Search for the payments or services section.",
+      "searchLigo": "Search: Ligo (LIGO CARD - LA MÁGICA CARD)",
+      "bcpPaymentPath": "Payment services → Search: Ligo (LIGO CARD - LA MÁGICA CARD)",
+      "interbankPaymentPath": "Operations → Payments → Service payments → Search: Ligo (LIGO CARD - LA MÁGICA CARD)",
+      "bbvaPaymentPath": "Pay service → New Service → Search: Ligo (LIGO CARD - LA MÁGICA CARD)",
+      "scotiabankPaymentPath": "Pay or recharge → Other companies and institutions → Others → Search: Ligo (LIGO CARD - LA MÁGICA CARD)",
       "ready": "READY!",
       "enterCardOperation": "Enter your card operation number"
     },

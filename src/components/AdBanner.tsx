@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 interface AdBannerProps {
   adClient: string;
@@ -7,6 +7,7 @@ interface AdBannerProps {
   fullWidthResponsive?: boolean;
   className?: string;
   style?: React.CSSProperties;
+  minContentLength?: number; // Longitud mínima de contenido para mostrar anuncios
 }
 
 /**
@@ -18,6 +19,7 @@ interface AdBannerProps {
  * @param fullWidthResponsive - Si el anuncio debe ser responsive a ancho completo
  * @param className - Clases CSS adicionales
  * @param style - Estilos CSS adicionales
+ * @param minContentLength - Longitud mínima de contenido en la página para mostrar el anuncio
  */
 const AdBanner: React.FC<AdBannerProps> = ({
   adClient,
@@ -26,25 +28,48 @@ const AdBanner: React.FC<AdBannerProps> = ({
   fullWidthResponsive = true,
   className = '',
   style = {},
+  minContentLength = 500, // Por defecto, requerir al menos 500 caracteres de contenido
 }) => {
   const adRef = useRef<HTMLModElement>(null);
+  const [shouldShowAd, setShouldShowAd] = useState(false);
 
   useEffect(() => {
-    // Cargar el script de AdSense si aún no está cargado
-    const hasAdScript = document.querySelector('script[src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"]');
+    // Verificar si hay suficiente contenido en la página para mostrar anuncios
+    const checkContentLength = () => {
+      // Obtener el contenido principal de la página (excluyendo elementos de navegación, footer, etc.)
+      const mainContent = document.querySelector('main') || document.body;
+      const contentText = mainContent.textContent || '';
+      const contentLength = contentText.trim().length;
+      
+      // Solo mostrar anuncios si hay suficiente contenido
+      setShouldShowAd(contentLength >= minContentLength);
+      
+      // Para depuración
+      if (contentLength < minContentLength) {
+        console.log(`No se muestra anuncio: contenido insuficiente (${contentLength}/${minContentLength} caracteres)`); 
+      }
+    };
     
-    if (!hasAdScript) {
-      const script = document.createElement('script');
-      script.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js';
-      script.async = true;
-      script.crossOrigin = 'anonymous';
-      script.dataset.adClient = adClient;
-      document.head.appendChild(script);
+    // Verificar contenido cuando el componente se monta
+    checkContentLength();
+    
+    // Cargar el script de AdSense si aún no está cargado y hay suficiente contenido
+    if (shouldShowAd) {
+      const hasAdScript = document.querySelector('script[src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"]');
+      
+      if (!hasAdScript) {
+        const script = document.createElement('script');
+        script.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js';
+        script.async = true;
+        script.crossOrigin = 'anonymous';
+        script.dataset.adClient = adClient;
+        document.head.appendChild(script);
+      }
     }
 
-    // Inicializar el anuncio
+    // Inicializar el anuncio solo si hay suficiente contenido
     try {
-      if (adRef.current && typeof window !== 'undefined') {
+      if (shouldShowAd && adRef.current && typeof window !== 'undefined') {
         // Esperar a que AdSense esté disponible
         const interval = setInterval(() => {
           if (window.adsbygoogle) {
@@ -60,8 +85,13 @@ const AdBanner: React.FC<AdBannerProps> = ({
     } catch (error) {
       console.error('Error al cargar el anuncio:', error);
     }
-  }, [adClient]);
+  }, [adClient, shouldShowAd, minContentLength]);
 
+  // No renderizar nada si no hay suficiente contenido
+  if (!shouldShowAd) {
+    return null;
+  }
+  
   return (
     <div className={`ad-container ${className}`} style={style}>
       <ins
@@ -70,6 +100,11 @@ const AdBanner: React.FC<AdBannerProps> = ({
         style={{
           display: 'block',
           textAlign: 'center',
+          margin: '0 auto',
+          border: '1px solid #eaeaea',
+          borderRadius: '4px',
+          padding: '4px',
+          backgroundColor: '#f9f9f9',
           ...style,
         }}
         data-ad-client={adClient}

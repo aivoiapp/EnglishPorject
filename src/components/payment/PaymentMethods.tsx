@@ -281,7 +281,7 @@ const PaymentMethods: React.FC = () => {
                   className="w-full px-4 py-3 border-2 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white transition-all"
                   required
                 >
-                  <option value="">{t('payment.paymentMethods.selectYourBank', 'Selecciona tu banco')}</option>
+                  <option value="">{t('payment.paymentMethods.selectYourBank')}</option>
                   <option value="BCP">BCP</option>
                   <option value="Interbank">Interbank</option>
                   <option value="BBVA">BBVA</option>
@@ -308,7 +308,7 @@ const PaymentMethods: React.FC = () => {
                           <div className="bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-200 font-bold rounded-full w-6 h-6 flex items-center justify-center mr-2 flex-shrink-0">2</div>
                           <div>
                             <p className="text-gray-700 dark:text-gray-300">{t('payment.paymentMethods.goTo', 'Ir a:')}</p>
-                            <p className="text-green-700 dark:text-green-300 font-medium">Pago de servicios → Buscar: Ligo (TARJETA LIGO - TARJETA LA MÁGICA)</p>
+                            <p className="text-green-700 dark:text-green-300 font-medium">{t('payment.paymentMethods.bcpPaymentPath')}</p>
                           </div>
                         </div>
                         <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 p-3 rounded-lg">
@@ -342,7 +342,7 @@ const PaymentMethods: React.FC = () => {
                           <div className="bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-200 font-bold rounded-full w-6 h-6 flex items-center justify-center mr-2 flex-shrink-0">2</div>
                           <div>
                             <p className="text-gray-700 dark:text-gray-300">{t('payment.paymentMethods.goTo', 'Ir a:')}</p>
-                            <p className="text-green-700 dark:text-green-300 font-medium">Operaciones → Pagos → Pagos de servicios → Buscar: Ligo (TARJETA LIGO - TARJETA LA MÁGICA)</p>
+                            <p className="text-green-700 dark:text-green-300 font-medium">{t('payment.paymentMethods.interbankPaymentPath')}</p>
                           </div>
                         </div>
                         <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 p-3 rounded-lg">
@@ -376,7 +376,7 @@ const PaymentMethods: React.FC = () => {
                           <div className="bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-200 font-bold rounded-full w-6 h-6 flex items-center justify-center mr-2 flex-shrink-0">2</div>
                           <div>
                             <p className="text-gray-700 dark:text-gray-300">{t('payment.paymentMethods.goTo', 'Ir a:')}</p>
-                            <p className="text-green-700 dark:text-green-300 font-medium">Pagar servicio → Nuevo Servicio → Buscar: Ligo (TARJETA LIGO - TARJETA LA MÁGICA)</p>
+                            <p className="text-green-700 dark:text-green-300 font-medium">{t('payment.paymentMethods.bbvaPaymentPath')}</p>
                           </div>
                         </div>
                         <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 p-3 rounded-lg">
@@ -410,7 +410,7 @@ const PaymentMethods: React.FC = () => {
                           <div className="bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-200 font-bold rounded-full w-6 h-6 flex items-center justify-center mr-2 flex-shrink-0">2</div>
                           <div>
                             <p className="text-gray-700 dark:text-gray-300">{t('payment.paymentMethods.goTo', 'Ir a:')}</p>
-                            <p className="text-green-700 dark:text-green-300 font-medium">Pagar o recargar → Otras empresas e instituciones → Otros → Buscar: Ligo (TARJETA LIGO - TARJETA LA MÁGICA)</p>
+                            <p className="text-green-700 dark:text-green-300 font-medium">{t('payment.paymentMethods.scotiabankPaymentPath')}</p>
                           </div>
                         </div>
                         <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 p-3 rounded-lg">
@@ -444,8 +444,8 @@ const PaymentMethods: React.FC = () => {
                         <div className="flex items-start">
                           <div className="bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-200 font-bold rounded-full w-6 h-6 flex items-center justify-center mr-2 flex-shrink-0">2</div>
                           <div>
-                            <p className="text-gray-700 dark:text-gray-300">Buscar la sección de pagos o servicios.</p>
-                            <p className="text-green-700 dark:text-green-300 font-medium">Buscar: Ligo (TARJETA LIGO - TARJETA LA MÁGICA)</p>
+                            <p className="text-gray-700 dark:text-gray-300">{t('payment.paymentMethods.searchPaymentsSection')}</p>
+                            <p className="text-green-700 dark:text-green-300 font-medium">{t('payment.paymentMethods.searchLigo')}</p>
                           </div>
                         </div>
                         <div className="flex items-start">

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { AdContainer } from './index';
 import { useAds } from '../context';
 
@@ -12,7 +12,42 @@ interface SidebarAdsLayoutProps {
  */
 const SidebarAdsLayout: React.FC<SidebarAdsLayoutProps> = ({ children }) => {
   const { shouldShowAdByPosition, getAdClientId, getAdSlot } = useAds();
-  const showSidebarAd = shouldShowAdByPosition('SIDEBAR');
+  const [hasEnoughContent, setHasEnoughContent] = useState(false);
+  const showSidebarAd = shouldShowAdByPosition('SIDEBAR') && hasEnoughContent;
+  
+  // Verificar si hay suficiente contenido para mostrar anuncios
+  useEffect(() => {
+    const checkContentLength = () => {
+      // Esperar a que el contenido se renderice completamente
+      setTimeout(() => {
+        const contentElement = document.querySelector('.flex-1');
+        if (contentElement) {
+          const contentText = contentElement.textContent || '';
+          const contentLength = contentText.trim().length;
+          const minContentLength = 800; // Requerir más contenido para anuncios laterales
+          
+          setHasEnoughContent(contentLength >= minContentLength);
+          
+          // Para depuración
+          if (contentLength < minContentLength) {
+            console.log(`No se muestran anuncios laterales: contenido insuficiente (${contentLength}/${minContentLength} caracteres)`);
+          }
+        }
+      }, 500); // Pequeño retraso para asegurar que el contenido esté disponible
+    };
+    
+    checkContentLength();
+    
+    // También verificar cuando cambie el contenido
+    const observer = new MutationObserver(checkContentLength);
+    const contentContainer = document.querySelector('.flex-1');
+    
+    if (contentContainer) {
+      observer.observe(contentContainer, { childList: true, subtree: true });
+    }
+    
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <div className="container mx-auto px-6 py-4">
