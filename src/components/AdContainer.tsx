@@ -1,5 +1,6 @@
 import React from 'react';
 import AdBanner from './AdBanner';
+import { useTranslation } from 'react-i18next';
 
 export type AdPosition = 
   | 'top' // Parte superior de la página
@@ -28,6 +29,7 @@ const AdContainer: React.FC<AdContainerProps> = ({
   adClient,
   adSlot,
 }) => {
+  const { t } = useTranslation();
   // Configuraciones específicas según la posición
   const getAdConfig = () => {
     switch (position) {
@@ -86,7 +88,7 @@ const AdContainer: React.FC<AdContainerProps> = ({
         ...style,
       }}
     >
-      <div className="text-xs text-gray-500 dark:text-gray-400 text-center mb-1">Publicidad</div>
+      <div className="text-xs text-gray-500 dark:text-gray-400 text-center mb-1">{t('ads.advertisement', 'Publicidad')}</div>
       <AdBanner 
         adClient={adClient}
         adSlot={adSlot}

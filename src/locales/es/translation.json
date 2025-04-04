@@ -1,6 +1,9 @@
 {
   "common": {
-    "selectLanguage": "Seleccionar idioma"
+    "selectLanguage": "Seleccionar idioma",
+    "selectCountry": "Seleccionar país",
+    "peruPaymentMethods": "Mostrando métodos de pago para Perú",
+    "internationalPaymentMethods": "Mostrando métodos de pago internacionales"
   },
   "benefitsSection": {
     "title": "Beneficios de aprender inglés",
@@ -206,6 +209,16 @@
       "submitButton": "¡Continuar al pago!"
     }
   },
+  "footer": {
+    "copyright": "Todos los derechos reservados."
+  },
+  "ads": {
+    "advertisement": "Publicidad"
+  },
+  "navigation": {
+    "next": "Siguiente",
+    "previous": "Anterior"
+  },
 
   "payment": {
     "title": "Hazlo oficial: inscríbete y asegura tu progreso",
@@ -265,6 +278,15 @@
       "yapeQrDesc": "Escanea el código QR con tu app",
       "creditCard": "Tarjeta de Crédito/Débito",
       "creditCardDesc": "Paga con tu tarjeta bancaria",
+      "paypal": "PayPal",
+      "paypalDesc": "Paga de forma segura con PayPal",
+      "paypalInstructions": "Instrucciones para Pago con PayPal",
+      "paypalDesc1": "Realiza tu pago directamente a través del siguiente enlace de PayPal: https://www.paypal.me/cylessons",
+      "paypalDesc2": "Puedes pagar con tu cuenta de PayPal o con tarjeta de crédito/débito sin necesidad de crear una cuenta.",
+      "paypalButton": "Pagar con PayPal",
+      "paypalTransactionId": "ID de Transacción de PayPal",
+      "paypalTransactionIdDesc": "Una vez completado el pago, ingresa el ID de transacción que te proporcionó PayPal",
+      "enterPaypalTransactionId": "Ingresa el ID de transacción de PayPal",
       "selectPaymentMethod": "Selecciona un método de pago para continuar",
       "bankTransferInstructions": "Instrucciones para Transferencia Bancaria",
       "bcpAccount": "Cuenta del banco BCP",
