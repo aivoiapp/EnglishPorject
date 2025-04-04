@@ -142,11 +142,22 @@ const PaymentMethods: React.FC = () => {
           >
             <h4 className="font-medium text-lg mb-3 text-blue-800 dark:text-blue-300">{t('payment.paymentMethods.paypalInstructions', 'Instrucciones para Pago con PayPal')}</h4>
             <p className="text-gray-700 dark:text-gray-300 mb-4">
-              {t('payment.paymentMethods.paypalDesc1', 'Serás redirigido a PayPal para completar tu pago de forma segura.')}
+              {t('payment.paymentMethods.paypalDesc1', 'Realiza tu pago directamente a través del siguiente enlace de PayPal: https://www.paypal.me/cylessons')}
             </p>
             <p className="text-gray-700 dark:text-gray-300 mb-4">
               {t('payment.paymentMethods.paypalDesc2', 'Puedes pagar con tu cuenta de PayPal o con tarjeta de crédito/débito sin necesidad de crear una cuenta.')}
             </p>
+            <div className="mb-4">
+              <a 
+                href="https://www.paypal.me/cylessons" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="inline-block bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition-colors flex items-center justify-center"
+              >
+                <FaPaypal className="mr-2" />
+                {t('payment.paymentMethods.paypalButton', 'Pagar con PayPal')}
+              </a>
+            </div>
             <div className="mt-4">
               <label htmlFor="operationNumber" className="block text-gray-700 dark:text-gray-300 mb-2 font-medium">
                 {t('payment.paymentMethods.paypalTransactionId', 'ID de Transacción de PayPal')}
