@@ -233,7 +233,7 @@ const PaymentStepper: React.FC<{onFormSubmit: (data: PaymentFormData) => void}> 
             onClick={prevStep}
             className={`flex items-center px-6 py-3 rounded-lg transition-colors ${currentStep === 0 ? 'invisible' : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'}`}
           >
-            <FaArrowLeft className="mr-2" /> Anterior
+            <FaArrowLeft className="mr-2" /> {t('navigation.previous', 'Anterior')}
           </button>
           {currentStep < 4 && canProceed && (
             <button
@@ -241,7 +241,7 @@ const PaymentStepper: React.FC<{onFormSubmit: (data: PaymentFormData) => void}> 
               onClick={nextStep}
               className="flex items-center px-6 py-3 rounded-lg transition-colors bg-blue-600 text-white hover:bg-blue-700"
             >
-              Siguiente <FaArrowRight className="ml-2" />
+              {t('navigation.next', 'Siguiente')} <FaArrowRight className="ml-2" />
             </button>
           )}
           {currentStep === 4 && (

@@ -40,9 +40,9 @@ const PaymentCourseInfo: React.FC = () => {
               required
             >
               <option value="">{t('payment.courseInfo.selectGroup', 'Selecciona un grupo')}</option>
-              <option value="Niños (8-12 años)">{t('payment.courseInfo.children', 'Niños (8-12 años)')}</option>
-              <option value="Adolescentes (13-17 años)">{t('payment.courseInfo.teenagers', 'Adolescentes (13-17 años)')}</option>
-              <option value="Adultos (18+ años)">{t('payment.courseInfo.adults', 'Adultos (18+ años)')}</option>
+              <option value={language === 'en' ? "Children (8-12 years)" : "Niños (8-12 años)"}>{t('payment.courseInfo.children', 'Niños (8-12 años)')}</option>
+              <option value={language === 'en' ? "Teenagers (13-17 years)" : "Adolescentes (13-17 años)"}>{t('payment.courseInfo.teenagers', 'Adolescentes (13-17 años)')}</option>
+              <option value={language === 'en' ? "Adults (18+ years)" : "Adultos (18+ años)"}>{t('payment.courseInfo.adults', 'Adultos (18+ años)')}</option>
             </select>
           </div>
         </div>
@@ -59,7 +59,10 @@ const PaymentCourseInfo: React.FC = () => {
           >
             <option value="">{t('payment.courseInfo.selectSchedule', 'Seleccione un horario')}</option>
             {formData.studentGroup && schedules[language as keyof typeof schedules]
-              .filter((schedule: Schedule) => schedule.group === formData.studentGroup)
+              .filter((schedule: Schedule) => 
+                // Comparar el grupo en el idioma actual con el grupo seleccionado
+                schedule.group === formData.studentGroup
+              )
               .flatMap((schedule: Schedule) => 
                 schedule.times.map((time: string, index: number) => (
                   <option key={`${schedule.group}-${index}`} value={`${schedule.group} - ${time}`}>

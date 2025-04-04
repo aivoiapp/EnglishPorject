@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import CurrencyContext, { CurrencyContextType } from './CurrencyContext';
 import { useLanguage } from './useLanguage';
-import { detectUserLocation } from '../services/geoLocationService';
 import { useTranslation } from 'react-i18next';
 
 interface CurrencyProviderProps {
@@ -34,24 +33,23 @@ const CurrencyProvider: React.FC<CurrencyProviderProps> = ({ children }) => {
     }
   }, [t]);
 
-  // Detectar la ubicación del usuario y determinar si es de Perú
+  // Determinar el país del usuario basado en preferencias guardadas o idioma
   useEffect(() => {
-    const detectLocation = async () => {
-      try {
-        const location = await detectUserLocation();
-        const isPeru = location?.country_code === 'PE';
-        setIsPeruvianUser(isPeru);
-        
-        // Actualizar moneda basada en la ubicación y el idioma
-        updateCurrency(isPeru, language);
-      } catch (error) {
-        console.error('Error al detectar la ubicación:', error);
-        // Si hay un error, usar el idioma como fallback
-        updateCurrency(false, language);
-      }
-    };
-
-    detectLocation();
+    // Verificar si hay una preferencia guardada en localStorage
+    const savedCountry = localStorage.getItem('userCountry');
+    
+    if (savedCountry) {
+      const isPeru = savedCountry === 'PE';
+      setIsPeruvianUser(isPeru);
+      updateCurrency(isPeru, language);
+    } else {
+      // Si no hay preferencia guardada, usar el idioma como indicador
+      // Asumir que si el idioma es español, el usuario podría ser de Perú
+      const isPeru = language === 'es';
+      setIsPeruvianUser(isPeru);
+      localStorage.setItem('userCountry', isPeru ? 'PE' : 'OTHER');
+      updateCurrency(isPeru, language);
+    }
   }, [language, updateCurrency]);
 
   // Actualizar la moneda cuando cambia el idioma
@@ -59,13 +57,22 @@ const CurrencyProvider: React.FC<CurrencyProviderProps> = ({ children }) => {
     updateCurrency(isPeruvianUser, language);
   }, [language, isPeruvianUser, updateCurrency]);
 
+  // Función para cambiar manualmente el país del usuario
+  const setUserCountry = (countryCode: string) => {
+    const isPeru = countryCode === 'PE';
+    setIsPeruvianUser(isPeru);
+    localStorage.setItem('userCountry', countryCode);
+    updateCurrency(isPeru, language);
+  };
+
   // Valor del contexto
   const contextValue: CurrencyContextType = {
     currency,
     currencySymbol,
     price,
     discountedPrice,
-    isPeruvianUser
+    isPeruvianUser,
+    setUserCountry
   };
 
   return (

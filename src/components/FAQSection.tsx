@@ -1,8 +1,10 @@
 import { HelpCircle } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { useCurrency } from '../context/useCurrency';
 
 const FAQSection = () => {
   const { t } = useTranslation();
+  const { currencySymbol } = useCurrency();
   
   return (
   <section id="faq" className="py-16 bg-gray-50 dark:bg-gray-900">
@@ -15,7 +17,11 @@ const FAQSection = () => {
         {/* Existing questions improved */}
         <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
           <h3 className="text-xl font-semibold mb-2 dark:text-white">{t('faqSection.cost.question')}</h3>
-          <p className="text-gray-600 dark:text-gray-300">{t('faqSection.cost.answer')}</p>
+          <p className="text-gray-600 dark:text-gray-300">
+            {t('faqSection.cost.answer')
+              .replace('S/.', currencySymbol)
+              .replace('S/. ', currencySymbol + ' ')}
+          </p>
         </div>
 
         <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">

@@ -1,89 +1,120 @@
 import React from 'react';
-import { FaUniversity, FaQrcode, FaCreditCard, FaCheckCircle } from 'react-icons/fa';
+import { FaUniversity, FaQrcode, FaCreditCard, FaCheckCircle, FaPaypal } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 import { PaymentMethodType, usePaymentContext } from './paymentTypes';
 import { useTranslation } from 'react-i18next';
+import { useCurrency } from '../../context/useCurrency';
 
 
 const PaymentMethods: React.FC = () => {
   const { t } = useTranslation();
   const { formData, handleInputChange, handlePaymentMethodChange } = usePaymentContext();
+  const { isPeruvianUser } = useCurrency();
   
   const renderPaymentOptions = () => (
     <div className="mb-6">
       <h3 className="text-xl font-semibold mb-4 dark:text-white">{t('payment.paymentMethods.title', 'Selecciona tu método de pago')}</h3>
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-        <motion.div 
-          whileHover={{ scale: 1.03 }}
-          whileTap={{ scale: 0.98 }}
-          className={`p-6 border-2 rounded-xl cursor-pointer transition-all shadow-sm hover:shadow-md ${formData.paymentMethod === 'transferencia' ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20' : 'border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-700'}`}
-          onClick={() => handlePaymentMethodChange('transferencia' as PaymentMethodType)}
-        >
-          <div className="flex flex-col items-center text-center">
-            <div className="bg-blue-100 dark:bg-blue-900 p-4 rounded-full mb-4 relative">
-              <FaUniversity className="text-blue-600 dark:text-blue-400 text-3xl" />
-              {formData.paymentMethod === 'transferencia' && (
-                <motion.div 
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  className="absolute -top-2 -right-2 bg-green-500 rounded-full p-1"
-                >
-                  <FaCheckCircle className="text-white text-lg" />
-                </motion.div>
-              )}
+        {!isPeruvianUser ? (
+          // Mostrar solo PayPal para usuarios fuera de Perú
+          <motion.div 
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.98 }}
+            className={`p-6 border-2 rounded-xl cursor-pointer transition-all shadow-sm hover:shadow-md ${formData.paymentMethod === 'paypal' ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20' : 'border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-700'}`}
+            onClick={() => handlePaymentMethodChange('paypal' as PaymentMethodType)}
+          >
+            <div className="flex flex-col items-center text-center">
+              <div className="bg-blue-100 dark:bg-blue-900 p-4 rounded-full mb-4 relative">
+                <FaPaypal className="text-blue-600 dark:text-blue-400 text-3xl" />
+                {formData.paymentMethod === 'paypal' && (
+                  <motion.div 
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    className="absolute -top-2 -right-2 bg-green-500 rounded-full p-1"
+                  >
+                    <FaCheckCircle className="text-white text-lg" />
+                  </motion.div>
+                )}
+              </div>
+              <h4 className="font-medium text-lg mb-2 dark:text-white">{t('payment.paymentMethods.paypal', 'PayPal')}</h4>
+              <p className="text-sm text-gray-600 dark:text-gray-400">{t('payment.paymentMethods.paypalDesc', 'Paga de forma segura con PayPal')}</p>
             </div>
-            <h4 className="font-medium text-lg mb-2 dark:text-white">{t('payment.paymentMethods.bankTransfer', 'Transferencia Bancaria')}</h4>
-            <p className="text-sm text-gray-600 dark:text-gray-400">{t('payment.paymentMethods.bankTransferDesc', 'Transfiere desde tu app bancaria')}</p>
-          </div>
-        </motion.div>
+          </motion.div>
+        ) : (
+          <>
+            <motion.div 
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.98 }}
+              className={`p-6 border-2 rounded-xl cursor-pointer transition-all shadow-sm hover:shadow-md ${formData.paymentMethod === 'transferencia' ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20' : 'border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-700'}`}
+              onClick={() => handlePaymentMethodChange('transferencia' as PaymentMethodType)}
+            >
+              <div className="flex flex-col items-center text-center">
+                <div className="bg-blue-100 dark:bg-blue-900 p-4 rounded-full mb-4 relative">
+                  <FaUniversity className="text-blue-600 dark:text-blue-400 text-3xl" />
+                  {formData.paymentMethod === 'transferencia' && (
+                    <motion.div 
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      className="absolute -top-2 -right-2 bg-green-500 rounded-full p-1"
+                    >
+                      <FaCheckCircle className="text-white text-lg" />
+                    </motion.div>
+                  )}
+                </div>
+                <h4 className="font-medium text-lg mb-2 dark:text-white">{t('payment.paymentMethods.bankTransfer', 'Transferencia Bancaria')}</h4>
+                <p className="text-sm text-gray-600 dark:text-gray-400">{t('payment.paymentMethods.bankTransferDesc', 'Transfiere desde tu app bancaria')}</p>
+              </div>
+            </motion.div>
 
-        <motion.div 
-          whileHover={{ scale: 1.03 }}
-          whileTap={{ scale: 0.98 }}
-          className={`p-6 border-2 rounded-xl cursor-pointer transition-all shadow-sm hover:shadow-md ${formData.paymentMethod === 'yape-qr' ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/20' : 'border-gray-200 dark:border-gray-700 hover:border-purple-300 dark:hover:border-purple-700'}`}
-          onClick={() => handlePaymentMethodChange('yape-qr' as PaymentMethodType)}
-        >
-          <div className="flex flex-col items-center text-center">
-            <div className="bg-purple-100 dark:bg-purple-900 p-4 rounded-full mb-4 relative">
-              <FaQrcode className="text-purple-600 dark:text-purple-400 text-3xl" />
-              {formData.paymentMethod === 'yape-qr' && (
-                <motion.div 
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  className="absolute -top-2 -right-2 bg-green-500 rounded-full p-1"
-                >
-                  <FaCheckCircle className="text-white text-lg" />
-                </motion.div>
-              )}
-            </div>
-            <h4 className="font-medium text-lg mb-2 dark:text-white">{t('payment.paymentMethods.yapeQr', 'Yape con QR')}</h4>
-            <p className="text-sm text-gray-600 dark:text-gray-400">{t('payment.paymentMethods.yapeQrDesc', 'Escanea el código QR con tu app')}</p>
-          </div>
-        </motion.div>
+            <motion.div 
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.98 }}
+              className={`p-6 border-2 rounded-xl cursor-pointer transition-all shadow-sm hover:shadow-md ${formData.paymentMethod === 'yape-qr' ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/20' : 'border-gray-200 dark:border-gray-700 hover:border-purple-300 dark:hover:border-purple-700'}`}
+              onClick={() => handlePaymentMethodChange('yape-qr' as PaymentMethodType)}
+            >
+              <div className="flex flex-col items-center text-center">
+                <div className="bg-purple-100 dark:bg-purple-900 p-4 rounded-full mb-4 relative">
+                  <FaQrcode className="text-purple-600 dark:text-purple-400 text-3xl" />
+                  {formData.paymentMethod === 'yape-qr' && (
+                    <motion.div 
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      className="absolute -top-2 -right-2 bg-green-500 rounded-full p-1"
+                    >
+                      <FaCheckCircle className="text-white text-lg" />
+                    </motion.div>
+                  )}
+                </div>
+                <h4 className="font-medium text-lg mb-2 dark:text-white">{t('payment.paymentMethods.yapeQr', 'Yape con QR')}</h4>
+                <p className="text-sm text-gray-600 dark:text-gray-400">{t('payment.paymentMethods.yapeQrDesc', 'Escanea el código QR con tu app')}</p>
+              </div>
+            </motion.div>
 
-        <motion.div 
-          whileHover={{ scale: 1.03 }}
-          whileTap={{ scale: 0.98 }}
-          className={`p-6 border-2 rounded-xl cursor-pointer transition-all shadow-sm hover:shadow-md ${formData.paymentMethod === 'tarjeta' ? 'border-green-500 bg-green-50 dark:bg-green-900/20' : 'border-gray-200 dark:border-gray-700 hover:border-green-300 dark:hover:border-green-700'}`}
-          onClick={() => handlePaymentMethodChange('tarjeta' as PaymentMethodType)}
-        >
-          <div className="flex flex-col items-center text-center">
-            <div className="bg-green-100 dark:bg-green-900 p-4 rounded-full mb-4 relative">
-              <FaCreditCard className="text-green-600 dark:text-green-400 text-3xl" />
-              {formData.paymentMethod === 'tarjeta' && (
-                <motion.div 
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  className="absolute -top-2 -right-2 bg-green-500 rounded-full p-1"
-                >
-                  <FaCheckCircle className="text-white text-lg" />
-                </motion.div>
-              )}
-            </div>
-            <h4 className="font-medium text-lg mb-2 dark:text-white">{t('payment.paymentMethods.creditCard', 'Tarjeta de Crédito/Débito')}</h4>
-            <p className="text-sm text-gray-600 dark:text-gray-400">{t('payment.paymentMethods.creditCardDesc', 'Paga con tu tarjeta bancaria')}</p>
-          </div>
-        </motion.div>
+            <motion.div 
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.98 }}
+              className={`p-6 border-2 rounded-xl cursor-pointer transition-all shadow-sm hover:shadow-md ${formData.paymentMethod === 'tarjeta' ? 'border-green-500 bg-green-50 dark:bg-green-900/20' : 'border-gray-200 dark:border-gray-700 hover:border-green-300 dark:hover:border-green-700'}`}
+              onClick={() => handlePaymentMethodChange('tarjeta' as PaymentMethodType)}
+            >
+              <div className="flex flex-col items-center text-center">
+                <div className="bg-green-100 dark:bg-green-900 p-4 rounded-full mb-4 relative">
+                  <FaCreditCard className="text-green-600 dark:text-green-400 text-3xl" />
+                  {formData.paymentMethod === 'tarjeta' && (
+                    <motion.div 
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      className="absolute -top-2 -right-2 bg-green-500 rounded-full p-1"
+                    >
+                      <FaCheckCircle className="text-white text-lg" />
+                    </motion.div>
+                  )}
+                </div>
+                <h4 className="font-medium text-lg mb-2 dark:text-white">{t('payment.paymentMethods.creditCard', 'Tarjeta de Crédito/Débito')}</h4>
+                <p className="text-sm text-gray-600 dark:text-gray-400">{t('payment.paymentMethods.creditCardDesc', 'Paga con tu tarjeta bancaria')}</p>
+              </div>
+            </motion.div>
+          </>
+        )}
       </div>
     </div>
   );
@@ -102,6 +133,40 @@ const PaymentMethods: React.FC = () => {
     }
     
     switch (formData.paymentMethod) {
+      case 'paypal':
+        return (
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 p-6 rounded-lg mb-4 shadow-sm"
+          >
+            <h4 className="font-medium text-lg mb-3 text-blue-800 dark:text-blue-300">{t('payment.paymentMethods.paypalInstructions', 'Instrucciones para Pago con PayPal')}</h4>
+            <p className="text-gray-700 dark:text-gray-300 mb-4">
+              {t('payment.paymentMethods.paypalDesc1', 'Serás redirigido a PayPal para completar tu pago de forma segura.')}
+            </p>
+            <p className="text-gray-700 dark:text-gray-300 mb-4">
+              {t('payment.paymentMethods.paypalDesc2', 'Puedes pagar con tu cuenta de PayPal o con tarjeta de crédito/débito sin necesidad de crear una cuenta.')}
+            </p>
+            <div className="mt-4">
+              <label htmlFor="operationNumber" className="block text-gray-700 dark:text-gray-300 mb-2 font-medium">
+                {t('payment.paymentMethods.paypalTransactionId', 'ID de Transacción de PayPal')}
+              </label>
+              <p className="text-gray-700 dark:text-gray-300 mb-4">
+                {t('payment.paymentMethods.paypalTransactionIdDesc', 'Una vez completado el pago, ingresa el ID de transacción que te proporcionó PayPal')}
+              </p>
+              <input
+                type="text"
+                id="operationNumber"
+                name="operationNumber"
+                value={formData.operationNumber}
+                onChange={handleInputChange}
+                placeholder={t('payment.paymentMethods.enterPaypalTransactionId', 'Ingresa el ID de transacción de PayPal')}
+                className="w-full px-4 py-3 border-2 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white transition-all"
+                required
+              />
+            </div>
+          </motion.div>
+        );
       case 'transferencia':
         return (
           <motion.div 
@@ -118,7 +183,7 @@ const PaymentMethods: React.FC = () => {
             </p>
             <p className="text-gray-700 dark:text-gray-300 mb-4">
               {t('payment.paymentMethods.bbvaAccount', 'Realiza una transferencia a la cuenta del banco BBVA')}: 
-              <span className="font-bold block mt-2 text-blue-700 dark:text-blue-400 text-lg"> Cuenta sole: 0011-0831-0200350764</span>
+              <span className="font-bold block mt-2 text-blue-700 dark:text-blue-400 text-lg"> Cuenta soles: 0011-0831-0200350764</span>
               <span className="font-bold block mt-2 text-blue-700 dark:text-blue-400 text-lg"> Cuenta interbacaria soles: 011-831-000200350764-53
               </span>
             </p>
