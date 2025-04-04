@@ -4,13 +4,10 @@ import { Globe } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 const LanguageSelector: React.FC = () => {
-  const { language, changeLanguage, isDetectingLocation } = useLanguage();
+  const { language, changeLanguage } = useLanguage();
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
-  
-  // No necesitamos el estado local isDetecting ni el efecto para verificar localStorage
-  // ya que ahora obtenemos isDetectingLocation directamente del contexto
-  
+      
   // Cerrar el menú cuando se hace clic fuera de él
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -33,12 +30,6 @@ const LanguageSelector: React.FC = () => {
       >
         <Globe className="w-4 h-4 text-blue-600 dark:text-blue-400" />
         <span className="font-medium text-gray-800 dark:text-gray-200 uppercase">{language.toUpperCase()}</span>
-        {isDetectingLocation && (
-          <span className="flex h-2 w-2 relative">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
-          </span>
-        )}
       </button>
       
       {isOpen && (
