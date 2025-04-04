@@ -17,7 +17,15 @@ export const getEvaluationMessages = () => [
   i18n.t('evaluation.generatingReport')
 ];
 
+// Obtenemos los mensajes de evaluación dinámicamente para que se actualicen con el idioma
 export const evaluationMessages = getEvaluationMessages();
+
+// Función para actualizar los mensajes cuando cambia el idioma
+i18n.on('languageChanged', () => {
+  // Actualizamos los mensajes de evaluación cuando cambia el idioma
+  const updatedMessages = getEvaluationMessages();
+  evaluationMessages.splice(0, evaluationMessages.length, ...updatedMessages);
+});
 
 /**
  * Prepara los datos para la evaluación del test
