@@ -302,7 +302,14 @@
       "completeCardData": "Completa los datos de tu tarjeta de crédito o débito",
       "issuerBank": "Banco Emisor",
       "selectBank": "Selecciona un banco",
-      "enterCardOperation": "Ingresa el número de operación de tu tarjeta"
+      "enterCardOperation": "Ingresa el número de operación de tu tarjeta",
+      "selectYourBank": "Selecciona tu banco",
+      "searchPaymentsSection": "Buscar la sección de pagos o servicios.",
+      "searchLigo": "Buscar: Ligo (TARJETA LIGO - TARJETA LA MÁGICA)",
+      "bcpPaymentPath": "Pago de servicios → Buscar: Ligo (TARJETA LIGO - TARJETA LA MÁGICA)",
+      "interbankPaymentPath": "Operaciones → Pagos → Pagos de servicios → Buscar: Ligo (TARJETA LIGO - TARJETA LA MÁGICA)",
+      "bbvaPaymentPath": "Pagar servicio → Nuevo Servicio → Buscar: Ligo (TARJETA LIGO - TARJETA LA MÁGICA)",
+      "scotiabankPaymentPath": "Pagar o recargar → Otras empresas e instituciones → Otros → Buscar: Ligo (TARJETA LIGO - TARJETA LA MÁGICA)"
     },
     "summary": {
       "title": "Resumen de pago",

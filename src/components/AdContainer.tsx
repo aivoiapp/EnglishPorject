@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import AdBanner from './AdBanner';
 import { useTranslation } from 'react-i18next';
+import { hasEnoughContent } from '../config/adsConfig';
 
 export type AdPosition = 
   | 'top' // Parte superior de la página
@@ -30,6 +31,27 @@ const AdContainer: React.FC<AdContainerProps> = ({
   adSlot,
 }) => {
   const { t } = useTranslation();
+  const [showAd, setShowAd] = useState(false);
+  
+  // Verificar si hay suficiente contenido para mostrar anuncios
+  useEffect(() => {
+    // Diferentes posiciones pueden requerir diferentes cantidades de contenido
+    const minContentByPosition = {
+      'top': 300,
+      'bottom': 800,
+      'between-sections': 500,
+      'sidebar': 800,
+      'footer': 600,
+      'article-middle': 1000
+    };
+    
+    const minContentRequired = minContentByPosition[position] || 500;
+    
+    // Esperar a que el contenido se cargue completamente
+    setTimeout(() => {
+      setShowAd(hasEnoughContent(minContentRequired));
+    }, 500);
+  }, [position]);
   // Configuraciones específicas según la posición
   const getAdConfig = () => {
     switch (position) {
@@ -80,6 +102,11 @@ const AdContainer: React.FC<AdContainerProps> = ({
 
   const config = getAdConfig();
 
+  // No renderizar nada si no hay suficiente contenido
+  if (!showAd) {
+    return null;
+  }
+
   return (
     <div 
       className={`ad-container-${position} ${config.className} ${className}`}
@@ -88,12 +115,13 @@ const AdContainer: React.FC<AdContainerProps> = ({
         ...style,
       }}
     >
-      <div className="text-xs text-gray-500 dark:text-gray-400 text-center mb-1">{t('ads.advertisement', 'Publicidad')}</div>
+      <div className="text-xs text-gray-500 dark:text-gray-400 text-center mb-1 font-bold">{t('common.advertisement')}</div>
       <AdBanner 
         adClient={adClient}
         adSlot={adSlot}
         adFormat={config.format}
-        fullWidthResponsive={true}
+        fullWidthResponsive={position !== 'sidebar'}
+        minContentLength={position === 'sidebar' ? 800 : 500} // Pasar el requisito de contenido mínimo
       />
     </div>
   );

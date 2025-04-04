@@ -67,6 +67,46 @@ export const shouldShowAd = (position: keyof typeof ADS_CONFIG.SLOTS): boolean =
     return MOBILE.POSITIONS_TO_SHOW.includes(position);
   }
   
+  // Verificar si la página está en proceso de carga o no tiene contenido visible
+  if (typeof document !== 'undefined') {
+    // No mostrar anuncios en páginas sin título o con títulos genéricos
+    const pageTitle = document.title;
+    if (!pageTitle || pageTitle === 'Untitled' || pageTitle === 'Loading...') {
+      console.log('No se muestran anuncios: página sin título o en carga');
+      return false;
+    }
+    
+    // No mostrar anuncios en páginas de error
+    if (window.location.pathname.includes('/error') || 
+        window.location.pathname.includes('/404') ||
+        document.body.textContent?.includes('404 Not Found')) {
+      console.log('No se muestran anuncios: página de error');
+      return false;
+    }
+  }
+  
   // En cualquier otro caso, mostrar el anuncio
   return true;
 };
+
+/**
+ * Función para verificar si una página tiene suficiente contenido para mostrar anuncios
+ * Esta función puede ser llamada desde componentes individuales para verificaciones adicionales
+ */
+export const hasEnoughContent = (minContentLength = 500): boolean => {
+  if (typeof document === 'undefined') return false;
+  
+  // Obtener el contenido principal de la página
+  const mainContent = document.querySelector('main') || document.body;
+  const contentText = mainContent.textContent || '';
+  const contentLength = contentText.trim().length;
+  
+  // Verificar si hay suficiente contenido
+  const hasEnough = contentLength >= minContentLength;
+  
+  if (!hasEnough) {
+    console.log(`Contenido insuficiente para anuncios: ${contentLength}/${minContentLength} caracteres`);
+  }
+  
+  return hasEnough;
+}
