@@ -92,8 +92,10 @@ export const shouldShowAd = (position: keyof typeof ADS_CONFIG.SLOTS): boolean =
 /**
  * Función para verificar si una página tiene suficiente contenido para mostrar anuncios
  * Esta función puede ser llamada desde componentes individuales para verificaciones adicionales
+ * 
+ * Implementa verificaciones más estrictas para cumplir con las políticas de Google AdSense
  */
-export const hasEnoughContent = (minContentLength = 500): boolean => {
+export const hasEnoughContent = (minContentLength = 800): boolean => {
   if (typeof document === 'undefined') return false;
   
   // Obtener el contenido principal de la página
@@ -101,12 +103,38 @@ export const hasEnoughContent = (minContentLength = 500): boolean => {
   const contentText = mainContent.textContent || '';
   const contentLength = contentText.trim().length;
   
-  // Verificar si hay suficiente contenido
+  // Verificar si hay suficiente contenido (aumentado el mínimo a 800 caracteres)
   const hasEnough = contentLength >= minContentLength;
   
-  if (!hasEnough) {
-    console.log(`Contenido insuficiente para anuncios: ${contentLength}/${minContentLength} caracteres`);
+  // Verificar si la página está en proceso de carga o edición
+  const isLoadingOrEditing = (
+    document.title.includes('Loading') ||
+    document.title.includes('Cargando') ||
+    window.location.pathname.includes('/edit') ||
+    window.location.pathname.includes('/admin') ||
+    window.location.pathname.includes('/dashboard') ||
+    document.body.classList.contains('editing') ||
+    document.body.classList.contains('loading')
+  );
+  
+  // Verificar si la página tiene elementos interactivos mínimos
+  // (una página vacía o de error normalmente no tiene muchos elementos interactivos)
+  const interactiveElements = document.querySelectorAll('button, a, input, select, textarea').length;
+  const hasInteractiveElements = interactiveElements > 3;
+  
+  // Verificar si hay contenido significativo (no solo texto de navegación o footer)
+  const mainContentSections = document.querySelectorAll('section, article, .content, main > div').length;
+  const hasContentSections = mainContentSections > 1;
+  
+  // Resultado final: debe tener suficiente contenido, no estar en carga/edición y tener elementos interactivos
+  const finalResult = hasEnough && !isLoadingOrEditing && hasInteractiveElements && hasContentSections;
+  
+  if (!finalResult) {
+    console.log(`No se muestran anuncios: ${contentLength}/${minContentLength} caracteres, ` +
+      `cargando/editando: ${isLoadingOrEditing}, ` +
+      `elementos interactivos: ${interactiveElements}, ` +
+      `secciones de contenido: ${mainContentSections}`);
   }
   
-  return hasEnough;
+  return finalResult;
 }

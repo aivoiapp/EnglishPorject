@@ -3,7 +3,8 @@
     "selectLanguage": "Seleccionar idioma",
     "selectCountry": "Seleccionar país",
     "peruPaymentMethods": "Mostrando métodos de pago para Perú",
-    "internationalPaymentMethods": "Mostrando métodos de pago internacionales"
+    "internationalPaymentMethods": "Mostrando métodos de pago internacionales",
+    "advertisement": "Publicidad"
   },
   "benefitsSection": {
     "title": "Beneficios de aprender inglés",
@@ -397,5 +398,18 @@
       "generatingQuestions": "Error al generar preguntas. Por favor, intenta de nuevo.",
       "evaluatingTest": "Error al evaluar tu prueba. Por favor, intenta de nuevo."
     }
+  },
+  
+  "contact": {
+    "title": "Contáctanos",
+    "fullName": "Nombre Completo",
+    "interestGroup": "Grupo de Interés",
+    "selectGroup": "Selecciona un grupo",
+    "children": "Niños (8-12 años)",
+    "teenagers": "Adolescentes (13-17 años)",
+    "adults": "Adultos (18+ años)",
+    "consultWith": "Consultar con",
+    "contactViaWhatsapp": "Contactar por WhatsApp",
+    "whatsappMessage": "Hola ${selectedAgent.name}, estoy interesado en tomar clases de inglés. Mi nombre es ${name} y me gustaría más información sobre el grupo de ${selectedGroup}."
   }
 }

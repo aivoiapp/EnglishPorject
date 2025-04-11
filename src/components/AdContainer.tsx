@@ -36,21 +36,23 @@ const AdContainer: React.FC<AdContainerProps> = ({
   // Verificar si hay suficiente contenido para mostrar anuncios
   useEffect(() => {
     // Diferentes posiciones pueden requerir diferentes cantidades de contenido
+    // Aumentados los valores para cumplir con las políticas de AdSense
     const minContentByPosition = {
-      'top': 300,
-      'bottom': 800,
-      'between-sections': 500,
-      'sidebar': 800,
-      'footer': 600,
-      'article-middle': 1000
+      'top': 800,
+      'bottom': 1200,
+      'between-sections': 1000,
+      'sidebar': 1200,
+      'footer': 1000,
+      'article-middle': 1500
     };
     
-    const minContentRequired = minContentByPosition[position] || 500;
+    const minContentRequired = minContentByPosition[position] || 1000;
     
     // Esperar a que el contenido se cargue completamente
+    // Aumentado el tiempo de espera para asegurar que todo el contenido esté disponible
     setTimeout(() => {
       setShowAd(hasEnoughContent(minContentRequired));
-    }, 500);
+    }, 1500);
   }, [position]);
   // Configuraciones específicas según la posición
   const getAdConfig = () => {
@@ -115,13 +117,14 @@ const AdContainer: React.FC<AdContainerProps> = ({
         ...style,
       }}
     >
-      <div className="text-xs text-gray-500 dark:text-gray-400 text-center mb-1 font-bold">{t('common.advertisement')}</div>
+      <div className="text-xs text-gray-500 dark:text-gray-400 text-center mb-1 font-bold">{t('ads.advertisement', 'Advertisement')}</div>
       <AdBanner 
         adClient={adClient}
         adSlot={adSlot}
         adFormat={config.format}
         fullWidthResponsive={position !== 'sidebar'}
-        minContentLength={position === 'sidebar' ? 800 : 500} // Pasar el requisito de contenido mínimo
+        minContentLength={position === 'sidebar' ? 1200 : 1000} // Aumentado el requisito de contenido mínimo
+        position={position} // Pasar la posición para verificaciones específicas
       />
     </div>
   );
