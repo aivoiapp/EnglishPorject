@@ -34,7 +34,7 @@ const AdBanner: React.FC<AdBannerProps> = ({
   minContentLength = 800, // Aumentado a 800 caracteres para cumplir con políticas de AdSense
   position = 'default',
 }) => {
-  const { t } = useTranslation();
+  useTranslation();
   const adRef = useRef<HTMLModElement>(null);
   const [shouldShowAd, setShouldShowAd] = useState(false);
   const [contentVerified, setContentVerified] = useState(false);
