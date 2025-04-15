@@ -1,6 +1,8 @@
 {
   "compilerOptions": {
-    "types": ["vite/client", "node"]
+    "esModuleInterop": true,
+    "jsx": "react-jsx",
+    "types": ["vite/client", "node", "jest"]
   },
   "files": [],
   "references": [
