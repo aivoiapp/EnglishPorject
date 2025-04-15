@@ -50,16 +50,26 @@
       "vision": "Vision",
       "methodology": "Methodology",
       "certifications": "Certifications",
-      "specialties": "Specialties"
+      "specialties": "Specialties",
+      "about": "About",
+      "founder": "Founder",
+      "experience": "Experience"
     },
     "cyril": {
-      "name": "Cyril O.",
-      "title": "Cambridge Certified Tutor",
+      "name": "Cyril Ordoñez",
+      "title": "Cambridge Certified Tutor | Founder of CyTalk.online",
       "certifications": ["CAE (Certificate in Advanced English)", "CELTA (Certificate in Teaching English to Speakers of Other Languages)"],
-      "experience": "With 9 years of experience teaching English as a foreign language. Her classes are dynamic, with relevant materials and a pleasant environment. She uses a communicative method and interactive digital tools, with personalized learning plans according to student interests and goals. She speaks Spanish (native), English (C1), French (B1) and Italian (A1).",
-      "specialties": ["General English", "Academic English", "Conversation", "Exam Preparation"],
-      "vision": "As the face of cytalk.online, my mission is to inspire and guide students worldwide to achieve their linguistic goals with confidence and success.",
-      "methodology": "My approach focuses on effective communication, using interactive and personalized methods for each student. I believe in learning through constant practice and the use of innovative digital resources."
+      "experience": "Foreign language teacher with over 9 years of experience teaching English as a foreign language to students of all ages and levels. Graduated in Education with a mention in Foreign Languages (English and French), she holds international certifications such as Cambridge CELTA and Cambridge Advanced English (CAE).",
+      "specialties": ["General English", "Academic English", "Conversation", "International Exam Preparation (B1, B2, C1)"],
+      "vision": "As the founder and face of CyTalk.online, my mission is to inspire and guide students worldwide to achieve their linguistic goals with confidence, autonomy, and success, through close, professional, and quality teaching.",
+      "methodology": "My approach is based on effective communication, using interactive and personalized strategies according to each student's profile, interests, and goals. I encourage learning through constant practice, constructive feedback, and the use of innovative digital resources that enrich the experience in each session."
+    },
+    "aboutCyTalk": {
+      "title": "About CyTalk.online",
+      "subtitle": "Real English for real lives - in community, from home",
+      "description": "CyTalk.online is a virtual academy that offers live group English classes, designed to accompany the progress of each student within an active and motivating learning community. Founded by Cyril Ordoñez, a Cambridge CELTA certified teacher with over 9 years of experience, CyTalk was born with the mission of making English a useful, accessible, and meaningful tool for daily life.",
+      "philosophy": "We believe that learning in a group enhances motivation, improves oral practice, and allows you to grow alongside others who share the same goal: speaking English with confidence. Each class is carefully planned based on communicative methodologies, authentic materials, and digital resources that make learning a dynamic and effective experience.",
+      "conclusion": "At CyTalk.online, you don't just learn English: you express yourself, connect, and prepare for a future without language barriers."
     }
   },
   "scheduleSection": {
@@ -385,7 +395,7 @@
     "title": "Master English for",
     "titleHighlight": "your personal and professional growth",
     "subtitle": "Learn with qualified teachers and international-level methodology",
-    "discount": "50% Discount - Until May 01",
+    "discount": "50% Discount - Until May 20",
     "whyChooseUs": "Why choose us?",
     "benefits": {
       "liveClasses": "Live virtual classes with expert teachers",
