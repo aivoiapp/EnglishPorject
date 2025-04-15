@@ -95,7 +95,7 @@ export const shouldShowAd = (position: keyof typeof ADS_CONFIG.SLOTS): boolean =
  * 
  * Implementa verificaciones más estrictas para cumplir con las políticas de Google AdSense
  */
-export const hasEnoughContent = (minContentLength = 800): boolean => {
+export const hasEnoughContent = (minContentLength = 1200): boolean => {
   if (typeof document === 'undefined') return false;
   
   // Obtener el contenido principal de la página
@@ -103,7 +103,7 @@ export const hasEnoughContent = (minContentLength = 800): boolean => {
   const contentText = mainContent.textContent || '';
   const contentLength = contentText.trim().length;
   
-  // Verificar si hay suficiente contenido (aumentado el mínimo a 800 caracteres)
+  // Verificar si hay suficiente contenido (aumentado el mínimo a 1200 caracteres)
   const hasEnough = contentLength >= minContentLength;
   
   // Verificar si la página está en proceso de carga o edición
@@ -120,20 +120,55 @@ export const hasEnoughContent = (minContentLength = 800): boolean => {
   // Verificar si la página tiene elementos interactivos mínimos
   // (una página vacía o de error normalmente no tiene muchos elementos interactivos)
   const interactiveElements = document.querySelectorAll('button, a, input, select, textarea').length;
-  const hasInteractiveElements = interactiveElements > 3;
+  const hasInteractiveElements = interactiveElements > 5; // Aumentado a 5 elementos interactivos mínimos
   
   // Verificar si hay contenido significativo (no solo texto de navegación o footer)
   const mainContentSections = document.querySelectorAll('section, article, .content, main > div').length;
-  const hasContentSections = mainContentSections > 1;
+  const hasContentSections = mainContentSections > 2; // Aumentado a 2 secciones mínimas
   
-  // Resultado final: debe tener suficiente contenido, no estar en carga/edición y tener elementos interactivos
-  const finalResult = hasEnough && !isLoadingOrEditing && hasInteractiveElements && hasContentSections;
+  // Verificar si hay imágenes o videos (contenido multimedia)
+  const multimediaElements = document.querySelectorAll('img, video, iframe, canvas').length;
+  const hasMultimedia = multimediaElements > 1; // Al menos 2 elementos multimedia
+  
+  // Verificar si hay párrafos de texto con contenido sustancial
+  const paragraphs = document.querySelectorAll('p, h1, h2, h3, h4, h5, h6, li');
+  let meaningfulParagraphs = 0;
+  let totalTextLength = 0;
+  
+  paragraphs.forEach(p => {
+    const text = p.textContent || '';
+    const trimmedText = text.trim();
+    if (trimmedText.length > 30) { // Párrafos con al menos 30 caracteres
+      meaningfulParagraphs++;
+      totalTextLength += trimmedText.length;
+    }
+  });
+  
+  // Verificar si hay contenido de valor (no texto de relleno o Lorem Ipsum)
+  const hasLoremIpsum = contentText.toLowerCase().includes('lorem ipsum') || 
+                       contentText.toLowerCase().includes('dolor sit amet');
+  
+  // Verificar si el contenido es inteligible (no texto de relleno)
+  const hasIntelligibleContent = !hasLoremIpsum && meaningfulParagraphs >= 4;
+  
+  // Resultado final: debe cumplir todos los criterios para mostrar anuncios
+  const finalResult = hasEnough && 
+                     !isLoadingOrEditing && 
+                     hasInteractiveElements && 
+                     hasContentSections && 
+                     hasMultimedia && 
+                     hasIntelligibleContent && 
+                     totalTextLength >= minContentLength;
   
   if (!finalResult) {
     console.log(`No se muestran anuncios: ${contentLength}/${minContentLength} caracteres, ` +
       `cargando/editando: ${isLoadingOrEditing}, ` +
       `elementos interactivos: ${interactiveElements}, ` +
-      `secciones de contenido: ${mainContentSections}`);
+      `secciones de contenido: ${mainContentSections}, ` +
+      `elementos multimedia: ${multimediaElements}, ` +
+      `párrafos significativos: ${meaningfulParagraphs}, ` +
+      `contenido Lorem Ipsum: ${hasLoremIpsum}, ` +
+      `longitud total de texto: ${totalTextLength}`);
   }
   
   return finalResult;

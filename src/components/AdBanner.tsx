@@ -60,33 +60,43 @@ const AdBanner: React.FC<AdBannerProps> = ({
       
       // Verificar si la página tiene elementos interactivos mínimos
       const interactiveElements = document.querySelectorAll('button, a, input, select, textarea').length;
-      const hasInteractiveElements = interactiveElements > 3;
+      const hasInteractiveElements = interactiveElements > 5; // Aumentado a 5 elementos interactivos mínimos
       
       // Verificar si hay contenido significativo (no solo texto de navegación o footer)
       const mainContentSections = document.querySelectorAll('section, article, .content, main > div').length;
-      const hasContentSections = mainContentSections > 1;
+      const hasContentSections = mainContentSections > 2; // Aumentado a 2 secciones mínimas
       
       // Verificar si hay imágenes o videos (contenido multimedia)
-      const hasMultimedia = document.querySelectorAll('img, video, iframe, canvas').length > 0;
+      const hasMultimedia = document.querySelectorAll('img, video, iframe, canvas').length > 1; // Al menos 2 elementos multimedia
       
       // Verificar si hay párrafos de texto con contenido sustancial
       const paragraphs = document.querySelectorAll('p, h1, h2, h3, h4, h5, h6, li');
       let meaningfulParagraphs = 0;
+      let totalTextLength = 0;
       paragraphs.forEach(p => {
         const text = p.textContent || '';
-        if (text.trim().length > 20) { // Párrafos con al menos 20 caracteres
+        const trimmedText = text.trim();
+        if (trimmedText.length > 30) { // Aumentado a párrafos con al menos 30 caracteres
           meaningfulParagraphs++;
+          totalTextLength += trimmedText.length;
         }
       });
+      
+      // Verificar si hay contenido de valor (no texto de relleno o Lorem Ipsum)
+      const hasLoremIpsum = contentText.toLowerCase().includes('lorem ipsum') || 
+                           contentText.toLowerCase().includes('dolor sit amet');
       
       // Requisitos específicos según la posición del anuncio
       let positionSpecificCheck = true;
       if (position === 'top') {
         // Para anuncios en la parte superior, ser más estrictos
-        positionSpecificCheck = contentLength >= 1000 && meaningfulParagraphs >= 5;
+        positionSpecificCheck = contentLength >= 1500 && meaningfulParagraphs >= 6;
       } else if (position === 'sidebar') {
         // Para anuncios en la barra lateral, verificar que haya suficiente contenido adyacente
-        positionSpecificCheck = contentLength >= 1200 && hasMultimedia;
+        positionSpecificCheck = contentLength >= 1800 && hasMultimedia;
+      } else if (position === 'between-sections') {
+        // Para anuncios entre secciones, verificar que haya suficiente contenido antes y después
+        positionSpecificCheck = contentLength >= 1600 && meaningfulParagraphs >= 5;
       }
       
       // Resultado final: debe cumplir todos los criterios
@@ -95,7 +105,10 @@ const AdBanner: React.FC<AdBannerProps> = ({
                           !isLoadingOrEditing && 
                           hasInteractiveElements && 
                           hasContentSections && 
-                          meaningfulParagraphs >= 3 &&
+                          meaningfulParagraphs >= 4 && // Aumentado a 4 párrafos significativos
+                          hasMultimedia &&
+                          !hasLoremIpsum &&
+                          totalTextLength >= minContentLength &&
                           positionSpecificCheck;
       
       // Actualizar estado
@@ -107,7 +120,9 @@ const AdBanner: React.FC<AdBannerProps> = ({
         console.log(`No se muestra anuncio: contenido=${contentLength}/${minContentLength}, ` +
           `cargando=${isLoadingOrEditing}, elementos=${interactiveElements}, ` +
           `secciones=${mainContentSections}, párrafos=${meaningfulParagraphs}, ` +
-          `posición=${position}, verificación específica=${positionSpecificCheck}`);
+          `multimedia=${hasMultimedia}, loremIpsum=${hasLoremIpsum}, ` +
+          `longitud total=${totalTextLength}, posición=${position}, ` +
+          `verificación específica=${positionSpecificCheck}`);
       }
     };
     

@@ -36,23 +36,51 @@ const AdContainer: React.FC<AdContainerProps> = ({
   // Verificar si hay suficiente contenido para mostrar anuncios
   useEffect(() => {
     // Diferentes posiciones pueden requerir diferentes cantidades de contenido
-    // Aumentados los valores para cumplir con las políticas de AdSense
+    // Valores aumentados significativamente para cumplir con las políticas de AdSense
     const minContentByPosition = {
-      'top': 800,
-      'bottom': 1200,
-      'between-sections': 1000,
-      'sidebar': 1200,
-      'footer': 1000,
-      'article-middle': 1500
+      'top': 1500,
+      'bottom': 1800,
+      'between-sections': 1600,
+      'sidebar': 1800,
+      'footer': 1500,
+      'article-middle': 2000
     };
     
-    const minContentRequired = minContentByPosition[position] || 1000;
+    const minContentRequired = minContentByPosition[position] || 1500;
+    
+    // Verificación adicional para posiciones específicas
+    const checkPositionSpecificRequirements = () => {
+      // Obtener el contenido principal de la página
+      
+      // Verificar si estamos en una página con suficiente contenido para anuncios
+      if (window.location.pathname === '/' || 
+          window.location.pathname.includes('/admin') || 
+          window.location.pathname.includes('/login')) {
+        // En páginas de inicio o administrativas, ser más estrictos
+        return false;
+      }
+      
+      // No mostrar anuncios en páginas que están siendo editadas o cargadas
+      if (document.title.includes('Loading') || 
+          document.title.includes('Cargando') || 
+          document.body.classList.contains('editing')) {
+        return false;
+      }
+      
+      return true;
+    };
     
     // Esperar a que el contenido se cargue completamente
     // Aumentado el tiempo de espera para asegurar que todo el contenido esté disponible
     setTimeout(() => {
-      setShowAd(hasEnoughContent(minContentRequired));
-    }, 1500);
+      const hasContent = hasEnoughContent(minContentRequired);
+      const passesPositionCheck = checkPositionSpecificRequirements();
+      setShowAd(hasContent && passesPositionCheck);
+      
+      if (!hasContent || !passesPositionCheck) {
+        console.log(`Anuncio en posición ${position} no mostrado: contenido suficiente=${hasContent}, verificación de posición=${passesPositionCheck}`);
+      }
+    }, 2000); // Aumentado a 2 segundos para asegurar carga completa
   }, [position]);
   // Configuraciones específicas según la posición
   const getAdConfig = () => {

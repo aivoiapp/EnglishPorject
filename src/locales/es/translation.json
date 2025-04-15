@@ -44,6 +44,7 @@
     "principleSecurity": "Seguridad: Cytalk.online implementará medidas técnicas y organizativas para proteger la información personal de nuestra comunidad educativa.",
     "closeButton": "Cerrar"
   },
+
   "audienceSection": {
     "title": "¿A quién va dirigido este curso?",
     "beginners": {
@@ -100,6 +101,19 @@
   },
   "professorsSection": {
     "title": "Expertos que te ayudan a hablar inglés con confianza",
+    "labels": {
+      "certifications": "Certificaciones",
+      "specialties": "Especialidades",
+      "experience": "Experiencia",
+      "methodology": "Metodología",
+      "vision": "Visión"
+    },
+    "aboutCyTalk": {
+      "title": "Sobre CyTalk.online",
+      "subtitle": "Inglés real para vidas reales - en comunidad, desde casa",
+      "description": "CyTalk.online es una academia virtual que ofrece clases de inglés en grupo, diseñadas para acompañar el progreso de cada estudiante dentro de una comunidad de aprendizaje activa y motivadora. Fundada por Cyril Ordoñez, profesora certificada por Cambridge CELTA con más de 9 años de experiencia, CyTalk nace con la misión de hacer del inglés una herramienta útil, accesible y significativa para la vida diaria.",
+      "conclusion": "En CyTalk.online, no solo aprendes inglés: te expresas, conectas y te preparas para un futuro sin barreras lingüísticas."
+    },
     "cyril": {
       "name": "Cyril O.",
       "title": "Tutora certificada por Cambridge",
@@ -176,7 +190,7 @@
     "title": "Domina el inglés para",
     "titleHighlight": "tu crecimiento personal y profesional",
     "subtitle": "Aprende con profesores calificados y metodología de nivel internacional",
-    "discount": "50% de Descuento - Hasta el 01 de mayo",
+    "discount": "50% de Descuento - Hasta el 20 de mayo",
     "whyChooseUs": "¿Por qué elegirnos?",
     "benefits": {
       "liveClasses": "Clases virtuales en vivo con profesores expertos",
