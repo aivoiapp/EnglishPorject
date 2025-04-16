@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Book, Menu, X } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { ScheduleSection, HeroSection, PaymentSection, FAQSection, PlacementSection, BenefitsSection, AudienceSection, CurriculumSection, ProfessorsSection, FloatingContactButton, AdContainer } from './components';
 import ThemeToggle from './components/ThemeToggle';
 import LanguageSelector from './components/LanguageSelector';
@@ -72,8 +72,8 @@ function App() {
               <div className="container mx-auto px-6 py-4">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center">
-                    <Book className="h-8 w-8 text-blue-600 dark:text-blue-400" />
-                    <span className="ml-2 text-2xl font-bold text-gray-800 dark:text-white">English Academy</span>
+                    <img src="/images/Cytalk_logo.png" alt="CyTalk Logo" className="h-10 w-10" />
+                    <span className="ml-2 text-2xl font-bold text-gray-800 dark:text-white">Cytalk English Academy</span>
                   </div>
                   
                   <nav className="hidden md:flex space-x-8">
@@ -217,7 +217,7 @@ function App() {
               <div className="container mx-auto px-6">
                 <div className="flex flex-col md:flex-row justify-between items-center gap-4">
                   <div>
-                    <p>&copy; 2024 English Academy. {t('footer.copyright', 'Todos los derechos reservados.')}</p>
+                    <p>&copy; 2024 Cytalk English Academy. {t('footer.copyright', 'Todos los derechos reservados.')}</p>
                   </div>
                   <div className="flex flex-wrap gap-6 mt-4 md:mt-0">
                     <a 

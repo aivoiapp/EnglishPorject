@@ -22,6 +22,10 @@ export const generatePlacementTestPDF = (result: PlacementTestResult, userData: 
   const doc = new jsPDF();
   const currentDate = format(new Date(), 'dd/MM/yyyy');
   
+  // Añadir logo de CyTalk
+  const logoPath = new URL('/images/Cytalk_logo.png', window.location.origin).href;
+  doc.addImage(logoPath, 'PNG', 10, 10, 20, 20);
+  
   // Remove the line: const { t } = useTranslation();
   
   // Colores corporativos mejorados para un aspecto más profesional
@@ -477,7 +481,7 @@ const recY = strengthsY + 80;
     doc.setTextColor(255, 255, 255);
     doc.setFontSize(10);
     doc.setFont('helvetica', 'bold');
-    doc.text(`English Academy - ${t('placementTest.title')}`, 105, 280, { align: 'center' });
+    doc.text(`Cytalk English Academy - ${t('placementTest.title')}`, 105, 280, { align: 'center' });
     
     // Texto secundario con estilo mejorado
     doc.setFontSize(8);
@@ -494,7 +498,7 @@ const recY = strengthsY + 80;
     // Añadir un pequeño logo o marca de agua
     doc.setFontSize(6);
     doc.setTextColor(255, 255, 255, 0.7);
-    doc.text('© English Academy 2023', 195, 295, { align: 'right' });
+    doc.text('© Cytalk English Academy 2023', 195, 295, { align: 'right' });
   }
   
   const fileName = `english-assessment-${userData.name || 'user'}.pdf`;
