@@ -83,7 +83,7 @@ const Loader = ({
   // Si es fullScreen, mostramos un loader que ocupa toda la pantalla
   if (fullScreen) {
     return (
-      <div className="fixed inset-0 bg-white dark:bg-gray-900 bg-opacity-90 dark:bg-opacity-90 z-50 flex flex-col items-center justify-center">
+      <div className="fixed inset-0 bg-[#f5f5f0] dark:bg-gray-900 bg-opacity-90 dark:bg-opacity-90 z-50 flex flex-col items-center justify-center">
         <div className="max-w-3xl w-full px-6">
           {/* Cabecera con título y tiempo transcurrido */}
           <div className="flex justify-between items-center mb-6">
@@ -178,7 +178,7 @@ const Loader = ({
   
   // Si no es fullScreen, mostramos un loader en un contenedor
   return (
-    <div className="max-w-2xl mx-auto bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md">
+    <div className="max-w-2xl mx-auto bg-[#f5f5f0] dark:bg-gray-800 p-8 rounded-lg shadow-md">
       <div className="flex justify-between items-center mb-4">
         <div className="flex items-center">
           <div className="relative mr-3">

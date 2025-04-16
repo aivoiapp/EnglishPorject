@@ -1,7 +1,23 @@
 /* Tailwind base styles */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* Import Tailwind base styles */
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+/* Estilos globales para el fondo */
+body {
+  background-color: #f5f5f0; /* Color crema suave para el fondo */
+}
+
+.dark body {
+  background-color: #1a1a1a; /* Color oscuro para el modo dark */
+}
+
+/* Mejora de contraste para componentes en modo claro */
+.bg-white {
+  background-color: #ffffff;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
 
 /* Animaciones personalizadas para el Loader */
 @keyframes shimmer {
