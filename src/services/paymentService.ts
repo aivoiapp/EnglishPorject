@@ -89,7 +89,7 @@ export const generatePaymentReceipt = (
   doc.text('COMPROBANTE DE PAGO', 105, 20, { align: 'center' });
   doc.setFontSize(12);
   doc.setFont('helvetica', 'normal');
-  doc.text('English Academy', 105, 30, { align: 'center' });
+  doc.text('Cytalk English Academy', 105, 30, { align: 'center' });
   
   // Información del estudiante - Sección con fondo claro
   roundedRect(15, 50, 180, 60, 5, lightBgColor);
@@ -242,7 +242,7 @@ export const generatePaymentReceipt = (
   doc.setTextColor(255, 255, 255);
   doc.setFontSize(10);
   doc.setFont('helvetica', 'bold');
-  doc.text('English Academy - Comprobante de Pago', 105, 280, { align: 'center' });
+  doc.text('Cytalk English Academy - Comprobante de Pago', 105, 280, { align: 'center' });
   doc.setFontSize(8);
   doc.setFont('helvetica', 'normal');
   doc.text('Este documento es un comprobante válido de su pago', 105, 286, { align: 'center' });
