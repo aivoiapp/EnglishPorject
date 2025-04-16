@@ -27,7 +27,7 @@ const PaymentSection: React.FC<PaymentSectionProps> = ({ name, email, phone }) =
   };
 
   return (
-    <section id="payment" className="py-16 bg-gray-50 dark:bg-gray-900">
+    <section id="payment" className="py-16 bg-gradient-to-b from-[#e5e5d8] to-[#d8d8c8] dark:from-gray-900 dark:to-gray-800 text-gray-800 dark:text-white">
       <div className="container mx-auto px-6">
         <h2 className="text-3xl font-bold text-center mb-12 dark:text-white">{t('payment.title', 'Hazlo oficial: inscríbete y asegura tu progreso')}</h2>
         

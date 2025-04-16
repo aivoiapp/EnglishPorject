@@ -302,7 +302,7 @@ const PlacementSection = () => {
   };
 
   return (
-    <section id="evaluacion" className="py-16 bg-blue-50 dark:bg-gray-900 relative">
+    <section id="evaluacion" className="py-16 bg-gradient-to-b from-[#e5e5d8] to-[#d8d8c8] dark:from-gray-900 dark:to-gray-800 text-gray-800 dark:text-white relative">
       <div className="container mx-auto px-6">
         <h2 className="text-3xl font-bold text-center mb-12 flex items-center justify-center dark:text-white">
           <BrainCircuit className="mr-2 h-8 w-8 dark:text-blue-400" />

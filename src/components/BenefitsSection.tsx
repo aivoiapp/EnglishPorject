@@ -9,7 +9,7 @@ const BenefitsSection = () => {
   });
   // Eliminado: const { language } = useLanguage();
   return (
-    <section id="beneficios" className="py-16 bg-white dark:bg-gray-800">
+    <section id="beneficios" className="py-16 bg-gradient-to-b from-[#e5e5d8] to-[#d8d8c8] dark:from-gray-900 dark:to-gray-800 text-gray-800 dark:text-white">
       <div className="container mx-auto px-6">
         <div className="grid md:grid-cols-2 gap-12 items-center">
           {/* Columna izquierda - Texto e iconos */}

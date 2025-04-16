@@ -27,7 +27,7 @@ const ProfessorsSection = () => {
   };
 
   return (
-    <section id="profesores" className="py-16 bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 text-gray-800 dark:text-white">
+    <section id="profesores" className="py-16 bg-gradient-to-b from-[#e5e5d8] to-[#d8d8c8] dark:from-gray-900 dark:to-gray-800 text-gray-800 dark:text-white">
       <div className="container mx-auto px-6">
         <h2 className="text-4xl font-bold text-center mb-12">
           {t('professorsSection.title')}
@@ -35,7 +35,7 @@ const ProfessorsSection = () => {
         
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Columna izquierda - Foto y datos básicos */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
+          <div className="bg-[#f0f0e8] dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden border border-gray-200">
             <div className="bg-pink-500 p-6 flex items-center justify-center">
               <img 
                 src={cyril.photo} 
@@ -78,7 +78,7 @@ const ProfessorsSection = () => {
           </div>
           
           {/* Columna central - Experiencia y metodología */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden p-6 flex flex-col">
+          <div className="bg-[#f0f0e8] dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden p-6 flex flex-col border border-gray-200">
             <div className="mb-6 flex items-center">
               <GraduationCap className="w-8 h-8 text-pink-500 mr-3" />
               <h3 className="text-xl font-bold text-gray-800 dark:text-white">{t('professorsSection.labels.experience')}</h3>
@@ -95,7 +95,7 @@ const ProfessorsSection = () => {
           </div>
           
           {/* Columna derecha - Visión y sobre la academia */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden p-6 flex flex-col">
+          <div className="bg-[#f0f0e8] dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden p-6 flex flex-col border border-gray-200">
             <div>
               <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-4 flex items-center">
                 <Star className="w-6 h-6 text-pink-500 mr-2" />

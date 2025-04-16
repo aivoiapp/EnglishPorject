@@ -9,7 +9,7 @@ const ScheduleSection = () => {
   const { language } = useLanguage();
   
   return (
-  <section id="horarios" className="py-16 bg-white dark:bg-gray-800">
+  <section id="horarios" className="py-16 bg-gradient-to-b from-[#e5e5d8] to-[#d8d8c8] dark:from-gray-900 dark:to-gray-800 text-gray-800 dark:text-white">
     <div className="container mx-auto px-6">
       <h2 className="text-3xl font-bold text-center mb-12 flex items-center justify-center dark:text-white">
         <Clock className="mr-2" />

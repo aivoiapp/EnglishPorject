@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 const CurriculumSection = () => {
   const { t } = useTranslation();
   return (
-    <section id="curriculum" className="py-16 bg-white dark:bg-gray-800">
+    <section id="curriculum" className="py-16 bg-gradient-to-b from-[#e5e5d8] to-[#d8d8c8] dark:from-gray-900 dark:to-gray-800 text-gray-800 dark:text-white">
       <div className="container mx-auto px-6">
         <h2 className="text-4xl font-bold text-center mb-12 text-blue-800 dark:text-blue-400">
           {t('curriculumSection.title')}
@@ -115,7 +115,7 @@ const CurriculumSection = () => {
         </div>
 
         <div className="mt-12 text-center">
-          <div className="inline-block bg-white dark:bg-gray-700 p-6 rounded-lg shadow-lg">
+          <div className="inline-block bg-[#f0f0e8] dark:bg-gray-700 p-6 rounded-lg shadow-lg border border-gray-200">
             <h3 className="text-xl font-semibold mb-3 text-gray-800 dark:text-white">{t('curriculumSection.certification.title')}</h3>
             <p className="text-gray-600 dark:text-gray-300">
               {t('curriculumSection.certification.description')}
