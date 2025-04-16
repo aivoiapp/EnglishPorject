@@ -16,7 +16,25 @@ interface MakeWebhookResponse {
 }
 
 // URLs de los webhooks de Make.com desde variables de entorno
+// Actualizado con nuevo webhook para resolver problemas de autorización
 const UNIFIED_WEBHOOK = 'https://hook.us2.make.com/gyebx6etjrubt48brle65sdvhdsm07qq';
+
+// Función para verificar y renovar la conexión con Make.com si es necesario
+const verifyMakeConnection = async (): Promise<boolean> => {
+  try {
+    // Enviar una solicitud de verificación a Make.com
+    const response = await axios.post(UNIFIED_WEBHOOK, {
+      action: 'verify_connection',
+      timestamp: new Date().toISOString()
+    });
+    
+    console.log('Connection verification response:', response.data);
+    return true;
+  } catch (error) {
+    console.error('Error verifying Make.com connection:', error);
+    return false;
+  }
+};
 
 /**
  * Envía los datos del formulario Hero a Make.com
@@ -29,17 +47,57 @@ export const sendHeroFormData = async (formData: {
   phone: string;
 }) => {
   try {
+    // Verificar la conexión antes de enviar datos
+    await verifyMakeConnection();
+    
+    // Añadir información adicional para ayudar con la autorización
     const response = await axios.post(UNIFIED_WEBHOOK, {
       ...formData,
       formType: 'hero',
-      timestamp: new Date().toISOString()
+      source: 'EnglishAcademy',
+      connectionName: 'Hero form cytalk', // Nombre exacto de la conexión en Make.com
+      timestamp: new Date().toISOString(),
+      appVersion: '1.0.1' // Versión de la aplicación para seguimiento
+    }, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'X-Connection-Key': 'englishacademy-web-app' // Clave de conexión para autenticación
+      },
+      timeout: 15000 // 15 segundos de timeout
     });
     
     console.log('Hero form data sent successfully:', response.data);
     return response.data;
   } catch (error) {
     console.error('Error sending hero form data:', error);
-    throw error;
+    // Intentar una vez más con un retraso
+    try {
+      console.log('Retrying hero form submission after 2 seconds...');
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      const response = await axios.post(UNIFIED_WEBHOOK, {
+        ...formData,
+        formType: 'hero',
+        source: 'EnglishAcademy',
+        connectionName: 'Hero form cytalk',
+        timestamp: new Date().toISOString(),
+        appVersion: '1.0.1',
+        isRetry: true
+      }, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'X-Connection-Key': 'englishacademy-web-app'
+        }
+      });
+      
+      console.log('Hero form data sent successfully on retry:', response.data);
+      return response.data;
+    } catch (retryError) {
+      console.error('Error on retry sending hero form data:', retryError);
+      throw retryError;
+    }
   }
 };
 
@@ -58,11 +116,24 @@ export const sendContactFormData = async (formData: {
   };
 }): Promise<MakeWebhookResponse> => {
   try {
+    // Verificar la conexión antes de enviar datos
+    await verifyMakeConnection();
+    
     console.log('Sending contact form data to Make.com webhook:', UNIFIED_WEBHOOK);
     const response = await axios.post(UNIFIED_WEBHOOK, {
       ...formData,
       formType: 'contact',
-      timestamp: new Date().toISOString()
+      source: 'EnglishAcademy',
+      connectionName: 'Hero form cytalk', // Nombre exacto de la conexión en Make.com
+      timestamp: new Date().toISOString(),
+      appVersion: '1.0.1' // Versión de la aplicación para seguimiento
+    }, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'X-Connection-Key': 'englishacademy-web-app' // Clave de conexión para autenticación
+      },
+      timeout: 15000 // 15 segundos de timeout
     });
     
     console.log('Contact form data sent successfully:', response.data);
@@ -76,7 +147,34 @@ export const sendContactFormData = async (formData: {
         data: error.response?.data
       });
     }
-    throw error;
+    
+    // Intentar una vez más con un retraso
+    try {
+      console.log('Retrying contact form submission after 2 seconds...');
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      const response = await axios.post(UNIFIED_WEBHOOK, {
+        ...formData,
+        formType: 'contact',
+        source: 'EnglishAcademy',
+        connectionName: 'Hero form cytalk',
+        timestamp: new Date().toISOString(),
+        appVersion: '1.0.1',
+        isRetry: true
+      }, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'X-Connection-Key': 'englishacademy-web-app'
+        }
+      });
+      
+      console.log('Contact form data sent successfully on retry:', response.data);
+      return response.data;
+    } catch (retryError) {
+      console.error('Error on retry sending contact form data:', retryError);
+      throw retryError;
+    }
   }
 };
 
@@ -227,6 +325,9 @@ export const sendPlacementTestData = async (
   pdfBlob: Blob
 ): Promise<MakeWebhookResponse> => {
   try {
+    // Verificar la conexión antes de enviar datos
+    await verifyMakeConnection();
+    
     console.log('Processing placement test data for Make.com webhook');
     
     // Validar el blob del PDF antes de intentar convertirlo
@@ -259,9 +360,11 @@ export const sendPlacementTestData = async (
         mimeType: 'application/pdf',
         contentEncoding: 'base64' // Especificar explícitamente la codificación
       },
-      source: 'Placement Test',
+      source: 'EnglishAcademy',
+      connectionName: 'Hero form cytalk', // Nombre exacto de la conexión en Make.com
       timestamp: new Date().toISOString(),
-      formType: 'placement'
+      formType: 'placement',
+      appVersion: '1.0.1' // Versión de la aplicación para seguimiento
     };
     
     // Send the data to Make.com
@@ -269,7 +372,8 @@ export const sendPlacementTestData = async (
     const response = await axios.post(UNIFIED_WEBHOOK, formData, {
       headers: {
         'Content-Type': 'application/json',
-        'Accept': 'application/json'
+        'Accept': 'application/json',
+        'X-Connection-Key': 'englishacademy-web-app' // Clave de conexión para autenticación
       },
       timeout: 30000 // 30 segundos de timeout para evitar problemas de conexión
     });
@@ -288,7 +392,44 @@ export const sendPlacementTestData = async (
     } else if (error instanceof Error) {
       console.error('Error message:', error.message, 'Stack:', error.stack);
     }
-    throw error;
+    
+    // Intentar una vez más con un retraso
+    try {
+      console.log('Retrying placement test data submission after 2 seconds...');
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      const retryFormData = {
+        userData,
+        testResult,
+        pdfAttachment: {
+          filename: `placement-test-${userData.name || 'user'}.pdf`,
+          data: await convertPdfToBase64(pdfBlob),
+          mimeType: 'application/pdf',
+          contentEncoding: 'base64'
+        },
+        source: 'EnglishAcademy',
+        connectionName: 'Hero form cytalk',
+        timestamp: new Date().toISOString(),
+        formType: 'placement',
+        appVersion: '1.0.1',
+        isRetry: true
+      };
+      
+      const response = await axios.post(UNIFIED_WEBHOOK, retryFormData, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'X-Connection-Key': 'englishacademy-web-app'
+        },
+        timeout: 30000
+      });
+      
+      console.log('Placement test data sent successfully on retry:', response.data);
+      return response.data;
+    } catch (retryError) {
+      console.error('Error on retry sending placement test data:', retryError);
+      throw retryError;
+    }
   }
 };
 
@@ -309,6 +450,9 @@ export const sendPaymentFormData = async (
   pdfBlob: Blob
 ): Promise<MakeWebhookResponse> => {
   try {
+    // Verificar la conexión antes de enviar datos
+    await verifyMakeConnection();
+    
     console.log('Processing payment form data for Make.com webhook');
     
     // Validar el blob del PDF antes de intentar convertirlo
@@ -340,9 +484,11 @@ export const sendPaymentFormData = async (
         mimeType: 'application/pdf',
         contentEncoding: 'base64' // Especificar explícitamente la codificación
       },
-      source: 'Payment Form',
+      source: 'EnglishAcademy',
+      connectionName: 'Hero form cytalk', // Nombre exacto de la conexión en Make.com
       timestamp: new Date().toISOString(),
-      formType: 'payment'
+      formType: 'payment',
+      appVersion: '1.0.1' // Versión de la aplicación para seguimiento
     };
     
     // Send the data to Make.com
@@ -350,7 +496,8 @@ export const sendPaymentFormData = async (
     const response = await axios.post(UNIFIED_WEBHOOK, formData, {
       headers: {
         'Content-Type': 'application/json',
-        'Accept': 'application/json'
+        'Accept': 'application/json',
+        'X-Connection-Key': 'englishacademy-web-app' // Clave de conexión para autenticación
       },
       timeout: 30000 // 30 segundos de timeout para evitar problemas de conexión
     });
@@ -369,7 +516,43 @@ export const sendPaymentFormData = async (
     } else if (error instanceof Error) {
       console.error('Error message:', error.message, 'Stack:', error.stack);
     }
-    throw error;
+    
+    // Intentar una vez más con un retraso
+    try {
+      console.log('Retrying payment form submission after 2 seconds...');
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      const retryFormData = {
+        paymentData,
+        pdfAttachment: {
+          filename: `payment-receipt-${paymentData.fullName.replace(/ /g, '-')}.pdf`,
+          data: await convertPdfToBase64(pdfBlob),
+          mimeType: 'application/pdf',
+          contentEncoding: 'base64'
+        },
+        source: 'EnglishAcademy',
+        connectionName: 'Hero form cytalk',
+        timestamp: new Date().toISOString(),
+        formType: 'payment',
+        appVersion: '1.0.1',
+        isRetry: true
+      };
+      
+      const response = await axios.post(UNIFIED_WEBHOOK, retryFormData, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'X-Connection-Key': 'englishacademy-web-app'
+        },
+        timeout: 30000
+      });
+      
+      console.log('Payment form data sent successfully on retry:', response.data);
+      return response.data;
+    } catch (retryError) {
+      console.error('Error on retry sending payment form data:', retryError);
+      throw retryError;
+    }
   }
 };
 
