@@ -1,5 +1,6 @@
 import { Award, Star, GraduationCap, BookOpen } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import ReviewsSection from './ReviewsSection';
 
 interface Professor {
   name: string;
@@ -27,6 +28,7 @@ const ProfessorsSection = () => {
   };
 
   return (
+    <>
     <section id="profesores" className="py-16 bg-gradient-to-b from-[#e5e5d8] to-[#d8d8c8] dark:from-gray-900 dark:to-gray-800 text-gray-800 dark:text-white">
       <div className="container mx-auto px-6">
         <h2 className="text-4xl font-bold text-center mb-12">
@@ -116,6 +118,8 @@ const ProfessorsSection = () => {
         </div>
       </div>
     </section>
+    <ReviewsSection />
+    </>
   );
 };
 
