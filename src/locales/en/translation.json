@@ -420,7 +420,7 @@
     },
     "form": {
       "title": "Register for the course",
-      "startDate": "Start: May 1st | Limited spots",
+      "startDate": "Start: May 20 | Limited spots",
       "fullName": "Full name",
       "email": "Email",
       "whatsapp": "WhatsApp",
@@ -438,5 +438,15 @@
   "navigation": {
     "next": "Next",
     "previous": "Previous"
+  },
+  "reviewsSection": {
+    "title": "Reviews",
+    "review": {
+      "name": "Name",
+      "date": "Date",
+      "rating": "Rating",
+      "comment": "Comment"
+    }
   }
+  
 }

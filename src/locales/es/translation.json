@@ -215,7 +215,7 @@
     },
     "form": {
       "title": "Inscríbete al curso",
-      "startDate": "Inicio: 01 de Mayo | Cupos: limitados",
+      "startDate": "Inicio: 20 de Mayo | Cupos: limitados",
       "fullName": "Nombre completo",
       "email": "Email",
       "whatsapp": "WhatsApp",
@@ -425,5 +425,14 @@
     "consultWith": "Consultar con",
     "contactViaWhatsapp": "Contactar por WhatsApp",
     "whatsappMessage": "Hola ${selectedAgent.name}, estoy interesado en tomar clases de inglés. Mi nombre es ${name} y me gustaría más información sobre el grupo de ${selectedGroup}."
+  },
+  "reviewsSection": {
+    "title": "Reseñas",
+    "review": {
+      "name": "Nombre",
+      "date": "Fecha",
+      "rating": "Calificación",
+      "comment": "Comentario"
+    }
   }
 }

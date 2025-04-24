@@ -1,0 +1,110 @@
+import { useTranslation } from 'react-i18next';
+import { Carousel } from 'react-responsive-carousel';
+import "react-responsive-carousel/lib/styles/carousel.min.css";
+import { reviews } from '../data/reviewsData';
+import { formatDate } from '../utils/dateFormatter';
+
+const ReviewsSection = () => {
+  const { t, i18n } = useTranslation();
+
+  return (
+    <section id="reviews" className="py-16 bg-gradient-to-b from-[#e5e5d8] to-[#d8d8c8] dark:from-gray-900 dark:to-gray-800 text-gray-800 dark:text-white">
+      <div className="container mx-auto px-6">
+        <h2 className="text-4xl font-bold text-center mb-12">
+          {t('reviewsSection.title')}
+        </h2>
+        <div className="relative overflow-visible">
+          <Carousel
+            showArrows={true}
+            showThumbs={false}
+            infiniteLoop={true}
+            autoPlay={true}
+            interval={5000}
+            centerMode={true}
+            centerSlidePercentage={25}
+            showStatus={false}
+            swipeable={true}
+            dynamicHeight={false}
+            className="max-w-7xl mx-auto"
+            renderArrowPrev={(clickHandler, hasPrev) =>
+              hasPrev && (
+                <button
+                  onClick={clickHandler}
+                  className="absolute left-0 top-1/2 z-20 bg-white dark:bg-gray-700 rounded-full p-2 shadow-md hover:bg-gray-100 dark:hover:bg-gray-600 transition-all"
+                  style={{ transform: 'translate(0%, -50%)', opacity: 0.8 }}
+                  aria-label={t('navigation.previous')}
+                >
+                  ‹
+                </button>
+              )
+            }
+            renderArrowNext={(clickHandler, hasNext) =>
+              hasNext && (
+                <button
+                  onClick={clickHandler}
+                  className="absolute right-0 top-1/2 z-20 bg-white dark:bg-gray-700 rounded-full p-2 shadow-md hover:bg-gray-100 dark:hover:bg-gray-600 transition-all"
+                  style={{ transform: 'translate(0%, -50%)', opacity: 0.8 }}
+                  aria-label={t('navigation.next')}
+                >
+                  ›
+                </button>
+              )
+            }
+            renderIndicator={(clickHandler, isSelected, index, label) => (
+              <li
+                className={`inline-block mx-1 cursor-pointer ${isSelected ? 'bg-gray-800 dark:bg-white' : 'bg-gray-400 dark:bg-gray-600'}`}
+                style={{ 
+                  width: 10, 
+                  height: 10, 
+                  borderRadius: '50%', 
+                  marginTop: '30px',  // Aumenté este valor para bajar los puntos
+                  marginBottom: '10px' 
+                }}
+                onClick={clickHandler}
+                onKeyDown={clickHandler}
+                role="button"
+                tabIndex={0}
+                aria-label={`Slide ${index + 1} ${label}`}
+                key={index}
+              />
+            )}
+          >
+            {reviews.map((review, index) => (
+              <div
+                key={index}
+                className="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden border border-gray-200 p-6 mx-4 flex flex-col"
+                style={{ minHeight: '380px', maxHeight: '380px' }}
+              >
+                <div className="flex-grow overflow-hidden">
+                  <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-2">
+                    {review.name}
+                  </h3>
+                  <p className="text-pink-500 font-semibold mb-4">
+                    {formatDate(review.date, i18n.language)}
+                  </p>
+                  <div className="flex items-center mb-4">
+                    {[...Array(5)].map((_, i) => (
+                      <span 
+                        key={i} 
+                        className={`text-xl ${i < review.rating ? 'text-yellow-500' : 'text-gray-300 dark:text-gray-600'}`}
+                      >
+                        ★
+                      </span>
+                    ))}
+                  </div>
+                  <div className="h-40 overflow-y-auto pr-2 custom-scrollbar">
+                    <p className="text-gray-600 dark:text-gray-300 text-sm">
+                      {review.comment || t('reviewsSection.noComment')}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </Carousel>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default ReviewsSection;
