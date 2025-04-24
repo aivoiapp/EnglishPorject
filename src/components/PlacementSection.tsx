@@ -112,23 +112,13 @@ const PlacementSection = () => {
       
       const isChild = parseInt(userData.age) < 13;
       const maxQuestions = isChild ? 10 : 15; // Máximo número de preguntas según edad
-      const minQuestions = isChild ? 5 : 7;  // Mínimo número de preguntas antes de considerar finalizar
       
       // Verificar si el rendimiento es consistente (para posible finalización temprana)
-      const isPerformanceConsistent = checkPerformanceConsistency(newPerformance);
       
-      if (newAnswers.length < minQuestions) {
-        // Siempre hacer al menos el mínimo de preguntas
+      if (newAnswers.length < maxQuestions) {
         selectAndAddNextQuestion(newAnswers);
-      } else if (newAnswers.length >= maxQuestions) {
-        // No exceder el máximo de preguntas
-        startEvaluation(newAnswers);
-      } else if (isPerformanceConsistent && newAnswers.length >= minQuestions) {
-        // Si el rendimiento es consistente y ya hemos hecho el mínimo de preguntas, podemos finalizar
-        startEvaluation(newAnswers);
       } else {
-        // Entre el mínimo y el máximo, seleccionar la siguiente pregunta
-        selectAndAddNextQuestion(newAnswers);
+        startEvaluation(newAnswers); // solo termina si llega al máximo
       }
       
       // Actualizar el progreso del test
@@ -136,28 +126,6 @@ const PlacementSection = () => {
     }, 1000);
   };
   
-  /**
-   * Verifica si el rendimiento del usuario es consistente en un nivel específico
-   * @param performance Rendimiento actual del usuario
-   * @returns Verdadero si el rendimiento es consistente
-   */
-  const checkPerformanceConsistency = (performance: {
-    performanceByLevel: Record<string, { correct: number, total: number }>
-  }) => {
-    for (const level in performance.performanceByLevel) {
-      const levelData = performance.performanceByLevel[level];
-      
-      if (levelData.total >= 3) {
-        const percentage = (levelData.correct / levelData.total) * 100;
-        
-        if (percentage > 80 || percentage < 30) {
-          return true;
-        }
-      }
-    }
-    
-    return false;
-  };
   
   /**
    * Selecciona y añade la siguiente pregunta basada en el rendimiento
@@ -203,6 +171,7 @@ const PlacementSection = () => {
     evaluateUserTest(selectedQuestions.slice(0, finalAnswers.length), finalAnswers, userData)
       .then(evaluation => {
         setResult(evaluation);
+        
       })
       .catch(error => {
         console.error('Error evaluating test:', error);
