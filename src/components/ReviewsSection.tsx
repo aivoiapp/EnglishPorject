@@ -1,16 +1,42 @@
 import { useTranslation } from 'react-i18next';
 import { Carousel } from 'react-responsive-carousel';
+import { useEffect, useState } from 'react';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { reviews } from '../data/reviewsData';
 import { formatDate } from '../utils/dateFormatter';
 
 const ReviewsSection = () => {
   const { t, i18n } = useTranslation();
+  const [slidePercentage, setSlidePercentage] = useState(25);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const updateResponsive = () => {
+      const width = window.innerWidth;
+      if (width < 640) {
+        setSlidePercentage(100);
+        setIsMobile(true);
+      } else if (width < 1024) {
+        setSlidePercentage(50);
+        setIsMobile(false);
+      } else {
+        setSlidePercentage(25);
+        setIsMobile(false);
+      }
+    };
+
+    updateResponsive();
+    window.addEventListener('resize', updateResponsive);
+    return () => window.removeEventListener('resize', updateResponsive);
+  }, []);
 
   return (
-    <section id="reviews" className="py-16 bg-gradient-to-b from-[#e5e5d8] to-[#d8d8c8] dark:from-gray-900 dark:to-gray-800 text-gray-800 dark:text-white">
+    <section
+      id="reviews"
+      className="py-16 bg-gradient-to-b from-[#e5e5d8] to-[#d8d8c8] dark:from-gray-900 dark:to-gray-800 text-gray-800 dark:text-white"
+    >
       <div className="container mx-auto px-6">
-        <h2 className="text-4xl font-bold text-center mb-12">
+        <h2 className="text-4xl font-bold text-center mb-12 mt-4">
           {t('reviewsSection.title')}
         </h2>
         <div className="relative overflow-visible">
@@ -21,7 +47,7 @@ const ReviewsSection = () => {
             autoPlay={true}
             interval={5000}
             centerMode={true}
-            centerSlidePercentage={25}
+            centerSlidePercentage={slidePercentage}
             showStatus={false}
             swipeable={true}
             dynamicHeight={false}
@@ -31,7 +57,7 @@ const ReviewsSection = () => {
                 <button
                   onClick={clickHandler}
                   className="absolute left-0 top-1/2 z-20 bg-white dark:bg-gray-700 rounded-full p-2 shadow-md hover:bg-gray-100 dark:hover:bg-gray-600 transition-all"
-                  style={{ transform: 'translate(0%, -50%)', opacity: 0.8 }}
+                  style={{ transform: 'translate(-120%, -50%)', opacity: 0.8 }}
                   aria-label={t('navigation.previous')}
                 >
                   ‹
@@ -43,37 +69,42 @@ const ReviewsSection = () => {
                 <button
                   onClick={clickHandler}
                   className="absolute right-0 top-1/2 z-20 bg-white dark:bg-gray-700 rounded-full p-2 shadow-md hover:bg-gray-100 dark:hover:bg-gray-600 transition-all"
-                  style={{ transform: 'translate(0%, -50%)', opacity: 0.8 }}
+                  style={{ transform: 'translate(120%, -50%)', opacity: 0.8 }}
                   aria-label={t('navigation.next')}
                 >
                   ›
                 </button>
               )
             }
-            renderIndicator={(clickHandler, isSelected, index, label) => (
-              <li
-                className={`inline-block mx-1 cursor-pointer ${isSelected ? 'bg-gray-800 dark:bg-white' : 'bg-gray-400 dark:bg-gray-600'}`}
-                style={{ 
-                  width: 10, 
-                  height: 10, 
-                  borderRadius: '50%', 
-                  marginTop: '30px',  // Aumenté este valor para bajar los puntos
-                  marginBottom: '10px' 
-                }}
-                onClick={clickHandler}
-                onKeyDown={clickHandler}
-                role="button"
-                tabIndex={0}
-                aria-label={`Slide ${index + 1} ${label}`}
-                key={index}
-              />
-            )}
+            renderIndicator={(clickHandler, isSelected, index, label) =>
+              isMobile ? null : (
+                <li
+                  className={`inline-block mx-1 cursor-pointer ${isSelected ? 'bg-gray-800 dark:bg-white' : 'bg-gray-400 dark:bg-gray-600'}`}
+                  style={{
+                    width: 10,
+                    height: 10,
+                    borderRadius: '50%',
+                    marginTop: '30px',
+                    marginBottom: '10px'
+                  }}
+                  onClick={clickHandler}
+                  onKeyDown={clickHandler}
+                  role="button"
+                  tabIndex={0}
+                  aria-label={`Slide ${index + 1} ${label}`}
+                  key={index}
+                />
+              )
+            }
           >
             {reviews.map((review, index) => (
               <div
                 key={index}
                 className="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden border border-gray-200 p-6 mx-4 flex flex-col"
-                style={{ minHeight: '380px', maxHeight: '380px' }}
+                style={{
+                  minHeight: isMobile ? 'auto' : '380px',
+                  maxHeight: isMobile ? 'auto' : '380px'
+                }}
               >
                 <div className="flex-grow overflow-hidden">
                   <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-2">
@@ -84,15 +115,15 @@ const ReviewsSection = () => {
                   </p>
                   <div className="flex items-center mb-4">
                     {[...Array(5)].map((_, i) => (
-                      <span 
-                        key={i} 
+                      <span
+                        key={i}
                         className={`text-xl ${i < review.rating ? 'text-yellow-500' : 'text-gray-300 dark:text-gray-600'}`}
                       >
                         ★
                       </span>
                     ))}
                   </div>
-                  <div className="h-40 overflow-y-auto pr-2 custom-scrollbar">
+                  <div className="max-h-40 overflow-y-auto pr-2 custom-scrollbar">
                     <p className="text-gray-600 dark:text-gray-300 text-sm">
                       {review.comment || t('reviewsSection.noComment')}
                     </p>
