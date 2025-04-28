@@ -9,6 +9,7 @@ const ReviewsSection = () => {
   const { t, i18n } = useTranslation();
   const [slidePercentage, setSlidePercentage] = useState(25);
   const [isMobile, setIsMobile] = useState(false);
+  const [currentSlide, setCurrentSlide] = useState(0);
 
   useEffect(() => {
     const updateResponsive = () => {
@@ -35,7 +36,7 @@ const ReviewsSection = () => {
       id="reviews"
       className="py-16 bg-gradient-to-b from-[#e5e5d8] to-[#d8d8c8] dark:from-gray-900 dark:to-gray-800 text-gray-800 dark:text-white"
     >
-      <div className="container mx-auto px-6">
+      <div className="container mx-auto px-6 pb-16">
         <h2 className="text-4xl font-bold text-center mb-12 mt-4">
           {t('reviewsSection.title')}
         </h2>
@@ -48,54 +49,13 @@ const ReviewsSection = () => {
             interval={5000}
             centerMode={true}
             centerSlidePercentage={slidePercentage}
+            showIndicators={false}
             showStatus={false}
             swipeable={true}
             dynamicHeight={false}
             className="max-w-7xl mx-auto"
-            renderArrowPrev={(clickHandler, hasPrev) =>
-              hasPrev && (
-                <button
-                  onClick={clickHandler}
-                  className="absolute left-0 top-1/2 z-20 bg-white dark:bg-gray-700 rounded-full p-2 shadow-md hover:bg-gray-100 dark:hover:bg-gray-600 transition-all"
-                  style={{ transform: 'translate(-120%, -50%)', opacity: 0.8 }}
-                  aria-label={t('navigation.previous')}
-                >
-                  ‹
-                </button>
-              )
-            }
-            renderArrowNext={(clickHandler, hasNext) =>
-              hasNext && (
-                <button
-                  onClick={clickHandler}
-                  className="absolute right-0 top-1/2 z-20 bg-white dark:bg-gray-700 rounded-full p-2 shadow-md hover:bg-gray-100 dark:hover:bg-gray-600 transition-all"
-                  style={{ transform: 'translate(120%, -50%)', opacity: 0.8 }}
-                  aria-label={t('navigation.next')}
-                >
-                  ›
-                </button>
-              )
-            }
-            renderIndicator={(clickHandler, isSelected, index, label) =>
-              isMobile ? null : (
-                <li
-                  className={`inline-block mx-1 cursor-pointer ${isSelected ? 'bg-gray-800 dark:bg-white' : 'bg-gray-400 dark:bg-gray-600'}`}
-                  style={{
-                    width: 10,
-                    height: 10,
-                    borderRadius: '50%',
-                    marginTop: '30px',
-                    marginBottom: '10px'
-                  }}
-                  onClick={clickHandler}
-                  onKeyDown={clickHandler}
-                  role="button"
-                  tabIndex={0}
-                  aria-label={`Slide ${index + 1} ${label}`}
-                  key={index}
-                />
-              )
-            }
+            selectedItem={currentSlide}
+            onChange={setCurrentSlide}
           >
             {reviews.map((review, index) => (
               <div
@@ -132,6 +92,27 @@ const ReviewsSection = () => {
               </div>
             ))}
           </Carousel>
+          {/* Solo este indicador personalizado queda */}
+          {!isMobile && (
+            <ul className="flex justify-center mt-2">
+              {reviews.map((_, index) => (
+                <li
+                  key={index}
+                  className={`inline-block mx-1 cursor-pointer ${currentSlide === index ? 'bg-gray-800 dark:bg-white' : 'bg-gray-400 dark:bg-gray-600'}`}
+                  style={{
+                    width: 10,
+                    height: 10,
+                    borderRadius: '20%',
+                    marginTop: '10px'
+                  }}
+                  onClick={() => setCurrentSlide(index)}
+                  role="button"
+                  tabIndex={0}
+                  aria-label={`Slide ${index + 1}`}
+                />
+              ))}
+            </ul>
+          )}
         </div>
       </div>
     </section>
