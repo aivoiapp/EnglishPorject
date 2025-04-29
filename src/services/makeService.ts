@@ -194,19 +194,19 @@ export const sendPlacementTestData = async (
     nextSteps: string[];
   }
 ): Promise<MakeWebhookResponse> => {
+  console.log('Iniciando envío de datos de placement test');
+  console.log('Datos de usuario:', JSON.stringify(userData, null, 2));
+  console.log('Resultados del test:', JSON.stringify(testResult, null, 2));
   try {
     await verifyMakeConnection();
 
     // Estructura plana con prefijos para evitar colisiones
     const payload = {
-      // User Data
       userName: userData.name,
       userEmail: userData.email,
       userAge: userData.age,
       selfAssessedLevel: userData.selfAssessedLevel,
       learningGoals: userData.learningGoals,
-      
-      // Test Results
       testLevel: testResult.level,
       testScore: testResult.score,
       recommendedGroup: testResult.recommendedGroup || 'No especificado',
@@ -214,16 +214,20 @@ export const sendPlacementTestData = async (
       weaknesses: testResult.weaknesses.join('; '),
       recommendation: testResult.recommendation,
       nextSteps: testResult.nextSteps.join(' | '),
-      
-      // Metadata
+      formType: 'placement',
       source: 'EnglishAcademy',
       connectionName: 'Hero form cytalk',
       timestamp: new Date().toISOString(),
-      formType: 'placement',
       appVersion: '1.0.1'
     };
 
     console.log('Enviando datos de placement test:', JSON.stringify(payload, null, 2));
+    console.log('URL del webhook:', UNIFIED_WEBHOOK);
+
+    // Verificar que formType esté correctamente establecido
+    if (payload.formType !== 'placement') {
+      console.warn('ADVERTENCIA: formType no está establecido como "placement"');
+    }
 
     const response = await axios.post(UNIFIED_WEBHOOK, payload, {
       headers: {
@@ -233,6 +237,9 @@ export const sendPlacementTestData = async (
       },
       timeout: 30000
     });
+    
+    // Mostrar la respuesta completa para diagnóstico
+    console.log('Respuesta completa del webhook:', JSON.stringify(response.data, null, 2));
 
     console.log('Datos de placement enviados exitosamente:', response.data);
     return response.data;
@@ -252,7 +259,7 @@ export const sendPlacementTestData = async (
       console.log('Reintentando envío después de 5 segundos...');
       await new Promise(resolve => setTimeout(resolve, 5000));
 
-      const response = await axios.post(UNIFIED_WEBHOOK, {
+      const retryPayload = {
         // User Data
         userName: userData.name,
         userEmail: userData.email,
@@ -276,7 +283,12 @@ export const sendPlacementTestData = async (
         formType: 'placement',
         appVersion: '1.0.1',
         isRetry: true
-      }, {
+      };
+      
+      console.log('Payload para reintento de placement test:', JSON.stringify(retryPayload, null, 2));
+      console.log('URL del webhook para reintento:', UNIFIED_WEBHOOK);
+
+      const response = await axios.post(UNIFIED_WEBHOOK, retryPayload, {
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
@@ -340,7 +352,19 @@ export const sendPaymentFormData = async (
       console.log('Retrying payment form submission after 2 seconds...');
       await new Promise(resolve => setTimeout(resolve, 2000));
       
-      const response = await axios.post(UNIFIED_WEBHOOK, FormData, {
+      const formDataRetry = {
+        paymentData,
+        source: 'EnglishAcademy',
+        connectionName: 'Hero form cytalk',
+        timestamp: new Date().toISOString(),
+        formType: 'payment',
+        appVersion: '1.0.1',
+        isRetry: true
+      };
+      
+      console.log('Payload para reintento de pago:', JSON.stringify(formDataRetry, null, 2));
+      
+      const response = await axios.post(UNIFIED_WEBHOOK, formDataRetry, {
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
