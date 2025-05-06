@@ -301,10 +301,12 @@ const PaymentMethods: React.FC = () => {
                     
                     {formData.bank === 'BCP' && (
                       <div className="space-y-3">
+                        {/* Paso 1 */}
                         <div className="flex items-start">
                           <div className="bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-200 font-bold rounded-full w-6 h-6 flex items-center justify-center mr-2 flex-shrink-0">1</div>
                           <p className="text-gray-700 dark:text-gray-300">{t('payment.paymentMethods.openBankApp', 'Abrir la app de tu banco.')}</p>
                         </div>
+                        {/* Paso 2 */}
                         <div className="flex items-start">
                           <div className="bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-200 font-bold rounded-full w-6 h-6 flex items-center justify-center mr-2 flex-shrink-0">2</div>
                           <div>
@@ -312,33 +314,43 @@ const PaymentMethods: React.FC = () => {
                             <p className="text-green-700 dark:text-green-300 font-medium">{t('payment.paymentMethods.bcpPaymentPath')}</p>
                           </div>
                         </div>
+                        {/* Recomendación */}
                         <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 p-3 rounded-lg">
                           <p className="text-blue-800 dark:text-blue-300 text-sm flex items-center">
                             <span className="mr-2">⏰</span>
                             {t('payment.paymentMethods.bcpRechargeRecommendation', 'Te recomendamos realizar tu recarga de lunes a viernes desde las 9:00am hasta las 8:00pm y los sábados desde las 9:00am hasta 1:30pm. Recuerda que no se podrá realizar recargas fuera de estos horarios.')}
                           </p>
                         </div>
+                        {/* Paso 3 (ahora: Ingresa el código de servicio) */}
                         <div className="flex items-start">
                           <div className="bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-200 font-bold rounded-full w-6 h-6 flex items-center justify-center mr-2 flex-shrink-0">3</div>
-                          <p className="text-gray-700 dark:text-gray-300">{t('payment.paymentMethods.enterRechargeAmount', 'Ingresar el monto a recargar (soles o dólares).')}</p>
-                        </div>
-                        <div className="flex items-start">
-                          <div className="bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-200 font-bold rounded-full w-6 h-6 flex items-center justify-center mr-2 flex-shrink-0">4</div>
                           <p className="text-gray-700 dark:text-gray-300">{t('payment.paymentMethods.enterLigoDNI', 'Ingresar el DNI de tu cuenta Ligo: 002117098.')}</p>
                         </div>
+                        {/* Paso 4 (ahora: Ingresa el monto a recargar) */}
+                        <div className="flex items-start">
+                          <div className="bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-200 font-bold rounded-full w-6 h-6 flex items-center justify-center mr-2 flex-shrink-0">4</div>
+                          <p className="text-gray-700 dark:text-gray-300">{t('payment.paymentMethods.enterRechargeAmount', 'Ingresar el monto a recargar (soles o dólares).')}</p>
+                        </div>
+                        {/* Paso 5 */}
                         <div className="flex items-start">
                           <div className="bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-200 font-bold rounded-full w-6 h-6 flex items-center justify-center mr-2 flex-shrink-0">5</div>
-                          <p className="text-gray-700 dark:text-gray-300">{t('payment.paymentMethods.selectCreditDebitCard', 'Escoger la tarjeta de crédito o débito como el medio de pago.')}</p>
+                          <p className="text-gray-700 dark:text-gray-300">{t('payment.paymentMethods.selectCreditDebitCard', 'Elige tarjeta de crédito o débito como método de pago.')}</p>
+                        </div>
+                        {/* ¡LISTO! */}
+                        <div>
+                          <span className="text-green-600 font-bold">{t('payment.paymentMethods.ready', '¡LISTO!')}</span>
                         </div>
                       </div>
                     )}
                     
                     {formData.bank === 'Interbank' && (
                       <div className="space-y-3">
+                        {/* Paso 1 */}
                         <div className="flex items-start">
                           <div className="bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-200 font-bold rounded-full w-6 h-6 flex items-center justify-center mr-2 flex-shrink-0">1</div>
                           <p className="text-gray-700 dark:text-gray-300">{t('payment.paymentMethods.openBankApp', 'Abrir la app de tu banco.')}</p>
                         </div>
+                        {/* Paso 2 */}
                         <div className="flex items-start">
                           <div className="bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-200 font-bold rounded-full w-6 h-6 flex items-center justify-center mr-2 flex-shrink-0">2</div>
                           <div>
@@ -346,23 +358,31 @@ const PaymentMethods: React.FC = () => {
                             <p className="text-green-700 dark:text-green-300 font-medium">{t('payment.paymentMethods.interbankPaymentPath')}</p>
                           </div>
                         </div>
+                        {/* Recomendación */}
                         <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 p-3 rounded-lg">
                           <p className="text-blue-800 dark:text-blue-300 text-sm flex items-center">
                             <span className="mr-2">⏰</span>
-                            {t('payment.paymentMethods.interbankRechargeRecommendation', 'Te sugerimos realizar tu recarga durante las 9 am y 11 pm para verlo reflejado el mismo día caso contrario se visualizará el día siguiente.')}
+                            {t('payment.paymentMethods.interbankRechargeRecommendation', 'Te recomendamos realizar tu recarga de lunes a domingo entre las 9:00am y las 9:00pm.')}
                           </p>
                         </div>
+                        {/* Paso 3 (ahora: Ingresa el código de servicio) */}
                         <div className="flex items-start">
                           <div className="bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-200 font-bold rounded-full w-6 h-6 flex items-center justify-center mr-2 flex-shrink-0">3</div>
-                          <p className="text-gray-700 dark:text-gray-300">{t('payment.paymentMethods.enterRechargeAmount', 'Ingresar el monto a recargar (soles o dólares).')}</p>
-                        </div>
-                        <div className="flex items-start">
-                          <div className="bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-200 font-bold rounded-full w-6 h-6 flex items-center justify-center mr-2 flex-shrink-0">4</div>
                           <p className="text-gray-700 dark:text-gray-300">{t('payment.paymentMethods.enterLigoDNI', 'Ingresar el DNI de tu cuenta Ligo: 002117098.')}</p>
                         </div>
+                        {/* Paso 4 (ahora: Ingresa el monto a recargar) */}
+                        <div className="flex items-start">
+                          <div className="bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-200 font-bold rounded-full w-6 h-6 flex items-center justify-center mr-2 flex-shrink-0">4</div>
+                          <p className="text-gray-700 dark:text-gray-300">{t('payment.paymentMethods.enterRechargeAmount', 'Ingresar el monto a recargar (soles o dólares).')}</p>
+                        </div>
+                        {/* Paso 5 */}
                         <div className="flex items-start">
                           <div className="bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-200 font-bold rounded-full w-6 h-6 flex items-center justify-center mr-2 flex-shrink-0">5</div>
-                          <p className="text-gray-700 dark:text-gray-300">{t('payment.paymentMethods.selectCreditDebitCard', 'Escoger la tarjeta de crédito o débito como el medio de pago.')}</p>
+                          <p className="text-gray-700 dark:text-gray-300">{t('payment.paymentMethods.selectCreditDebitCard', 'Elige tarjeta de crédito o débito como método de pago.')}</p>
+                        </div>
+                        {/* ¡LISTO! */}
+                        <div>
+                          <span className="text-green-600 font-bold">{t('payment.paymentMethods.ready', '¡LISTO!')}</span>
                         </div>
                       </div>
                     )}

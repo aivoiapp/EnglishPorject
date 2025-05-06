@@ -109,7 +109,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onFormSubmit }) => {
               <div className="flex items-end gap-4 mb-2">
                 <div>
                   <span className="text-2xl line-through text-gray-300">
-                    {currencySymbol} {price*0.5}
+                    {currencySymbol} {price}
                   </span>
                   <span className="block text-4xl font-bold text-yellow-400">
                     {currencySymbol} {discountedPrice*0.5}

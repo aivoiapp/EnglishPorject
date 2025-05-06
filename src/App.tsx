@@ -68,7 +68,7 @@ function App() {
       <CurrencyProvider>
         <AdsProvider>
           <div className="min-h-screen bg-gradient-to-b from-[#f5f5f0] to-[#f0f0e8] dark:from-gray-900 dark:to-gray-800 dark:text-white">
-            <header className="bg-white dark:bg-gray-800 shadow-lg fixed w-full z-10">
+            <header className="bg-white dark:bg-gray-800 shadow-lg fixed w-full z-[100]"> 
               <div className="container mx-auto px-6 py-4">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center">
