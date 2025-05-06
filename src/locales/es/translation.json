@@ -132,7 +132,7 @@
     "title": "Preguntas Frecuentes",
     "cost": {
       "question": "¿Cuánto cuesta el curso?",
-      "answer": "¡Aprovecha nuestra oferta especial! 50% de descuento, las clases quedan en solo S/. 200 S/. 100 por mes."
+      "answer": "¡Aprovecha nuestras ofertas especiales! Consigue descuentos especiales y aprovecha todas las ventajas de nuestros cursos."
     },
     "duration": {
       "question": "¿Puedo tomar solo un mes?",
@@ -345,6 +345,22 @@
       "receiptGenerated": "Tu recibo ha sido generado y enviado a tu correo",
       "downloadReceipt": "Descargar Recibo",
       "returnToHome": "Volver al Inicio"
+    },
+    "coupons": {
+      "title": "Cupones de Descuento",
+      "placeholder": "Ingresa código de cupón",
+      "apply": "Aplicar",
+      "appliedCoupons": "Cupones aplicados",
+      "totalDiscountPercentage": "Descuento total",
+      "remove": "Eliminar cupón",
+      "totalDiscount": "Descuento total",
+      "emptyCode": "Por favor ingresa un código de cupón",
+      "alreadyApplied": "Este cupón ya ha sido aplicado",
+      "invalidCoupon": "Cupón inválido o expirado",
+      "maxDiscountExceeded": "No se puede exceder el 50% de descuento total",
+      "maxDiscountCouponApplied": "Ya tienes un cupón con el máximo descuento permitido (50%)",
+      "cannotAddMaxDiscountCoupon": "No puedes agregar un cupón de 50% cuando ya tienes otros cupones aplicados",
+      "approachingMaxDiscount": "Estás cerca del límite máximo de descuento (50%)"
     }
   },
   "placementTest": {
@@ -434,5 +450,5 @@
       "rating": "Calificación",
       "comment": "Comentario"
     }
-  }
+  } 
 }

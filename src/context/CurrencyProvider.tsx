@@ -23,13 +23,13 @@ const CurrencyProvider: React.FC<CurrencyProviderProps> = ({ children }) => {
     if (isPeru && lang === 'es') {
       setCurrency('PEN');
       setCurrencySymbol(t('hero.pricing.currency.PEN', 'S/.'));
-      setPrice(200);
-      setDiscountedPrice(100);
+      setPrice(400); // Precio regular en soles
+      setDiscountedPrice(200); // Precio base para Perú: 200 soles
     } else {
       setCurrency('USD');
       setCurrencySymbol(t('hero.pricing.currency.USD', '$'));
-      setPrice(100);
-      setDiscountedPrice(50);
+      setPrice(200); // Precio regular en dólares
+      setDiscountedPrice(100); // Precio base para otros países: 100 dólares
     }
   }, [t]);
 
