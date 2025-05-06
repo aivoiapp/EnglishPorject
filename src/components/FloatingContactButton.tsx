@@ -41,7 +41,10 @@ const FloatingContactButton: React.FC<FloatingContactButtonProps> = ({ onNameCha
     
     // Redirect to WhatsApp as originally intended
     const whatsappMessage = encodeURIComponent(
-      t('contact.whatsappMessage', `Hola ${selectedAgent.name}, me interesa tomar clases de inglés. Mi nombre es ${name} y me gustaría más información sobre el grupo de ${selectedGroup}.`)
+      t('contact.whatsappMessage', {
+        name: name,
+        selectedGroup: selectedGroup,
+      })
     );
     window.open(`https://wa.me/${selectedAgent.phone}?text=${whatsappMessage}`, '_blank');
     
