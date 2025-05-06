@@ -79,12 +79,12 @@ const PaymentDetails: React.FC = () => {
                 </span>
               </p>
               <p className="text-lg font-semibold text-green-600 dark:text-green-400">
-                {t('payment.paymentDetails.amountToPay', 'Monto a pagar')}: {currencySymbol} {formData.amount.toFixed(2)}
+                {t('payment.paymentDetails.amountToPay')}: {currencySymbol} {formData.amount.toFixed(2)}
               </p>
             </div>
           ) : (
             <p className="text-lg font-semibold dark:text-white">
-              {t('payment.paymentDetails.amountToPay', 'Monto a pagar')}: {currencySymbol} {formData.amount.toFixed(2)}
+              {t('payment.paymentDetails.amountToPay')}: {currencySymbol} {formData.amount.toFixed(2)}
             </p>
           )}
           {formData.paymentType === 'fullLevel' && (

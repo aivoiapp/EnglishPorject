@@ -43,7 +43,7 @@ const PaymentSection: React.FC<PaymentSectionProps> = ({ name, email, phone }) =
               courseSchedule: paymentData?.courseSchedule || '',
               paymentType: paymentData?.paymentType || 'monthly',
               monthsCount: paymentData?.monthsCount || 1,
-              amount: paymentData?.amount || 100,
+              amount: paymentData?.amount || 200,
               paymentMethod: paymentData?.paymentMethod || '',
               operationNumber: paymentData?.operationNumber || '',
               bank: paymentData?.bank || '',

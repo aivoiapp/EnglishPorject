@@ -67,15 +67,21 @@ export const calculateEndDate = (startDate: Date, paymentType: 'monthly' | 'full
 export const calculateAmount = (
   paymentType: 'monthly' | 'fullLevel', 
   monthsCount: number = 1, 
-  basePrice: number = 100,
+  basePrice: number = 200, // Precio base original sin descuento
   appliedCoupons: CouponData[] = []
 ): { originalAmount: number; finalAmount: number } => {
-  // Calcular el monto original sin descuentos de cupones
-  const originalAmount = paymentType === 'monthly' 
-    ? basePrice * monthsCount 
-    : basePrice * 6 * 0.9;
   
-  // Aplicar descuentos de cupones acumulativamente
+  // Precio base sin descuentos
+  let originalAmount = paymentType === 'monthly' 
+    ? basePrice * monthsCount 
+    : basePrice * 6; // 6 meses sin descuento
+  
+  // Aplicar descuento del 10% solo para nivel completo
+  if (paymentType === 'fullLevel') {
+    originalAmount *= 0.9;
+  }
+
+  // Aplicar descuentos de cupones sobre el monto base
   let finalAmount = originalAmount;
   appliedCoupons.forEach(coupon => {
     if (coupon.isValid) {
@@ -83,7 +89,10 @@ export const calculateAmount = (
     }
   });
   
-  return { originalAmount, finalAmount };
+  return { 
+    originalAmount: paymentType === 'fullLevel' ? basePrice * 6 : originalAmount, 
+    finalAmount 
+  };
 };
 
 // Función para calcular el porcentaje total de descuento aplicado
