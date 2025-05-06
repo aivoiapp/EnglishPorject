@@ -169,9 +169,35 @@ const PlacementSection = () => {
     setMessageInterval(interval);
 
     evaluateUserTest(selectedQuestions.slice(0, finalAnswers.length), finalAnswers, userData)
-      .then(evaluation => {
+      .then(async evaluation => {
         setResult(evaluation);
-        
+        // Enviar datos al webhook de Make.com inmediatamente después de obtener el resultado
+        try {
+          // Preparar los datos para enviar a Make.com
+          const userDataToSend = {
+            name: userData.name || '',
+            email: userData.email || '',
+            age: userData.age || '',
+            selfAssessedLevel: userData.selfAssessedLevel || 'beginner',
+            learningGoals: userData.learningGoals || ''
+          };
+          
+          const testResult = {
+            level: evaluation.level,
+            score: evaluation.score,
+            recommendedGroup: evaluation.recommendedGroup,
+            strengths: evaluation.strengths,
+            weaknesses: evaluation.weaknesses,
+            recommendation: evaluation.recommendation,
+            nextSteps: evaluation.nextSteps
+          };
+          
+          console.log('Enviando datos a Make.com con formType=placement');
+          await sendPlacementTestData(userDataToSend, testResult);
+          console.log('Datos del test de nivel enviados correctamente a Make.com');
+        } catch (error) {
+          console.error('Error al enviar datos del test de nivel a Make.com:', error);
+        }
       })
       .catch(error => {
         console.error('Error evaluating test:', error);
@@ -260,12 +286,12 @@ const PlacementSection = () => {
       const fileName = `${t('placementTest.results.filePrefix', 'english-assessment')}-${userData.name || t('placementTest.results.defaultUser', 'user')}.pdf`;
       doc.save(fileName);
       
-      const pdfBlob = doc.output('blob');
-      
-      await sendPlacementTestData(userData, result, pdfBlob);
-      console.log('Datos y PDF del test de nivel enviados correctamente a Make.com');
+      // Ya no se envía el PDF al webhook
+      // const pdfBlob = doc.output('blob');
+      //await sendPlacementTestData(userData, result);
+      // console.log('Datos y PDF del test de nivel enviados correctamente a Make.com');
     } catch (error) {
-      console.error('Error al enviar datos del test de nivel a Make.com:', error);
+      console.error('Error al generar el PDF del test de nivel:', error);
       generatePlacementTestPDF(result, userData, t);
     }
   };

@@ -4,6 +4,7 @@ import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 import { usePaymentContext } from './paymentTypes';
 import { useCurrency } from '../../context/useCurrency';
+import PaymentCoupons from './PaymentCoupons';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useTranslation } from 'react-i18next';
 
@@ -70,9 +71,22 @@ const PaymentDetails: React.FC = () => {
         )}
 
         <div className="mt-4">
-          <p className="text-lg font-semibold dark:text-white">
-            {t('payment.paymentDetails.amountToPay', 'Monto a pagar')}: {currencySymbol} {formData.amount.toFixed(2)}
-          </p>
+          {formData.appliedCoupons.length > 0 ? (
+            <div>
+              <p className="text-lg font-semibold dark:text-white">
+                <span className="line-through text-gray-500 mr-2">
+                  {t('payment.paymentDetails.originalAmount', 'Precio original')}: {currencySymbol} {formData.originalAmount.toFixed(2)}
+                </span>
+              </p>
+              <p className="text-lg font-semibold text-green-600 dark:text-green-400">
+                {t('payment.paymentDetails.amountToPay', 'Monto a pagar')}: {currencySymbol} {formData.amount.toFixed(2)}
+              </p>
+            </div>
+          ) : (
+            <p className="text-lg font-semibold dark:text-white">
+              {t('payment.paymentDetails.amountToPay', 'Monto a pagar')}: {currencySymbol} {formData.amount.toFixed(2)}
+            </p>
+          )}
           {formData.paymentType === 'fullLevel' && (
             <p className="text-sm text-green-600 dark:text-green-400">
               {t('payment.paymentDetails.discountIncluded', 'Incluye descuento del 10% por pago de nivel completo')}
@@ -80,6 +94,9 @@ const PaymentDetails: React.FC = () => {
           )}
         </div>
 
+        {/* Componente de cupones */}
+        <PaymentCoupons />
+        
         <div className="mt-4">
           <div className="flex items-center">
             <input

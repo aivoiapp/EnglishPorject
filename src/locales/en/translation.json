@@ -80,7 +80,7 @@
     "title": "Frequently Asked Questions",
     "cost": {
       "question": "How much does the course cost?",
-      "answer": "Take advantage of our special offer! 50% discount, classes are only S/. 100 S/. 50 per month."
+      "answer": "Take advantage of our special offers! Get special discounts and take advantage of all the benefits of our courses."
     },
     "duration": {
       "question": "Can I take just one month?",
@@ -388,6 +388,22 @@
       "receiptGenerated": "Your receipt has been generated and sent to your email",
       "downloadReceipt": "Download Receipt",
       "returnToHome": "Return to Home"
+    },
+    "coupons": {
+      "title": "Discount Coupons",
+      "placeholder": "Enter coupon code",
+      "apply": "Apply",
+      "appliedCoupons": "Applied Coupons",
+      "totalDiscountPercentage": "Total Discount",
+      "remove": "Remove Coupon",
+      "totalDiscount": "Total Discount",
+      "emptyCode": "Please enter a coupon code",
+      "alreadyApplied": "This coupon has already been applied",
+      "invalidCoupon": "Invalid or expired coupon",
+      "maxDiscountExceeded": "Total discount cannot exceed 50%",
+      "maxDiscountCouponApplied": "You already have a coupon with the maximum allowed discount (50%)",
+      "cannotAddMaxDiscountCoupon": "You can't apply a 50% coupon when other coupons are already applied",
+      "approachingMaxDiscount": "You're approaching the maximum discount limit (50%)"
     }
   },
   

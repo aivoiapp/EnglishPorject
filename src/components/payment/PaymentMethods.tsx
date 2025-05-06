@@ -9,6 +9,7 @@ import { useCurrency } from '../../context/useCurrency';
 const PaymentMethods: React.FC = () => {
   const { t } = useTranslation();
   const { formData, handleInputChange, handlePaymentMethodChange } = usePaymentContext();
+  useCurrency();
   const { isPeruvianUser } = useCurrency();
   
   const renderPaymentOptions = () => (

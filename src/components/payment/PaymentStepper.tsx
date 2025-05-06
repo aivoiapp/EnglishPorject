@@ -11,6 +11,7 @@ import { es } from 'date-fns/locale';
 import { storePaymentData, generatePaymentReceipt } from '../../services/paymentService';
 import { sendPaymentFormData } from '../../services/makeService';
 import { useTranslation } from 'react-i18next';
+import { useCurrency } from '../../context/useCurrency';
 
 // Define MotivationalMessage component
 const MotivationalMessage: React.FC<{step: number}> = ({ step }) => {
@@ -39,6 +40,7 @@ const MotivationalMessage: React.FC<{step: number}> = ({ step }) => {
 const PaymentStepper: React.FC<{onFormSubmit: (data: PaymentFormData) => void}> = ({ onFormSubmit }) => {
   const { t } = useTranslation();
   const { formData } = usePaymentContext();
+  const { currencySymbol } = useCurrency();
   const [currentStep, setCurrentStep] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -102,17 +104,16 @@ const PaymentStepper: React.FC<{onFormSubmit: (data: PaymentFormData) => void}> 
         storePaymentData(formData);
         
         // Generar el PDF usando el servicio mejorado
-        const { pdfDoc } = generatePaymentReceipt(
+        generatePaymentReceipt(
           formData,
           formData.paymentMethod,
           undefined // No hay ID de transacción en este punto
         );
         
-        // Obtener el blob del PDF para enviarlo a Make.com
-        const pdfBlob = pdfDoc.output('blob');
+       
         
         // Enviar datos y PDF a Make.com
-        await sendPaymentFormData(formData, pdfBlob);
+        await sendPaymentFormData(formData);
         
         // Mostrar mensaje de confirmación
         setReceiptGenerated(true);
@@ -210,7 +211,33 @@ const PaymentStepper: React.FC<{onFormSubmit: (data: PaymentFormData) => void}> 
                 <p>{t('payment.summary.schedule', 'Horario')}: {formData.courseSchedule}</p>
                 <p>{t('payment.summary.paymentType', 'Tipo de pago')}: {formData.paymentType === 'monthly' ? t('payment.paymentDetails.monthly', 'Mensual') : t('payment.paymentDetails.fullLevel', 'Nivel Completo')}</p>
                 <p>{t('payment.summary.period', 'Período de pago')}: {format(formData.startDate, 'MMMM yyyy', { locale: es })} a {format(formData.endDate, 'MMMM yyyy', { locale: es })}</p>
-                <p>{t('payment.summary.amount', 'Monto a pagar')}: S/. {formData.amount.toFixed(2)}</p>
+                
+                {/* Mostrar información de cupones si hay alguno aplicado */}
+                {formData.appliedCoupons && formData.appliedCoupons.length > 0 && (
+                  <div className="mt-2 mb-2">
+                    <p>{t('payment.summary.couponsApplied', 'Cupones aplicados')}:</p>
+                    <ul className="list-disc pl-5">
+                      {formData.appliedCoupons.map(coupon => (
+                        <li key={coupon.code}>
+                          {coupon.code} <span className="text-green-600 dark:text-green-400">(-{coupon.discountPercentage}%)</span>
+                        </li>
+                      ))}
+                    </ul>
+                    <p className="line-through text-gray-500">
+                      {t('payment.summary.originalAmount', 'Precio original')}: {currencySymbol} {formData.originalAmount ? formData.originalAmount.toFixed(2) : formData.amount.toFixed(2)}
+                    </p>
+                  </div>
+                )}
+                
+                <p className="font-medium">
+                  {t('payment.summary.amount', 'Monto a pagar')}: {currencySymbol} {formData.amount.toFixed(2)}
+                  {formData.appliedCoupons && formData.appliedCoupons.length > 0 && (
+                    <span className="text-green-600 dark:text-green-400 text-sm ml-2">
+                      ({t('payment.summary.withDiscount', 'con descuento')})
+                    </span>
+                  )}
+                </p>
+                
                 <p>{t('payment.summary.paymentMethod', 'Método de pago')}: {
                   formData.paymentMethod === 'transferencia' 
                     ? t('payment.paymentMethods.bankTransfer', 'Transferencia Bancaria') 

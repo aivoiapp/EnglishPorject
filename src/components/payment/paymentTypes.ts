@@ -1,6 +1,12 @@
 import { createContext, useContext } from 'react';
 import { addMonths } from 'date-fns';
 
+export interface CouponData {
+  code: string;
+  discountPercentage: number;
+  isValid: boolean;
+}
+
 export interface PaymentFormData {
   fullName: string;
   email: string;
@@ -13,11 +19,14 @@ export interface PaymentFormData {
   startDate: Date;
   endDate: Date;
   amount: number;
+  originalAmount: number;
+  appliedCoupons: CouponData[];
   paymentMethod: string;
   operationNumber: string;
   bank: string;
   generateReceipt: boolean;
   ruc: string;
+  error?: 'coupon_already_applied' | 'invalid_coupon' | 'max_discount_exceeded' | 'max_discount_coupon_applied' | 'cannot_add_max_discount_coupon';
 }
 
 export type PaymentMethodType = 'transferencia' | 'yape-qr' | 'tarjeta' | '';
@@ -28,6 +37,8 @@ export interface PaymentContextType {
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
   handleStartDateChange: (date: Date | null) => void;
   handlePaymentMethodChange: (method: PaymentMethodType) => void;
+  applyCoupon: (couponCode: string) => void;
+  removeCoupon: (couponCode: string) => void;
   initialFormState: PaymentFormData;
   handleSubmit: (e: React.FormEvent) => void;
 }
@@ -52,7 +63,30 @@ export const calculateEndDate = (startDate: Date, paymentType: 'monthly' | 'full
   return addMonths(startDate, paymentType === 'fullLevel' ? 6 : monthsCount);
 };
 
-// Función para calcular el monto basado en el tipo de pago y la cantidad de meses
-export const calculateAmount = (paymentType: 'monthly' | 'fullLevel', monthsCount: number = 1): number => {
-  return paymentType === 'monthly' ? 100 * monthsCount : 100 * 6 * 0.9;
+// Función para calcular el monto basado en el tipo de pago, la cantidad de meses y los cupones aplicados
+export const calculateAmount = (
+  paymentType: 'monthly' | 'fullLevel', 
+  monthsCount: number = 1, 
+  basePrice: number = 100,
+  appliedCoupons: CouponData[] = []
+): { originalAmount: number; finalAmount: number } => {
+  // Calcular el monto original sin descuentos de cupones
+  const originalAmount = paymentType === 'monthly' 
+    ? basePrice * monthsCount 
+    : basePrice * 6 * 0.9;
+  
+  // Aplicar descuentos de cupones acumulativamente
+  let finalAmount = originalAmount;
+  appliedCoupons.forEach(coupon => {
+    if (coupon.isValid) {
+      finalAmount = finalAmount * (1 - coupon.discountPercentage / 100);
+    }
+  });
+  
+  return { originalAmount, finalAmount };
+};
+
+// Función para calcular el porcentaje total de descuento aplicado
+export const calculateTotalDiscountPercentage = (appliedCoupons: CouponData[] = []): number => {
+  return appliedCoupons.reduce((total, coupon) => total + coupon.discountPercentage, 0);
 };
