@@ -135,8 +135,8 @@ export const generatePaymentReceipt = (
   doc.text(paymentData.courseLevel, 65, 145);
   doc.text(paymentData.courseSchedule, 65, 155);
   
-  // Información del pago - Sección con fondo de acento
-  roundedRect(15, 170, 180, 80, 5, [accentColor[0], accentColor[1], accentColor[2], 0.1]);
+  // Información del pago - Sección con fondo blanco (sin acento)
+  roundedRect(15, 170, 180, 80, 5, [255, 255, 255]); // Fondo blanco
   doc.setDrawColor(accentColor[0], accentColor[1], accentColor[2]);
   doc.setLineWidth(0.5);
   doc.rect(15, 170, 180, 80, 'S');
@@ -229,13 +229,8 @@ export const generatePaymentReceipt = (
   }
   
   // Agregar código QR simulado
-  roundedRect(150, 195, 35, 35, 0, [0, 0, 0]);
-  doc.setFillColor(255, 255, 255);
-  // Usar el método nativo de jsPDF para el rectángulo interno
-  doc.roundedRect(152, 197, 31, 31, 0, 0, 'F');
-  doc.setFontSize(6);
-  doc.setTextColor(0, 0, 0);
-  doc.text('Código QR', 167.5, 213, { align: 'center' });
+  // Eliminar el bloque de código QR
+  // (No agregar el recuadro ni el texto "Código QR")
   
   // Pie de página
   roundedRect(0, 270, 210, 27, 0, secondaryColor);
@@ -247,7 +242,7 @@ export const generatePaymentReceipt = (
   doc.setFont('helvetica', 'normal');
   doc.text('Este documento es un comprobante válido de su pago', 105, 286, { align: 'center' });
   doc.text(`Generado el: ${currentDate}`, 105, 292, { align: 'center' });
-  
+
   const fileName = `recibo-${currentMonth}-${paymentData.fullName.replace(/ /g, '-')}.pdf`;
   doc.save(fileName);
   return { fileName, pdfDoc: doc }; // Devolver tanto el nombre del archivo como el objeto jsPDF
