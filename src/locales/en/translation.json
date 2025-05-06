@@ -264,7 +264,7 @@
     "adults": "Adults (18+ years)",
     "consultWith": "Consult with",
     "contactViaWhatsapp": "Contact via WhatsApp",
-    "whatsappMessage": "Hello ${selectedAgent.name}, I'm interested in taking English classes. My name is ${name} and I would like more information about the ${selectedGroup} group."
+    "whatsappMessage": "Hello, I'm interested in taking English classes. My name is {{name}} and I would like more information about the {{selectedGroup}} group."
   },
   "payment": {
     "title": "Make it official: register and secure your progress",
@@ -394,45 +394,48 @@
       "placeholder": "Enter coupon code",
       "apply": "Apply",
       "appliedCoupons": "Applied Coupons",
-      "totalDiscountPercentage": "Total Discount",
-      "remove": "Remove Coupon",
-      "totalDiscount": "Total Discount",
+      "totalDiscountPercentage": "Total discount",
+      "remove": "Remove coupon",
+      "totalDiscount": "Total discount",
       "emptyCode": "Please enter a coupon code",
       "alreadyApplied": "This coupon has already been applied",
       "invalidCoupon": "Invalid or expired coupon",
-      "maxDiscountExceeded": "Total discount cannot exceed 50%",
+      "maxDiscountExceeded": "Cannot exceed 50% total discount",
       "maxDiscountCouponApplied": "You already have a coupon with the maximum allowed discount (50%)",
-      "cannotAddMaxDiscountCoupon": "You can't apply a 50% coupon when other coupons are already applied",
+      "cannotAddMaxDiscountCoupon": "You cannot add a 50% coupon when you already have other coupons applied",
       "approachingMaxDiscount": "You're approaching the maximum discount limit (50%)"
+           
     }
   },
-  
+    
   "hero": {
-    "title": "Master English for",
-    "titleHighlight": "your personal and professional growth",
-    "subtitle": "Learn with qualified teachers and international-level methodology",
-    "discount": "50% Discount - Until May 20",
+    "title": "Master English with",
+    "titleHighlight": "an effective methodology and certified teachers",
+    "subtitle": "Boost your personal and professional growth with live, dynamic, and student-centered virtual classes.",
+    "discount": "Get up to 50% off your monthly payment or the full level (6 months)",
     "whyChooseUs": "Why choose us?",
-    "benefits": {
-      "liveClasses": "Live virtual classes with expert teachers",
-      "sessions": "2 weekly sessions of 60 minutes",
-      "studentCentered": "Student-centered learning",
-      "dynamicClasses": "Participative and dynamic classes"
-    },
+      "benefits": {
+        "liveClasses": "Live classes with expert teachers",
+        "sessions": "2 weekly sessions of 60 minutes each",
+        "studentCentered": "Student-centered learning approach",
+        "dynamicClasses": "Engaging, dynamic, and results-focused classes",
+        "certifications": "Methodology aligned with international certifications"
+      },
     "features": {
-      "allLevels": "All levels",
-      "duration": "6 months per level",
-      "certifications": "Approach aligned and designed for international certifications"
+        "allLevels": "All levels",
+        "duration": "6 months per level",
+        "certifications": "Approach aligned and designed for international certifications"
     },
     "pricing": {
-      "oldPrice": "200",
-      "newPrice": "100",
-      "perMonth": "/month",
-      "limitedOffer": "LIMITED OFFER!",
-      "currency": {
-        "PEN": "S/.",
-        "USD": "$"
-      }
+        "oldPrice": "100",
+        "newPrice": "50",
+        "perMonth": "/month",
+        "fullLevelOffer": "Full Level (6 months with 10% discount)",
+        "limitedOffer": "LIMITED OFFER!",
+        "currency": {
+            "PEN": "S/.",
+            "USD": "$"
+        }
     },
     "form": {
       "title": "Register for the course",
@@ -440,9 +443,11 @@
       "fullName": "Full name",
       "email": "Email",
       "whatsapp": "WhatsApp",
-      "privacyPolicy": "I have read and accept the",
+      "privacyPolicy": "I have read and accept the ",
       "privacyPolicyLink": "Privacy Policy",
-      "submitButton": "Continue to payment!"
+      "submitButton": "Continue to payment!",
+      "couponNote": "To obtain your discount coupon, contact us via the",
+      "contactLink": "Contact Us section"
     }
   },
   "footer": {

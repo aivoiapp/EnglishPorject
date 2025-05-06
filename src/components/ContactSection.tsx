@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { MapIcon as WhatsappIcon } from 'lucide-react';
+import { MapIcon as WhatsappIcon, X } from 'lucide-react';
 import { Agent, agents } from '../types';
 import { sendContactFormData } from '../services/makeService';
 import CustomPhoneInput from './CustomPhoneInput';
@@ -8,9 +8,11 @@ import { useTranslation } from 'react-i18next';
 
 interface ContactSectionProps {
   onNameChange?: (name: string) => void;
+  isOpen?: boolean;
+  onClose?: () => void;
 }
 
-const ContactSection: React.FC<ContactSectionProps> = ({ onNameChange }) => {
+const ContactSection: React.FC<ContactSectionProps> = ({ onNameChange, isOpen, onClose }) => {
   const { t } = useTranslation();
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
@@ -36,10 +38,18 @@ const ContactSection: React.FC<ContactSectionProps> = ({ onNameChange }) => {
     
     // Redirigir a WhatsApp como estaba originalmente
     const whatsappMessage = encodeURIComponent(
-      t('contact.whatsappMessage', `Hola ${selectedAgent.name}, me interesa tomar clases de inglés. Mi nombre es ${name} y me gustaría más información sobre el grupo de ${selectedGroup}.`)
+      t('contact.whatsappMessage', {
+        name: name,
+        selectedGroup: selectedGroup,
+      })
     );
     window.open(`https://wa.me/${selectedAgent.phone}?text=${whatsappMessage}`, '_blank');
+    
+    // Cerrar el modal después de enviar
+    if (onClose) onClose();
   };
+
+  if (!isOpen) return null;
 
   return (
     <section id="contacto" className="py-16 bg-white dark:bg-gray-800">
@@ -105,6 +115,12 @@ const ContactSection: React.FC<ContactSectionProps> = ({ onNameChange }) => {
             >
               <WhatsappIcon className="mr-2" />
               {t('contact.contactViaWhatsapp', 'Contactar por WhatsApp')}
+            </button>
+            <button 
+              onClick={onClose}
+              className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+            >
+              <X className="w-6 h-6" />
             </button>
           </form>
         </div>

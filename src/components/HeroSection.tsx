@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Sparkles, CheckCircle2, BookOpen, Clock, Award } from 'lucide-react';
+import { Sparkles, BookOpen, Clock, Award } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import PrivacyPolicyModal from './PrivacyPolicyModal';
 import { sendHeroFormData } from '../services/makeService';
@@ -7,6 +7,8 @@ import CustomPhoneInput from './CustomPhoneInput';
 import { useLanguage } from '../context/useLanguage';
 import { useCurrency } from '../context/useCurrency';
 import '../phone-input.css';
+import { motion } from 'framer-motion';
+import FloatingContactButton from './FloatingContactButton';
 
 interface HeroSectionProps {
   onFormSubmit: (name: string, email: string, phone: string) => void; // Update the function signature
@@ -15,6 +17,8 @@ interface HeroSectionProps {
 const HeroSection: React.FC<HeroSectionProps> = ({ onFormSubmit }) => {
   const { t } = useTranslation();
   const { language } = useLanguage();
+  // Agregar nuevo estado para el modal de contacto
+  //const [] = useState(false);
   const { currencySymbol, price, discountedPrice } = useCurrency();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -47,80 +51,97 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onFormSubmit }) => {
   };
 
   return (
-    <section id="hero" className="py-12 md:py-20 bg-gradient-to-br from-blue-700 to-blue-900 dark:from-blue-900 dark:to-blue-950 text-white">
-      <div className="container mx-auto px-6">
-        <div className="grid md:grid-cols-2 gap-12 items-center">
-          {/* Columna izquierda - Contenido */}
-          <div className="space-y-8">
-            <div>
-              <h1 className="text-4xl md:text-5xl font-bold mb-4">
-                {t('hero.title')} <span className="text-yellow-400">{t('hero.titleHighlight')}</span>
+    <section id="hero" className="relative py-16 md:py-24 bg-gradient-to-br from-blue-800 to-blue-900 dark:from-blue-900 dark:to-blue-950 overflow-hidden">
+      <div className="container mx-auto px-4">
+        <div className="grid lg:grid-cols-2 gap-8 items-center">
+          {/* Contenido Principal */}
+          <motion.div 
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            className="relative z-10 space-y-6 text-white"
+          >
+            <div className="mb-8">
+              <motion.div
+                initial={{ y: 20 }}
+                animate={{ y: 0 }}
+                className="bg-yellow-400/20 backdrop-blur-sm inline-block px-4 py-1 rounded-full mb-4"
+              >
+                <span className="text-lg font-bold text-yellow-400">🎓 {t('hero.discount')}</span>
+              </motion.div>
+              
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-4">
+                {t('hero.title')}{' '}
+                <span className="bg-gradient-to-r from-yellow-400 to-yellow-500 bg-clip-text text-transparent">
+                  {t('hero.titleHighlight')}
+                </span>
               </h1>
-              <p className="text-xl md:text-2xl mb-6">
+              
+              <p className="text-xl md:text-2xl text-blue-100 dark:text-blue-200 mb-6">
                 {t('hero.subtitle')}
               </p>
-              <div className="inline-block bg-yellow-400 text-blue-900 px-6 py-2 rounded-full text-lg font-bold animate-bounce mb-6">
-                {t('hero.discount')}
-              </div>
             </div>
 
-            <div className="space-y-4">
-              <h3 className="text-2xl font-semibold">{t('hero.whyChooseUs')}</h3>
-              <ul className="space-y-3">
-                <li className="flex items-center">
-                  <CheckCircle2 className="w-5 h-5 text-green-400 mr-2" />
-                  <span>{t('hero.benefits.liveClasses')}</span>
-                </li>
-                <li className="flex items-center">
-                  <CheckCircle2 className="w-5 h-5 text-green-400 mr-2" />
-                  <span>{t('hero.benefits.sessions')}</span>
-                </li>
-                <li className="flex items-center">
-                  <CheckCircle2 className="w-5 h-5 text-green-400 mr-2" />
-                  <span>{t('hero.benefits.studentCentered')}</span>
-                </li>
-                <li className="flex items-center">
-                  <CheckCircle2 className="w-5 h-5 text-green-400 mr-2" />
-                  <span>{t('hero.benefits.dynamicClasses')}</span>
-                </li>
-              </ul>
+            {/* Beneficios en Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+              {[
+                { icon: Clock, text: t('hero.benefits.liveClasses') },
+                { icon: Award, text: t('hero.benefits.certifications') },
+                { icon: Sparkles, text: t('hero.benefits.dynamicClasses') },
+                { icon: BookOpen, text: t('hero.benefits.studentCentered') }
+              ].map((item, index) => (
+                <motion.div
+                  key={index}
+                  whileHover={{ scale: 1.02 }}
+                  className="flex items-center p-4 bg-white/10 dark:bg-gray-800/50 rounded-xl backdrop-blur-sm"
+                >
+                  <item.icon className="w-8 h-8 text-yellow-400 mr-3 flex-shrink-0" />
+                  <span className="text-lg font-medium">{item.text}</span>
+                </motion.div>
+              ))}
             </div>
 
-            <div className="flex flex-wrap gap-6">
-              <div className="flex items-center">
-                <BookOpen className="w-6 h-6 text-yellow-400 mr-2" />
-                <span>{t('hero.features.allLevels')}</span>
+            {/* Precios y Oferta */}
+            <motion.div 
+              initial={{ scale: 0.9 }}
+              animate={{ scale: 1 }}
+              className="bg-white/10 dark:bg-gray-800/50 p-6 rounded-2xl backdrop-blur-sm"
+            >
+              <div className="flex items-end gap-4 mb-2">
+                <div>
+                  <span className="text-2xl line-through text-gray-300">
+                    {currencySymbol} {price*0.5}
+                  </span>
+                  <span className="block text-4xl font-bold text-yellow-400">
+                    {currencySymbol} {discountedPrice*0.5}
+                  </span>
+                </div>
+                <span className="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold">
+                  {t('hero.pricing.limitedOffer')}
+                </span>
               </div>
-              <div className="flex items-center">
-                <Clock className="w-6 h-6 text-yellow-400 mr-2" />
-                <span>{t('hero.features.duration')}</span>
-              </div>
-              <div className="flex items-center">
-                <Award className="w-6 h-6 text-yellow-400 mr-2" />
-                <span>{t('hero.features.certifications')}</span>
-              </div>
-            </div>
+              <p className="text-blue-100 text-sm">
+                {t('hero.pricing.perMonth')} | {t('hero.pricing.fullLevelOffer')}
+              </p>
+            </motion.div>
+          </motion.div>
 
-            <div className="flex items-center gap-4">
-              <div className="flex flex-col">
-                <span className="text-2xl font-bold line-through text-gray-400">{currencySymbol} {price*0.5}</span>
-                <span className="text-5xl font-bold text-yellow-400">{currencySymbol} {discountedPrice*0.5}</span>
-                <span className="text-gray-300">{t('hero.pricing.perMonth')}</span>
-              </div>
-              <div className="bg-red-500 text-white px-4 py-2 rounded-lg font-bold">
-                {t('hero.pricing.limitedOffer')}
-              </div>
-            </div>
-          </div>
-
-          {/* Columna derecha - Formulario */}
-          <div className="bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 rounded-xl shadow-2xl overflow-hidden p-8">
+          {/* Formulario */}
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            className="relative z-10 bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-6 md:p-8"
+          >
             <div className="text-center mb-6">
-              <h2 className="text-2xl font-bold text-blue-800 dark:text-blue-400">{t('hero.form.title')}</h2>
-              <p className="text-gray-600 dark:text-gray-400">{t('hero.form.startDate')}</p>
+              <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-600 to-blue-500 bg-clip-text text-transparent">
+                {t('hero.form.title')}
+              </h2>
+              <p className="text-gray-600 dark:text-gray-300 mt-2">
+                {t('hero.form.startDate')}
+              </p>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-4">
+              {/* Campos del formulario existentes se mantienen igual */}
               <div>
                 <label className="block text-gray-700 dark:text-gray-300 mb-2">{t('hero.form.fullName')}</label>
                 <input
@@ -164,7 +185,9 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onFormSubmit }) => {
                   required
                 />
                 <label htmlFor="privacy-policy" className="ml-2 block text-sm text-gray-700 dark:text-gray-300">
-                  {t('hero.form.privacyPolicy')} <button 
+                  {t('hero.form.privacyPolicy')}
+                  
+                  <button 
                     type="button"
                     onClick={() => setIsPrivacyModalOpen(true)}
                     className="text-blue-600 dark:text-blue-400 underline font-medium hover:text-blue-800 dark:hover:text-blue-300"
@@ -174,22 +197,48 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onFormSubmit }) => {
                 </label>
               </div>
 
+              <PrivacyPolicyModal 
+                isOpen={isPrivacyModalOpen}
+                onClose={() => setIsPrivacyModalOpen(false)}
+                />
+  
               <button
                 type="submit"
                 disabled={!privacyAccepted}
-                className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center mt-6 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full bg-gradient-to-r from-blue-600 to-blue-500 text-white py-4 rounded-xl font-bold hover:from-blue-700 hover:to-blue-600 transition-all flex items-center justify-center gap-2"
               >
-                <Sparkles className="mr-2 h-5 w-5" />
+                <Sparkles className="w-5 h-5" />
                 {t('hero.form.submitButton')}
               </button>
-              
-              <PrivacyPolicyModal 
-                isOpen={isPrivacyModalOpen} 
-                onClose={() => setIsPrivacyModalOpen(false)} 
-              />
+              <p className="text-center text-sm text-gray-500 dark:text-gray-400 mt-3">
+                {t('hero.form.couponNote')}{' '}
+                <button 
+                  type="button"
+                  onClick={() => {
+                    // Simula el click en el botón flotante
+                    const floatBtn = document.querySelector('.fixed.bottom-6.right-6');
+                    if (floatBtn) (floatBtn as HTMLElement).click();
+                  }}
+                  className="text-blue-600 dark:text-blue-400 underline"
+                >
+                  {t('hero.form.contactLink')}
+                </button>
+              </p>
             </form>
-          </div>
+          </motion.div>
         </div>
+      </div>
+
+      {/* Modal de Contacto */}
+      {/* Elimina la sección ContactSection aquí */}
+      {/* <ContactSection isOpen={isContactModalOpen} onClose={() => setIsContactModalOpen(false)} /> */}
+      {/* Agrega el botón flotante */}
+      <FloatingContactButton />
+      
+      {/* Efectos de fondo */}
+      <div className="absolute inset-0 opacity-10 dark:opacity-5">
+        <div className="absolute w-[800px] h-[800px] -top-48 -left-48 bg-gradient-to-r from-yellow-400/20 to-transparent rounded-full blur-3xl" />
+        <div className="absolute w-[600px] h-[600px] -bottom-32 -right-32 bg-gradient-to-l from-blue-400/20 to-transparent rounded-full blur-3xl" />
       </div>
     </section>
   );
