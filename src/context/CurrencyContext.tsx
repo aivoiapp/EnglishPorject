@@ -8,6 +8,7 @@ export interface CurrencyContextType {
   discountedPrice: number;
   isPeruvianUser: boolean;
   setUserCountry: (countryCode: string) => void;
+  updateCurrency: (isPeru: boolean) => void; // <-- Add this line
 }
 
 // Creación del contexto con un valor inicial undefined

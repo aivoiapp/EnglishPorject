@@ -84,7 +84,7 @@ const QuestionDisplay = ({
 
         <div className="mb-6 bg-blue-50 dark:bg-blue-900/20 p-5 rounded-lg border border-blue-100 dark:border-blue-800">
           <div className="flex items-center gap-2">
-            <h3 className="text-xl font-semibold flex-grow text-gray-900 dark:text-gray-100">
+            <h3 className="text-xl font-semibold flex-grow text-gray-900 dark:text-gray-100" translate="no">
               {question.question}
             </h3>
             <button 
@@ -107,6 +107,7 @@ const QuestionDisplay = ({
             <button
               onClick={() => onAnswer(option)}
               disabled={feedbackState !== null}
+              translate="no"
               className={`w-full text-left p-4 border rounded-lg transition-all duration-300 transform
                         ${
                           feedbackState !== null 
@@ -127,7 +128,7 @@ const QuestionDisplay = ({
                 <span className="w-8 h-8 flex items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 mr-3 font-medium">
                   {String.fromCharCode(65 + index)}
                 </span>
-                <span className="flex-grow">{option}</span>
+                <span className="flex-grow" translate="no">{option}</span>
               </div>
             </button>
           </div>

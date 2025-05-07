@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import CurrencyContext, { CurrencyContextType } from './CurrencyContext';
+import CurrencyContext from './CurrencyContext';
 import { useLanguage } from './useLanguage';
 import { useTranslation } from 'react-i18next';
 
@@ -29,35 +29,45 @@ const CurrencyProvider: React.FC<CurrencyProviderProps> = ({ children }) => {
       setDiscountedPrice(100); // Sin descuento por defecto
     }
   }, []);
-  
-  // Eliminar dependencia del idioma en los efectos
+
+  // Add setUserCountry function
+  const setUserCountry = (countryCode: string) => {
+    if (countryCode === 'PE') {
+      setIsPeruvianUser(true);
+      updateCurrency(true);
+    } else {
+      setIsPeruvianUser(false);
+      updateCurrency(false);
+    }
+  };
+
+  // Detección de país mediante IP
   useEffect(() => {
-    const savedCountry = localStorage.getItem('userCountry');
-    const isPeru = savedCountry === 'PE';
-    
-    setIsPeruvianUser(isPeru);
-    updateCurrency(isPeru);
+    fetch("https://ipapi.co/json/")
+      .then(res => res.json())
+      .then(data => {
+        const isPeru = data.country === "PE";
+        setIsPeruvianUser(isPeru);
+        updateCurrency(isPeru);
+      })
+      .catch(err => {
+        console.error("Error detecting location", err);
+        updateCurrency(false); // fallback USD
+      });
   }, [updateCurrency]);
 
-  const setUserCountry = (countryCode: string) => {
-    const isPeru = countryCode === 'PE';
-    setIsPeruvianUser(isPeru);
-    localStorage.setItem('userCountry', countryCode);
-    updateCurrency(isPeru);
-  };
-
-  // Valor del contexto
-  const contextValue: CurrencyContextType = {
-    currency,
-    currencySymbol,
-    price,
-    discountedPrice,
-    isPeruvianUser,
-    setUserCountry
-  };
-
   return (
-    <CurrencyContext.Provider value={contextValue}>
+    <CurrencyContext.Provider
+      value={{
+        isPeruvianUser,
+        currency,
+        currencySymbol,
+        price,
+        discountedPrice,
+        setUserCountry, // <-- Add this line
+        updateCurrency
+      }}
+    >
       {children}
     </CurrencyContext.Provider>
   );

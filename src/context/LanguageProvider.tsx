@@ -56,7 +56,7 @@ const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) => {
     if (resources[lang as SupportedLanguages]) { // Cast to SupportedLanguages
       i18n.changeLanguage(lang);
       setLanguage(lang as SupportedLanguages);
-      localStorage.setItem('i18nextLng', lang);
+      localStorage.setItem('preferredLang', lang);
     }
   };
 
