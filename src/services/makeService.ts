@@ -1,31 +1,23 @@
+
 /**
- * Servicio para la integración con Make.com
- * Proporciona funciones para enviar datos a webhooks
+ * Servicio para la integración con Make.com y Backend Cytalk
  */
 
 import axios from 'axios';
+import { toast } from 'react-toastify';
 import { PaymentFormData } from '../components/payment/paymentTypes';
+import { ContactFormData, HeroFormData, PlacementTestData } from '../components/forms/formTypes';
 
-// Interfaz para la respuesta de Make.com
-interface MakeWebhookResponse {
-  success: boolean;
-  webhookId?: string;
-  executionId?: string;
-  timestamp?: string;
-  data?: Record<string, unknown>;
-}
 
-// URLs de los webhooks de Make.com desde variables de entorno
 const UNIFIED_WEBHOOK = 'https://hook.us2.make.com/gyebx6etjrubt48brle65sdvhdsm07qq';
+const BACKEND_BASE_URL = 'https://cytalk-backend.onrender.com';
 
-// Función para verificar y renovar la conexión con Make.com si es necesario
 const verifyMakeConnection = async (): Promise<boolean> => {
   try {
     const response = await axios.post(UNIFIED_WEBHOOK, {
       action: 'verify_connection',
       timestamp: new Date().toISOString()
     });
-    
     console.log('Connection verification response:', response.data);
     return true;
   } catch (error) {
@@ -34,93 +26,124 @@ const verifyMakeConnection = async (): Promise<boolean> => {
   }
 };
 
-/**
- * Envía los datos del formulario Hero a Make.com
- * @param formData Datos del formulario
- * @returns Promesa con la respuesta
- */
-export const sendHeroFormData = async (formData: {
-  name: string;
-  email: string;
-  phone: string;
+const buildPayload = <T>(formData: T, formType: string) => ({
+  ...formData,
+  formType,
+  source: 'web',
+  connectionName: 'Cytalk Web App',
+  timestamp: new Date().toISOString(),
+  appVersion: '1.0.1'
+});
+
+export const sendHeroFormData = async (formData: HeroFormData) => {
+  const payload = buildPayload(formData, 'hero');
+  const results = { make: null, backend: null };
+  await verifyMakeConnection();
+
+  try {
+    const makeRes = await axios.post(UNIFIED_WEBHOOK, payload, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'X-Connection-Key': 'englishacademy-web-app'
+      },
+      timeout: 15000
+    });
+    results.make = makeRes.data;
+    console.log('sendHeroFormData enviado a Make.com con éxito');
+  } catch (error) {
+    console.error('❌ Error Make.com:', error);
+    toast.error('No se pudo enviar a Make.com');
+  }
+
+  try {
+    const backendRes = await axios.post(`${BACKEND_BASE_URL}/api/forms/hero`, payload);
+    results.backend = backendRes.data;
+    console.log('sendHeroFormData enviado al backend con éxito');
+  } catch (error) {
+    console.error('❌ Error Backend:', error);
+    toast.error('No se pudo guardar el registro en Cytalk');
+  }
+
+  return results;
+};
+
+export const sendContactFormData = async (formData: ContactFormData) => {
+  const payload = buildPayload(formData, 'contact');
+  const results = { make: null, backend: null };
+  await verifyMakeConnection();
+
+  try {
+    const makeRes = await axios.post(UNIFIED_WEBHOOK, payload, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'X-Connection-Key': 'englishacademy-web-app'
+      },
+      timeout: 15000
+    });
+    results.make = makeRes.data;
+    console.log('sendContactFormData enviado a Make.com con éxito');
+  } catch (error) {
+    console.error('❌ Error Make.com:', error);
+    toast.error('No se pudo enviar a Make.com');
+  }
+
+  try {
+    const backendRes = await axios.post(`${BACKEND_BASE_URL}/api/forms/contact`, payload);
+    results.backend = backendRes.data;
+    console.log('sendContactFormData enviado al backend con éxito');
+  } catch (error) {
+    console.error('❌ Error Backend:', error);
+    toast.error('No se pudo guardar el registro en Cytalk');
+  }
+
+  return results;
+};
+
+export const sendPlacementTestData = async (userData: {
+  name?: string;
+  email?: string;
+  age?: string;
+  selfAssessedLevel?: string;
+  learningGoals?: string;
+}, testResult: {
+  level?: string;
+  score?: number;
+  recommendedGroup?: string;
+  strengths?: string[];
+  weaknesses?: string[];
+  recommendation?: string;
+  nextSteps?: string[] | string;
 }) => {
-  try {
-    await verifyMakeConnection();
-    
-    const response = await axios.post(UNIFIED_WEBHOOK, {
-      ...formData,
-      formType: 'hero',
-      source: 'EnglishAcademy',
-      connectionName: 'Hero form cytalk',
-      timestamp: new Date().toISOString(),
-      appVersion: '1.0.1'
-    }, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'X-Connection-Key': 'englishacademy-web-app'
-      },
-      timeout: 15000
-    });
-    
-    console.log('Hero form data sent successfully:', response.data);
-    return response.data;
-  } catch (error) {
-    console.error('Error sending hero form data:', error);
-    try {
-      console.log('Retrying hero form submission after 2 seconds...');
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      const response = await axios.post(UNIFIED_WEBHOOK, {
-        ...formData,
-        formType: 'hero',
-        source: 'EnglishAcademy',
-        connectionName: 'Hero form cytalk',
-        timestamp: new Date().toISOString(),
-        appVersion: '1.0.1',
-        isRetry: true
-      }, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          'X-Connection-Key': 'englishacademy-web-app'
-        }
-      });
-      
-      console.log('Hero form data sent successfully on retry:', response.data);
-      return response.data;
-    } catch (retryError) {
-      console.error('Error on retry sending hero form data:', retryError);
-      throw retryError;
-    }
-  }
-};
-
-/**
- * Envía los datos del formulario de Contacto a Make.com
- * @param formData Datos del formulario
- * @returns Promesa con la respuesta
- */
-export const sendContactFormData = async (formData: {
-  name: string;
-  phone: string;
-  selectedGroup: string;
-  selectedAgent: {
-    name: string;
-    phone: string;
+  // Crear un objeto completo que cumpla con la interfaz PlacementTestData
+  const formData: PlacementTestData = {
+    userName: userData.name || '',
+    userEmail: userData.email || '',
+    userAge: userData.age || '',
+    selfAssessedLevel: userData.selfAssessedLevel || 'beginner',
+    learningGoals: userData.learningGoals || '',
+    testLevel: testResult.level || '',
+    testScore: testResult.score || 0,
+    recommendedGroup: testResult.recommendedGroup || '',
+    strengths: testResult.strengths?.join(', ') || '',
+    weaknesses: testResult.weaknesses?.join(', ') || '',
+    recommendation: testResult.recommendation || '',
+    nextSteps: Array.isArray(testResult.nextSteps) ? testResult.nextSteps.join(' | ') : testResult.nextSteps || '',
+    // Campos adicionales que podrían estar faltando
+    nivelActual: userData.selfAssessedLevel || '',
+    disponibilidad: '',
+    objetivos: [userData.learningGoals || ''],
+    // Hardcodear el código de cupón como solicitado
+    generatedCouponCode: 'CYTALK50-B1X7'
   };
-}): Promise<MakeWebhookResponse> => {
+
+  const payload = buildPayload(formData, 'placement');
+  const results = { make: null, backend: null };
+  await verifyMakeConnection();
+
   try {
-    await verifyMakeConnection();
-    
-    const response = await axios.post(UNIFIED_WEBHOOK, {
-      ...formData,
-      formType: 'contact',
-      source: 'EnglishAcademy',
-      connectionName: 'Hero form cytalk',
-      timestamp: new Date().toISOString(),
-      appVersion: '1.0.1'
-    }, {
+    const makeRes = await axios.post(UNIFIED_WEBHOOK, payload, {
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
@@ -128,32 +151,93 @@ export const sendContactFormData = async (formData: {
       },
       timeout: 15000
     });
-    
-    console.log('Contact form data sent successfully:', response.data);
-    return response.data;
+    results.make = makeRes.data;
+    console.log('sendPlacementTestData enviado a Make.com con éxito');
   } catch (error) {
-    console.error('Error sending contact form data:', error);
-    if (axios.isAxiosError(error)) {
-      console.error('Axios error details:', {
-        status: error.response?.status,
-        statusText: error.response?.statusText,
-        data: error.response?.data
-      });
-    }
+    console.error('❌ Error Make.com:', error);
+    toast.error('No se pudo enviar a Make.com');
+  }
+
+  try {
+    const backendRes = await axios.post(`${BACKEND_BASE_URL}/api/forms/placement`, payload);
+    results.backend = backendRes.data;
+    console.log('sendPlacementTestData enviado al backend con éxito');
+  } catch (error) {
+    console.error('❌ Error Backend:', error);
+    toast.error('No se pudo guardar el registro en Cytalk');
+  }
+
+  return results;
+};
+
+export const sendPaymentFormData = async (formData: PaymentFormData) => {
+  // Crear el payload directamente con los datos necesarios
+  const payload = {
+    // Datos del estudiante
+    studentName: formData.fullName,
+    phone: formData.phone,
+    email: formData.email,
+    
+    // Datos del curso
+    courseLevel: formData.courseLevel,
+    courseType: formData.paymentType === 'fullLevel' ? 'Intensive' : 'Monthly',
+    courseName: `English Level ${formData.courseLevel} - ${formData.paymentType === 'fullLevel' ? 'Intensive' : 'Monthly'}`,
+    studentGroup: formData.studentGroup,
+    
+    // Datos del horario y período
+    schedule: formData.courseSchedule || '',
+    startDate: formData.startDate.toISOString().split('T')[0],
+    endDate: formData.endDate.toISOString().split('T')[0],
+    period: `${new Date(formData.startDate).toLocaleDateString('es-ES', {month: 'long', year: 'numeric'})} a ${new Date(formData.endDate).toLocaleDateString('es-ES', {month: 'long', year: 'numeric'})}`,
+    
+    // Datos del pago
+    amount: formData.amount,
+    paymentMethod: formData.paymentMethod,
+    transactionId: formData.operationNumber,
+    operationNumber: formData.operationNumber,
+    paymentDate: new Date().toISOString(),
+    
+    // Datos para facturación
+    receipt: formData.operationNumber ? `https://example.com/receipts/${formData.operationNumber}.pdf` : '',
+    ruc: formData.ruc || '',
+    documentId: formData.operationNumber || '',
+    
+    // Metadatos
+    formType: 'payment',
+    source: 'EnglishAcademy',
+    connectionName: 'Hero form cytalk',
+    timestamp: new Date().toISOString(),
+    appVersion: '1.0.1'
+  };
+  
+  const results = { make: null, backend: null };
+  await verifyMakeConnection();
+
+  try {
+    const makeRes = await axios.post(UNIFIED_WEBHOOK, payload, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'X-Connection-Key': 'englishacademy-web-app'
+      },
+      timeout: 15000
+    });
+    results.make = makeRes.data;
+    console.log('sendPaymentFormData enviado a Make.com con éxito');
+  } catch (error) {
+    console.error('❌ Error Make.com:', error);
+    toast.error('No se pudo enviar a Make.com');
     
     try {
-      console.log('Retrying contact form submission after 2 seconds...');
+      console.log('Reintentando envío del formulario de pago después de 2 segundos...');
       await new Promise(resolve => setTimeout(resolve, 2000));
       
-      const response = await axios.post(UNIFIED_WEBHOOK, {
-        ...formData,
-        formType: 'contact',
-        source: 'EnglishAcademy',
-        connectionName: 'Hero form cytalk',
-        timestamp: new Date().toISOString(),
-        appVersion: '1.0.1',
+      const retryPayload = {
+        ...payload,
         isRetry: true
-      }, {
+      };
+      
+      const makeRes = await axios.post(UNIFIED_WEBHOOK, retryPayload, {
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
@@ -161,223 +245,37 @@ export const sendContactFormData = async (formData: {
         }
       });
       
-      console.log('Contact form data sent successfully on retry:', response.data);
-      return response.data;
+      results.make = makeRes.data;
+      console.log('sendPaymentFormData enviado a Make.com con éxito en el reintento');
     } catch (retryError) {
-      console.error('Error on retry sending contact form data:', retryError);
-      throw retryError;
+      console.error('❌ Error en reintento Make.com:', retryError);
     }
   }
-};
 
-/**
- * Envía los resultados del Placement Test a Make.com
- * @param userData Datos del usuario
- * @param testResult Resultados del test
- * @returns Promesa con la respuesta
- */
-export const sendPlacementTestData = async (
-  userData: {
-    name: string;
-    email: string;
-    age: string;
-    selfAssessedLevel: string;
-    learningGoals: string;
-  },
-  testResult: {
-    level: string;
-    score: number;
-    recommendedGroup?: string;
-    strengths: string[];
-    weaknesses: string[];
-    recommendation: string;
-    nextSteps: string[];
-  }
-): Promise<MakeWebhookResponse> => {
-  console.log('Iniciando envío de datos de placement test');
-  console.log('Datos de usuario:', JSON.stringify(userData, null, 2));
-  console.log('Resultados del test:', JSON.stringify(testResult, null, 2));
   try {
-    await verifyMakeConnection();
-
-    // Estructura plana con prefijos para evitar colisiones
-    const payload = {
-      userName: userData.name,
-      userEmail: userData.email,
-      userAge: userData.age,
-      selfAssessedLevel: userData.selfAssessedLevel,
-      learningGoals: userData.learningGoals,
-      testLevel: testResult.level,
-      testScore: testResult.score,
-      recommendedGroup: testResult.recommendedGroup || 'No especificado',
-      strengths: testResult.strengths.join('; '),
-      weaknesses: testResult.weaknesses.join('; '),
-      recommendation: testResult.recommendation,
-      nextSteps: testResult.nextSteps.join(' | '),
-      formType: 'placement',
-      source: 'EnglishAcademy',
-      connectionName: 'Hero form cytalk',
-      timestamp: new Date().toISOString(),
-      appVersion: '1.0.1'
-    };
-
-    console.log('Enviando datos de placement test:', JSON.stringify(payload, null, 2));
-    console.log('URL del webhook:', UNIFIED_WEBHOOK);
-
-    // Verificar que formType esté correctamente establecido
-    if (payload.formType !== 'placement') {
-      console.warn('ADVERTENCIA: formType no está establecido como "placement"');
-    }
-
-    const response = await axios.post(UNIFIED_WEBHOOK, payload, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'X-Connection-Key': 'englishacademy-web-app'
-      },
-      timeout: 30000
-    });
-    
-    // Mostrar la respuesta completa para diagnóstico
-    console.log('Respuesta completa del webhook:', JSON.stringify(response.data, null, 2));
-
-    console.log('Datos de placement enviados exitosamente:', response.data);
-    return response.data;
+    const backendRes = await axios.post(`${BACKEND_BASE_URL}/api/forms/payment`, payload);
+    results.backend = backendRes.data;
+    console.log('sendPaymentFormData enviado al backend con éxito');
   } catch (error) {
-    console.error('Error enviando datos de placement:', error);
-    
-    if (axios.isAxiosError(error)) {
-      console.error('Detalles del error:', {
-        status: error.response?.status,
-        data: error.response?.data,
-        headers: error.response?.headers
-      });
-    }
-
-    // Reintento mejorado
-    try {
-      console.log('Reintentando envío después de 5 segundos...');
-      await new Promise(resolve => setTimeout(resolve, 5000));
-
-      const retryPayload = {
-        // User Data
-        userName: userData.name,
-        userEmail: userData.email,
-        userAge: userData.age,
-        selfAssessedLevel: userData.selfAssessedLevel,
-        learningGoals: userData.learningGoals,
-        
-        // Test Results
-        testLevel: testResult.level,
-        testScore: testResult.score,
-        recommendedGroup: testResult.recommendedGroup || 'No especificado',
-        strengths: testResult.strengths.join('; '),
-        weaknesses: testResult.weaknesses.join('; '),
-        recommendation: testResult.recommendation,
-        nextSteps: testResult.nextSteps.join(' | '),
-        
-        // Metadata
-        source: 'EnglishAcademy',
-        connectionName: 'Hero form cytalk',
-        timestamp: new Date().toISOString(),
-        formType: 'placement',
-        appVersion: '1.0.1',
-        isRetry: true
-      };
-      
-      console.log('Payload para reintento de placement test:', JSON.stringify(retryPayload, null, 2));
-      console.log('URL del webhook para reintento:', UNIFIED_WEBHOOK);
-
-      const response = await axios.post(UNIFIED_WEBHOOK, retryPayload, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          'X-Connection-Key': 'englishacademy-web-app'
-        },
-        timeout: 30000
-      });
-
-      console.log('Envío exitoso en reintento:', response.data);
-      return response.data;
-    } catch (retryError) {
-      console.error('Error en reintento:', retryError);
-      throw retryError;
-    }
-  }
-};
-
-/**
- * Envía los datos del formulario de Pago a Make.com
- * @param paymentData Datos del pago
- * @returns Promesa con la respuesta
- */
-export const sendPaymentFormData = async (
-  paymentData: PaymentFormData
-): Promise<MakeWebhookResponse> => {
-  try {
-    await verifyMakeConnection();
-    
-    const formData = {
-      paymentData,
-      source: 'EnglishAcademy',
-      connectionName: 'Hero form cytalk',
-      timestamp: new Date().toISOString(),
-      formType: 'payment',
-      appVersion: '1.0.1'
-    };
-    
-    const response = await axios.post(UNIFIED_WEBHOOK, formData, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'X-Connection-Key': 'englishacademy-web-app'
-      },
-      timeout: 30000
-    });
-    
-    console.log('Payment form data sent successfully:', response.data);
-    return response.data;
-  } catch (error) {
-    console.error('Error sending payment form data:', error);
-    if (axios.isAxiosError(error)) {
-      console.error('Axios error details:', {
-        status: error.response?.status,
-        statusText: error.response?.statusText,
-        data: error.response?.data,
-        request: error.request ? 'Request was made but no response received' : 'Request setup error'
-      });
-    }
+    console.error('❌ Error Backend:', error);
+    toast.error('No se pudo guardar el registro en Cytalk');
     
     try {
-      console.log('Retrying payment form submission after 2 seconds...');
+      console.log('Reintentando envío del formulario de pago al backend después de 2 segundos...');
       await new Promise(resolve => setTimeout(resolve, 2000));
       
-      const formDataRetry = {
-        paymentData,
-        source: 'EnglishAcademy',
-        connectionName: 'Hero form cytalk',
-        timestamp: new Date().toISOString(),
-        formType: 'payment',
-        appVersion: '1.0.1',
+      const retryPayload = {
+        ...payload,
         isRetry: true
       };
       
-      console.log('Payload para reintento de pago:', JSON.stringify(formDataRetry, null, 2));
-      
-      const response = await axios.post(UNIFIED_WEBHOOK, formDataRetry, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          'X-Connection-Key': 'englishacademy-web-app'
-        },
-        timeout: 30000
-      });
-      
-      console.log('Payment form data sent successfully on retry:', response.data);
-      return response.data;
+      const backendRes = await axios.post(`${BACKEND_BASE_URL}/api/forms/payment`, retryPayload);
+      results.backend = backendRes.data;
+      console.log('sendPaymentFormData enviado al backend con éxito en el reintento');
     } catch (retryError) {
-      console.error('Error on retry sending payment form data:', retryError);
-      throw retryError;
+      console.error('❌ Error en reintento Backend:', retryError);
     }
   }
+
+  return results;
 };

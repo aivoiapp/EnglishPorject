@@ -34,7 +34,7 @@ const ReviewsSection = () => {
   return (
     <section
       id="reviews"
-      className="py-16 bg-gradient-to-b from-[#e5e5d8] to-[#d8d8c8] dark:from-gray-900 dark:to-gray-800 text-gray-800 dark:text-white"
+      className="py-16 bg-gradient-to-b from-[#5B0E88] to-[#C5156E] dark:from-gray-900 dark:to-gray-800 text-gray-800 dark:text-white"
     >
       <div className="container mx-auto px-6 pb-16">
         <h2 className="text-4xl font-bold text-center mb-12 mt-4">
@@ -60,7 +60,7 @@ const ReviewsSection = () => {
             {reviews.map((review, index) => (
               <div
                 key={index}
-                className="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden border border-gray-200 p-6 mx-4 flex flex-col"
+                className="bg-[#f6e6fa]/90 dark:bg-gray-800/90 rounded-lg shadow-lg overflow-hidden border border-gray-200 p-6 mx-4 flex flex-col"
                 style={{
                   minHeight: isMobile ? 'auto' : '380px',
                   maxHeight: isMobile ? 'auto' : '380px'

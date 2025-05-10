@@ -297,19 +297,23 @@ const PlacementSection = () => {
   };
 
   return (
-    <section id="evaluacion" className="py-16 bg-gradient-to-b from-[#e5e5d8] to-[#d8d8c8] dark:from-gray-900 dark:to-gray-800 text-gray-800 dark:text-white relative">
+    <section id="evaluacion" className="py-16 bg-gradient-to-b from-[#5B0E88] to-[#C5156E] dark:from-gray-900 dark:to-gray-800 text-gray-800 dark:text-white relative">
       <div className="container mx-auto px-6">
-        <h2 className="text-3xl font-bold text-center mb-12 flex items-center justify-center dark:text-white">
+        <h2 className="text-3xl font-bold text-center mb-12 flex items-center justify-center text-white dark:text-white">
           <BrainCircuit className="mr-2 h-8 w-8 dark:text-blue-400" />
           {t('placementTest.title')}
         </h2>
         
         {!selectedQuestions.length && !result ? (
-          <UserForm onSubmit={handleUserFormSubmit} isLoading={isLoading} />
+          <div className="max-w-7xl w-full mx-auto">
+            <div className="bg-[#f6e6fa]/90 dark:bg-gray-900/90 p-8 rounded-2xl shadow-2xl ring-2 ring-blue-100 dark:ring-blue-900/40 transition-all duration-300">
+              <UserForm onSubmit={handleUserFormSubmit} isLoading={isLoading} />
+            </div>
+          </div>
         ) : selectedQuestions.length > 0 && currentQuestion < selectedQuestions.length && !result ? (
           <div className="space-y-6">
             {/* Progress Bar Mejorado */}
-            <div className="bg-white dark:bg-gray-800 p-5 rounded-lg shadow-md">
+            <div className="bg-[#f6e6fa]/90 dark:bg-gray-800/90 p-5 rounded-lg shadow-md">
               <div className="flex justify-between items-center mb-3">
                 <div className="flex items-center bg-blue-50 dark:bg-blue-900/20 px-3 py-1 rounded-full">
                   <span className="text-sm font-medium text-blue-700 dark:text-blue-300">
@@ -382,14 +386,18 @@ const PlacementSection = () => {
             </div>
             
             {/* Componente de Pregunta */}
-            <QuestionDisplay 
-              question={selectedQuestions[currentQuestion]}
-              currentQuestionIndex={currentQuestion}
-              totalQuestions={Math.max(parseInt(userData.age) < 13 ? 10 : 15, selectedQuestions.length)}
-              onAnswer={handleAnswer}
-              feedbackState={feedbackState}
-              userAge={userData.age}
-            />
+            <div className="max-w-3xl w-full mx-auto">
+              <div className="bg-[#f6e6fa]/90 dark:bg-gray-900/90 p-8 rounded-2xl shadow-2xl ring-2 ring-blue-100 dark:ring-blue-900/40 transition-all duration-300">
+                <QuestionDisplay 
+                  question={selectedQuestions[currentQuestion]}
+                  currentQuestionIndex={currentQuestion}
+                  totalQuestions={Math.max(parseInt(userData.age) < 13 ? 10 : 15, selectedQuestions.length)}
+                  onAnswer={handleAnswer}
+                  feedbackState={feedbackState}
+                  userAge={userData.age}
+                />
+              </div>
+            </div>
           </div>
         ) : isLoading && !result ? (
           <Loader fullScreen={false} evaluationMessages={evaluationMessages} title={t('loader.processing')} />
@@ -402,7 +410,6 @@ const PlacementSection = () => {
           />
         ) : null}
       </div>
-
       {/* Loading Overlay para evaluación */}
       {isEvaluating && (
         <Loader 

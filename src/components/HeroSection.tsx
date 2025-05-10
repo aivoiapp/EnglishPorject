@@ -51,7 +51,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onFormSubmit }) => {
   };
 
   return (
-    <section id="hero" className="relative py-16 md:py-24 bg-gradient-to-br from-blue-800 to-blue-900 dark:from-blue-900 dark:to-blue-950 overflow-hidden">
+    <section id="hero" className="relative py-16 md:py-24 bg-gradient-to-br from-[#5B0E88] to-[#C5156E] dark:from-blue-900 dark:to-blue-950 overflow-hidden">
       <div className="container mx-auto px-4">
         <div className="grid lg:grid-cols-2 gap-8 items-center">
           {/* Contenido Principal */}
@@ -129,7 +129,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onFormSubmit }) => {
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
-            className="relative z-10 bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-6 md:p-8"
+            className="relative z-10 bg-[#f6e6fa]/90 dark:bg-gray-800/90 rounded-2xl shadow-2xl ring-2 ring-blue-100 dark:ring-blue-900/40 p-6 md:p-8 backdrop-blur-md transition-all duration-300"
           >
             <div className="text-center mb-6">
               <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-600 to-blue-500 bg-clip-text text-transparent">

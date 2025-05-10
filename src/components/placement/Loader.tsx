@@ -83,7 +83,7 @@ const Loader = ({
   // Si es fullScreen, mostramos un loader que ocupa toda la pantalla
   if (fullScreen) {
     return (
-      <div className="fixed inset-0 bg-[#f5f5f0] dark:bg-gray-900 bg-opacity-90 dark:bg-opacity-90 z-50 flex flex-col items-center justify-center">
+      <div className="fixed inset-0 bg-[#BDBDB8] dark:bg-gray-900 bg-opacity-80 dark:bg-opacity-80 z-50 flex flex-col items-center justify-center">
         <div className="max-w-3xl w-full px-6">
           {/* Cabecera con título y tiempo transcurrido */}
           <div className="flex justify-between items-center mb-6">
