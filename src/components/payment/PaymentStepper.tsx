@@ -9,7 +9,7 @@ import PaymentMethods from './PaymentMethods';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 import { storePaymentData, generatePaymentReceipt } from '../../services/paymentService';
-import { sendPaymentFormData } from '../../services/makeService';
+import { sendPaymentFormData } from '../../services/makeServicePayment';
 import { useTranslation } from 'react-i18next';
 import { useCurrency } from '../../context/useCurrency';
 

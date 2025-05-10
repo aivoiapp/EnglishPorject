@@ -6,7 +6,7 @@ import Loader from './placement/Loader';
 import { generateQuestions } from '../services/placementService';
 import { evaluateUserTest } from '../services/evaluationService'; 
 import { generatePlacementTestPDF } from '../services/pdfService'; 
-import { sendPlacementTestData } from '../services/makeService';
+import { sendPlacementTestData } from '../services/makeServicePlacement';
 import { UserData } from './placement/UserForm';
 import { jsPDF } from 'jspdf';
 import { selectInitialQuestions, selectNextQuestion, calculatePerformance } from '../services/adaptiveTestService'; // Importar el servicio adaptativo

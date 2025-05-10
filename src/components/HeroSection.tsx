@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Sparkles, BookOpen, Clock, Award } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import PrivacyPolicyModal from './PrivacyPolicyModal';
-import { sendHeroFormData } from '../services/makeService';
+import { sendHeroFormData } from '../services/makeServiceHero';
 import CustomPhoneInput from './CustomPhoneInput';
 import { useLanguage } from '../context/useLanguage';
 import { useCurrency } from '../context/useCurrency';

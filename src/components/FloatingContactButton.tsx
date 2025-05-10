@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { MessageCircle, X } from 'lucide-react';
 import { Agent, agents } from '../types';
-import { sendContactFormData } from '../services/makeService';
+import { sendContactFormData } from '../services/makeServiceContact';
 import CustomPhoneInput from './CustomPhoneInput';
 import '../phone-input.css';
 import { useTranslation } from 'react-i18next';
