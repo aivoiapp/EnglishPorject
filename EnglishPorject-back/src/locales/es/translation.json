@@ -4,9 +4,7 @@
     "selectCountry": "Seleccionar país",
     "peruPaymentMethods": "Mostrando métodos de pago para Perú",
     "internationalPaymentMethods": "Mostrando métodos de pago internacionales",
-    "advertisement": "Publicidad",
-    "copyButton": "Copiar",
-    "closeButton": "Cerrar"
+    "advertisement": "Publicidad"
   },
   "benefitsSection": {
     "title": "Beneficios de aprender inglés",
@@ -440,8 +438,7 @@
       "performance": "Rendimiento",
       "performanceByLevel": "Rendimiento por nivel",
       "filePrefix": "evaluacion-ingles",
-      "defaultUser": "usuario",
-      "generateCoupon": "Felicidades ahora genera tu cupón de descuento"
+      "defaultUser": "usuario"
     },
     "errors": {
       "generatingQuestions": "Error al generar preguntas. Por favor, intenta de nuevo.",

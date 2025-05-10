@@ -4,9 +4,7 @@
     "selectCountry": "Select country",
     "peruPaymentMethods": "Showing payment methods for Peru",
     "internationalPaymentMethods": "Showing international payment methods",
-    "advertisement": "Advertisement",
-    "copyButton": "Copy",
-    "closeButton": "Close"
+    "advertisement": "Advertisement"
   },
   "benefitsSection": {
     "title": "Benefits of Learning English",
@@ -249,8 +247,7 @@
       "performance": "Performance",
       "performanceByLevel": "Performance by level",
       "filePrefix": "english-assessment",
-      "defaultUser": "user",
-      "generateCoupon": "Congratulations! Now generate your discount code."
+      "defaultUser": "user"
     },
     "errors": {
       "generatingQuestions": "Error generating questions. Please try again."

@@ -1,6 +1,4 @@
-import { Fragment, useState } from 'react';
-import Confetti from 'react-confetti';
-import CouponModal from './CouponModal';
+import { Fragment } from 'react';
 import { RefreshCw } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { PlacementTestResult, schedules, Schedule } from '../../types';
@@ -25,27 +23,6 @@ const ResultsDisplay = ({
   // Debugging logs
   console.log('Result:', result);
   console.log('Schedules:', schedules);
-
-  const [couponCode, setCouponCode] = useState('');
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const handleGenerateCoupon = async () => {
-    try {
-      const response = await fetch('https://cytalk-backend.onrender.com/coupons/generate', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({ discountPercentage: 50 })
-      });
-      
-      if (response.ok) {
-        const { code } = await response.json();
-        setCouponCode(code);
-        setIsModalOpen(true);
-      }
-    } catch (error) {
-      console.error('Error generating coupon:', error);
-    }
-  };
 
   return (
     <div className="max-w-4xl mx-auto bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md">
@@ -143,20 +120,7 @@ const ResultsDisplay = ({
           <RefreshCw className="w-5 h-5 mr-2" />
           {t('placementTest.results.takeAnother')}
         </button>
-        <button
-          onClick={handleGenerateCoupon}
-          className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 dark:bg-green-700 dark:hover:bg-green-800 transition-colors flex items-center justify-center"
-        >
-          🎉 {t('placementTest.results.generateCoupon')}
-        </button>
       </div>
-
-      {isModalOpen && <Confetti recycle={false} numberOfPieces={200} />}
-      <CouponModal
-        isOpen={isModalOpen}
-        code={couponCode}
-        onClose={() => setIsModalOpen(false)}
-      />
     </div>
   );
 };

@@ -15,7 +15,6 @@
     "test": "jest"
   },
   "dependencies": {
-    "@headlessui/react": "^2.2.2",
     "@radix-ui/react-accordion": "^1.1.2",
     "@radix-ui/react-dialog": "^1.0.5",
     "@radix-ui/react-slot": "^1.0.2",
@@ -32,7 +31,6 @@
     "libphonenumber-js": "^1.12.6",
     "lucide-react": "^0.294.0",
     "react": "^18.2.0",
-    "react-confetti": "^6.4.0",
     "react-datepicker": "^8.2.1",
     "react-dom": "^18.2.0",
     "react-i18next": "^15.4.1",
