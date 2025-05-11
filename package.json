@@ -15,10 +15,12 @@
     "test": "jest"
   },
   "dependencies": {
+    "@headlessui/react": "^2.2.2",
     "@radix-ui/react-accordion": "^1.1.2",
     "@radix-ui/react-dialog": "^1.0.5",
     "@radix-ui/react-slot": "^1.0.2",
     "@types/react-datepicker": "^6.2.0",
+    "@types/react-toastify": "^4.0.2",
     "axios": "^1.8.4",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
@@ -30,6 +32,7 @@
     "libphonenumber-js": "^1.12.6",
     "lucide-react": "^0.294.0",
     "react": "^18.2.0",
+    "react-confetti": "^6.4.0",
     "react-datepicker": "^8.2.1",
     "react-dom": "^18.2.0",
     "react-i18next": "^15.4.1",
@@ -37,7 +40,8 @@
     "react-intersection-observer": "^9.16.0",
     "react-phone-number-input": "^3.4.12",
     "react-player": "^2.16.0",
-    "react-responsive-carousel": "^3.2.23"
+    "react-responsive-carousel": "^3.2.23",
+    "react-toastify": "^11.0.5"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.1",

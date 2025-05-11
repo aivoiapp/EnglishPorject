@@ -1,0 +1,470 @@
+{
+  "common": {
+    "selectLanguage": "Seleccionar idioma",
+    "selectCountry": "Seleccionar país",
+    "peruPaymentMethods": "Mostrando métodos de pago para Perú",
+    "internationalPaymentMethods": "Mostrando métodos de pago internacionales",
+    "advertisement": "Publicidad"
+  },
+  "benefitsSection": {
+    "title": "Beneficios de aprender inglés",
+    "globalOpportunitiesTitle": "Oportunidades globales",
+    "globalOpportunitiesDescription": "Accede a oportunidades laborales y educativas en todo el mundo. El inglés es el idioma global de los negocios y la educación.",
+    "betterSalariesTitle": "Mejores salarios",
+    "betterSalariesDescription": "Los profesionales bilingües ganan en promedio un 30% más que aquellos que solo hablan un idioma.",
+    "professionalDevelopmentTitle": "Desarrollo profesional",
+    "professionalDevelopmentDescription": "Mejora tu perfil profesional y accede a recursos, investigaciones y networking internacional.",
+    "scrollToViewVideo": "Desplázate para ver el video"
+  },
+  "privacyPolicy": {
+    "title": "Política de Protección de Datos Personales",
+    "objectiveTitle": "Objetivo de la Política",
+    "objectiveDescription": "El presente documento tiene como objetivo establecer principios, prácticas uniformes y responsabilidades referidas al tratamiento de datos personales realizado por Cytalk.online.",
+    "scopeTitle": "Alcance",
+    "scopeDescription": "La presente política es aplicable a todos los datos personales recopilados a través de nuestra plataforma de aprendizaje en línea, incluyendo información de estudiantes, profesores y usuarios del servicio. Esta política deberá ser conocida y cumplida por todo el personal y colaboradores de Cytalk.online.",
+    "keyTermsTitle": "Términos Clave",
+    "keyTermsDescription": "Cytalk.online: Se refiere a nuestra plataforma de aprendizaje de inglés en línea y todos los servicios educativos asociados a ella.",
+    "policyDetailTitle": "Detalle de la Política",
+    "policyDetailDescription": "Cytalk.online se encuentra comprometida a cumplir con las legislaciones correspondientes en materia de protección de datos personales. Estas normativas nos obligan, fundamentalmente a:",
+    "policyDetailItem1": "La recopilación y el uso de la información personal.",
+    "policyDetailItem2": "La calidad y la seguridad de la información.",
+    "policyDetailItem3": "Los derechos de las personas con respecto a la información sobre sí mismos.",
+    "policyDetailConclusion": "Cytalk.online se encuentra comprometida con la protección, el manejo y tratamiento adecuado de los datos personales de nuestros estudiantes, profesores y usuarios de la plataforma.",
+    "complianceResponsibilitiesTitle": "Responsabilidades del Cumplimiento",
+    "complianceResponsibilitiesDescription": "El equipo de dirección de Cytalk.online, junto con el personal designado, será responsable de revisar periódicamente esta Política y efectuar los ajustes necesarios. Nuestro equipo de soporte técnico estará encargado de resolver cualquier consulta relacionada con la aplicación y alcances de la presente Política.",
+    "confidentialityTitle": "Confidencialidad",
+    "confidentialityDescription": "Los datos personales recopilados a través de nuestra plataforma, incluyendo información académica y de contacto, no podrán ser divulgados sin el previo consentimiento del titular de los datos personales, salvo las excepciones reguladas en Ley.",
+    "principlesTitle": "Principios",
+    "principlesDescription": "Todo el personal y colaboradores de Cytalk.online deberán cumplir de forma permanente con los siguientes principios establecidos en la Ley:",
+    "principleLegality": "Legalidad: El tratamiento de datos personales realizado por Cytalk.online se hará conforme a lo dispuesto en la Ley.",
+    "principleConsent": "Consentimiento: Cytalk.online no podrá tratar datos personales sin el consentimiento previo, expreso, inequívoco y libre de su titular.",
+    "principlePurpose": "Finalidad: Cytalk.online recopilará datos personales únicamente para fines educativos y de mejora de la experiencia de aprendizaje.",
+    "principleProportionality": "Proporcionalidad: Todo tratamiento de datos personales realizado por Cytalk.online será adecuado y relevante para el proceso de enseñanza-aprendizaje.",
+    "principleQuality": "Calidad: Los datos personales de nuestros estudiantes y profesores serán mantenidos de manera precisa y actualizada para garantizar una experiencia educativa óptima.",
+    "principleSecurity": "Seguridad: Cytalk.online implementará medidas técnicas y organizativas para proteger la información personal de nuestra comunidad educativa.",
+    "closeButton": "Cerrar"
+  },
+
+  "audienceSection": {
+    "title": "¿A quién va dirigido este curso?",
+    "beginners": {
+      "title": "Principiantes en inglés",
+      "description": "Personas sin experiencia previa, interesadas en aprender inglés desde cero. Ideal para quienes buscan desarrollar una base sólida en el idioma y quieren evolucionar profesionalmente."
+    },
+    "professionals": {
+      "title": "Profesionales y Creativos",
+      "description": "Para profesionales con experiencia, que buscan renovar sus conocimientos, cambiar de área o crecer en la misma empresa. Aprenderás en profundidad las variantes del inglés y estarás preparado para colaborar en equipos de trabajo internacionales."
+    },
+    "entrepreneurs": {
+      "title": "Emprendedores y Microempresarios",
+      "description": "Empresarios con intención de crear productos exitosos para potenciar su marca. Dominarás las habilidades para ofrecer las mejores experiencias centradas en el usuario. Conseguirás ser un líder en la coordinación de proyectos internacionales."
+    }
+  },
+  "curriculumSection": {
+    "title": "¿Qué aprenderás?",
+    "conversation": {
+      "title": "Participar en conversaciones",
+      "description": "Aprende a participar activamente en conversaciones en inglés, mejorando tu fluidez y confianza."
+    },
+    "pronunciation": {
+      "title": "Practicar la pronunciación",
+      "description": "Perfecciona tu pronunciación para hablar inglés con confianza y ser entendido por hablantes nativos."
+    },
+    "grammar": {
+      "title": "Mejora tu gramática",
+      "description": "Domina las reglas gramaticales del inglés para comunicarte con precisión y claridad en cualquier situación."
+    },
+    "vocabulary": {
+      "title": "Ampliar tu vocabulario",
+      "description": "Aprende nuevas palabras y expresiones para enriquecer tu comunicación y comprensión del inglés."
+    },
+    "reading": {
+      "title": "Desarrollar habilidades de lectura",
+      "description": "Mejora tu capacidad para leer y comprender textos en inglés, desde artículos hasta literatura."
+    },
+    "listening": {
+      "title": "Mejorar la comprensión auditiva",
+      "description": "Desarrolla la habilidad de entender el inglés hablado en diferentes acentos y contextos."
+    },
+    "examPrep": {
+      "title": "Preparación para exámenes",
+      "description": "Prepárate para exámenes de inglés reconocidos internacionalmente, como TOEFL y IELTS."
+    },
+    "culture": {
+      "title": "Cultura y contexto",
+      "description": "Aprende sobre la cultura y el contexto de los países de habla inglesa para una comunicación más efectiva."
+    },
+    "certification": {
+      "title": "Certificación Internacional",
+      "description": "Aquellos estudiantes que completen exitosamente el programa de estudios estarán preparados para presentar las pruebas oficiales de Cambridge de reconocimiento internacional, abriendo puertas a oportunidades académicas y profesionales en todo el mundo."
+    }
+  },
+  "professorsSection": {
+    "title": "Expertos que te ayudan a hablar inglés con confianza",
+    "labels": {
+      "certifications": "Certificaciones",
+      "specialties": "Especialidades",
+      "experience": "Experiencia",
+      "methodology": "Metodología",
+      "vision": "Visión"
+    },
+    "aboutCyTalk": {
+      "title": "Sobre CyTalk.online",
+      "subtitle": "Inglés real para vidas reales - en comunidad, desde casa",
+      "description": "CyTalk.online es una academia virtual que ofrece clases de inglés en grupo, diseñadas para acompañar el progreso de cada estudiante dentro de una comunidad de aprendizaje activa y motivadora. Fundada por Cyril Ordoñez, profesora certificada por Cambridge CELTA con más de 9 años de experiencia, CyTalk nace con la misión de hacer del inglés una herramienta útil, accesible y significativa para la vida diaria.",
+      "conclusion": "En CyTalk.online, no solo aprendes inglés: te expresas, conectas y te preparas para un futuro sin barreras lingüísticas."
+    },
+    "cyril": {
+      "name": "Cyril O.",
+      "title": "Tutora certificada por Cambridge",
+      "certifications": ["CAE (Certificate in Advanced English)", "CELTA (Certificate in Teaching English to Speakers of Other Languages)"],
+      "experience": "Con 9 años de experiencia enseñando inglés como lengua extranjera. Sus clases son dinámicas, con materiales relevantes y un ambiente ameno. Utiliza un método comunicativo y herramientas digitales interactivas, con planes de aprendizaje personalizados según intereses y objetivos del estudiante. Habla Español (nativo), Inglés (C1), Francés (B1) e Italiano (A1).",
+      "specialties": ["Inglés General", "Inglés Académico", "Conversación", "Preparación para Exámenes"],
+      "vision": "Como la imagen de cytalk.online, mi misión es inspirar y guiar a estudiantes de todo el mundo a alcanzar sus metas lingüísticas con confianza y éxito.",
+      "methodology": "Mi enfoque se centra en la comunicación efectiva, utilizando métodos interactivos y personalizados para cada estudiante. Creo en el aprendizaje a través de la práctica constante y el uso de recursos digitales innovadores."
+    }
+  },
+  "scheduleSection": {
+    "title": "Horarios Disponibles",
+    "group": "Grupo"
+  },
+  "faqSection": {
+    "title": "Preguntas Frecuentes",
+    "cost": {
+      "question": "¿Cuánto cuesta el curso?",
+      "answer": "¡Aprovecha nuestras ofertas especiales! Consigue descuentos especiales y aprovecha todas las ventajas de nuestros cursos."
+    },
+    "duration": {
+      "question": "¿Puedo tomar solo un mes?",
+      "answer": "Sí, ofrecemos modalidad mensual. Sin embargo recomendamos un mínimo de 6 meses para lograr un progreso significativo en tu inglés."
+    },
+    "registration": {
+      "question": "¿Cómo es el proceso de inscripción?",
+      "answer": "1. Dirijete hacia el formulario de pago\n2. Elige tu horario preferido\n3. Realiza el pago mediante tranferencia, Yape o tarjeta\n4. Sigue las intrucciones y ¡Listo para comenzar!"
+    },
+    "requirements": {
+      "question": "¿Qué requisitos técnicos necesito?",
+      "answer": "- Computador o laptop con cámara web\n- Conexión a internet estable\n- Micrófono funcional\n- Zoom instalado (te enviaremos el link de acceso)"
+    },
+    "courseIncludes": {
+      "question": "¿Qué incluye el curso?",
+      "answer": "- Incluye acceso a clases en vivo\n- Materiales digitales\n- Ejercicios interactivos\n- Acompañamiento docente\n- Evaluaciones periódicas para medir tu avance."
+    },
+    "level": {
+      "question": "¿Qué nivel de inglés necesito para comenzar?",
+      "answer": "- No necesitas experiencia previa.\n- Al registrarte, te ayudamos a determinar tu nivel actual para ubicarte en el grupo adecuado.\n- ¡Comienza tu viaje hacia el inglés hoy!"
+    }
+  },
+  "header": {
+    "title": "Cytalk English Academy",
+    "audience": "Audiencia",
+    "curriculum": "Curriculum",
+    "professors": "Profesores",
+    "schedule": "Horarios",
+    "faq": "FAQ",
+    "placementTest": "Placement Test"
+  },
+  "loader": {
+    "processing": "Procesando...",
+    "pleaseWait": "Por favor espera unos segundos",
+    "estimatedProgress": "Progreso estimado",
+    "creatingExperience": "Creando una experiencia de evaluación hecha a tu medida",
+    "preparingEvaluation": "Preparando una evaluación personalizada según tu nivel",
+    "tips": {
+      "tip1": "¿Sabías que el inglés es el idioma más estudiado del mundo? Empieza con nosotros y sé parte de quienes ya están avanzando.",
+      "tip2": "Nuestras clases te preparan para aprovechar oportunidades laborables reales.",
+      "tip3": "Dos sesiones por semana bien aprovechadas te llevan más lejos de lo que imaginas.",
+      "tip4": "Te ayudamos a dominar las palabras que realmente necesitas para comunicarte.",
+      "tip5": "Escuchar música en inglés mejora tu comprensión auditiva"
+    }
+  },
+  "evaluation": {
+    "analyzing": "Analizando tus respuestas...",
+    "evaluatingGrammar": "Evaluando tu nivel de gramática...",
+    "calculatingVocabulary": "Calculando tu nivel de vocabulario...",
+    "determiningStrengths": "Determinando tus fortalezas y debilidades...",
+    "preparingRecommendations": "Preparando recomendaciones personalizadas...",
+    "generatingReport": "Generando tu informe detallado..."
+  },
+ "hero": {
+    "title": "Domina el inglés con",
+    "titleHighlight": "una metodología eficaz y profesores certificados", 
+    "subtitle": "Impulsa tu crecimiento personal y profesional con clases virtuales en vivo, dinámicas y centradas en el estudiante.",
+    "discount": "Hasta 50% de descuento en tu mensualidad o en el nivel completo (6 meses)",
+    "whyChooseUs": "¿Por qué elegirnos?",
+    "benefits": {
+        "liveClasses": "Clases en vivo con profesores expertos",
+        "sessions": "2 sesiones semanales de 60 minutos",
+        "studentCentered": "Aprendizaje centrado en el estudiante",
+        "dynamicClasses": "Clases participativas, dinámicas y enfocadas en resultados",
+        "certifications": "Metodología alineada a certificaciones internacionales"
+    },
+    "features": {
+        "allLevels": "Todos los niveles",
+        "duration": "6 meses por nivel", 
+        "certifications": "Enfoque alineado y diseñado a certificaciones internacionales"
+    },
+    "pricing": {
+        "oldPrice": "200",
+        "newPrice": "100",
+        "perMonth": "/mes",
+        "fullLevelOffer": "Nuestra oferta incluye 10% de descuento extra por pago completo del nivel (6 meses)",
+        "limitedOffer": "¡OFERTA LIMITADA!",
+        "currency": {
+            "PEN": "S/.",
+            "USD": "$"
+        }
+    },
+    "form": {
+      "title": "Inscríbete al curso",
+      "startDate": "Inicio: 20 de Mayo | Cupos: limitados",
+      "fullName": "Nombre completo",
+      "email": "Email",
+      "whatsapp": "WhatsApp",
+      "privacyPolicy": "He leído y acepto el ",
+      "privacyPolicyLink": "Aviso de privacidad",
+      "submitButton": "¡Continuar al pago!",
+      "couponNote": "Para obtener tu cupón de descuento, comunícate con nosotros en la sección",
+      "contactLink": "Contáctanos"
+    }
+  },
+  "footer": {
+    "copyright": "Todos los derechos reservados."
+  },
+  "ads": {
+    "advertisement": "Publicidad"
+  },
+  "navigation": {
+    "next": "Siguiente",
+    "previous": "Anterior"
+  },
+
+  "payment": {
+    "title": "Hazlo oficial: inscríbete y asegura tu progreso",
+    "stepper": {
+      "personalInfo": "Datos Personales",
+      "courseInfo": "Datos del Curso",
+      "paymentDetails": "Detalles de Pago",
+      "paymentMethod": "Método de Pago",
+      "paymentSummary": "Resumen de Pago"
+    },
+    "motivationalMessages": {
+      "step0": "¡Comencemos! Solo necesitamos algunos datos básicos.",
+      "step1": "¡Excelente! Ahora cuéntanos sobre el curso que te interesa.",
+      "step2": "¡Vas muy bien! Definamos los detalles del pago.",
+      "step3": "Elige cómo prefieres realizar tu pago.",
+      "step4": "¡Listo! Revisa los detalles y confirma tu pago."
+    },
+    "personalInfo": {
+      "title": "Datos Personales",
+      "fullName": "Nombre Completo",
+      "email": "Correo Electrónico",
+      "phone": "Teléfono"
+    },
+    "courseInfo": {
+      "title": "Datos del Curso",
+      "level": "Nivel",
+      "beginners": "Principiantes (A0-A1-A2)",
+      "intermediate": "Intermedios (B1-B2)",
+      "group": "Grupo de interés",
+      "selectGroup": "Selecciona un grupo",
+      "children": "Niños (8-12 años)",
+      "teenagers": "Adolescentes (13-17 años)",
+      "adults": "Adultos (18+ años)",
+      "schedule": "Horario",
+      "selectSchedule": "Seleccione un horario"
+    },
+    "paymentDetails": {
+      "title": "Datos del Pago",
+      "paymentType": "Tipo de Pago",
+      "monthly": "Mensual",
+      "fullLevel": "Nivel Completo (6 meses con 10% descuento)",
+      "monthsCount": "Cantidad de Meses",
+      "startMonth": "Mes de inicio",
+      "paymentPeriod": "Período de pago",
+      "from": "Desde",
+      "to": "Hasta",
+      "amountToPay": "Monto a pagar",
+      "discountIncluded": "Incluye descuento del 10% por pago de nivel completo",
+      "generateReceipt": "Deseo que se genere un recibo por honorarios",
+      "enterRuc": "Ingrese su RUC para emitir el recibo"
+    },
+    "paymentMethods": {
+      "title": "Selecciona tu método de pago",
+      "bankTransfer": "Transferencia bancaria",
+      "bankTransferDesc": "Transfiere desde tu app bancaria",
+      "yapeQr": "Yape con código QR",
+      "yapeQrDesc": "Escanea el código QR con tu aplicación",
+      "creditCard": "Tarjeta de crédito/débito",
+      "creditCardDesc": "Paga con tu tarjeta bancaria",
+      "paypal": "PayPal",
+      "paypalDesc": "Paga de forma segura con PayPal",
+      "paypalInstructions": "Instrucciones para pago con PayPal",
+      "paypalDesc1": "Realiza tu pago directamente a través del siguiente enlace de PayPal: https://www.paypal.me/cylessons",
+      "paypalDesc2": "Puedes pagar con tu cuenta de PayPal o con una tarjeta de crédito/débito sin necesidad de crear una cuenta.",
+      "paypalButton": "Pagar con PayPal",
+      "paypalTransactionId": "ID de transacción de PayPal",
+      "paypalTransactionIdDesc": "Una vez realizado el pago, ingresa el ID de transacción que te proporciona PayPal",
+      "enterPaypalTransactionId": "Ingresa el ID de transacción de PayPal",
+      "selectPaymentMethod": "Selecciona un método de pago para continuar",
+      "bankTransferInstructions": "Instrucciones para transferencia bancaria",
+      "bcpAccount": "Cuenta bancaria BCP",
+      "bbvaAccount": "Cuenta bancaria BBVA",
+      "operationCode": "Código de operación",
+      "operationCodeDesc": "Una vez realizada la transferencia, regresa a este espacio e ingresa el número de transacción o código de operación en el campo correspondiente",
+      "enterOperationCode": "Ingresa el código de operación",
+      "yapeInstructions": "Instrucciones para pagar con Yape usando QR",
+      "scanQrCode": "Escanea el siguiente código QR con la app de Yape",
+      "operationNumber": "Número de operación",
+      "enterYapeOperation": "Ingresa el número de operación de Yape",
+      "cardInstructions": "Instrucciones para pago con tarjeta",
+      "completeCardData": "Completa los datos de tu tarjeta de crédito o débito",
+      "issuerBank": "Banco emisor",
+      "selectBank": "Selecciona un banco",
+      "other": "Otro",
+      "howDoIDoIt": "¿Cómo lo hago?",
+      "openBankApp": "Abre tu aplicación bancaria.",
+      "goTo": "Ve a:",
+      "bcpRechargeRecommendation": "Recomendamos realizar tu recarga de lunes a viernes de 9:00 a.m. a 8:00 p.m. y los sábados de 9:00 a.m. a 1:30 p.m. Recuerda que fuera de este horario no se pueden hacer recargas.",
+      "enterRechargeAmount": "Ingresa el monto a recargar (en soles).",
+      "enterLigoDNI": "Ingresa el código de servicio: 002117098.",
+      "selectCreditDebitCard": "Elige tarjeta de crédito o débito como método de pago.",
+      "interbankRechargeRecommendation": "Sugerimos hacer tu recarga entre las 9:00 a.m. y las 11:00 p.m. para que se refleje el mismo día; de lo contrario, se verá reflejada al día siguiente.",
+      "bbvaRechargeRecommendation": "Recomendamos hacer tu recarga de lunes a domingo entre las 9:00 a.m. y las 9:00 p.m.",
+      "otherBanksInstructions": "Para otros bancos, sigue estos pasos generales:",
+      "selectYourBank": "Selecciona tu banco",
+      "searchPaymentsSection": "Busca la sección de pagos o servicios.",
+      "searchLigo": "Busca: Ligo (LIGO CARD - LA MÁGICA CARD)",
+      "bcpPaymentPath": "Pagar servicios → Buscar empresa: Ligo (Tarjeta Ligo- Tajeta LA MÁGICA ) → Seleccionar servicio: ( Ligo - La Magica Soles ) ",
+      "interbankPaymentPath": "Operaciones → Pagos → Pago de servicios → Buscar: Ligo (LIGO CARD - LA MÁGICA CARD)",
+      "bbvaPaymentPath": "Pagar servicio → Nuevo servicio → Buscar: Ligo (LIGO CARD - LA MÁGICA CARD)",
+      "scotiabankPaymentPath": "Pagar o recargar → Otras empresas e instituciones → Otros → Buscar: Ligo (LIGO CARD - LA MÁGICA CARD)",
+      "ready": "¡LISTO!",
+      "enterCardOperation": "Ingresa el número de operación de tu tarjeta"
+    },
+    "summary": {
+      "title": "Resumen de pago",
+      "student": "Estudiante",
+      "level": "Nivel",
+      "group": "Grupo",
+      "schedule": "Horario",
+      "paymentType": "Tipo de pago",
+      "months": "Meses",
+      "period": "Período",
+      "amount": "Monto",
+      "paymentMethod": "Método de pago",
+      "operationNumber": "Número de operación",
+      "bank": "Banco",
+      "confirmPayment": "Confirmar Pago",
+      "processingPayment": "Procesando pago...",
+      "paymentSuccess": "¡Pago procesado con éxito!",
+      "receiptGenerated": "Tu recibo ha sido generado y enviado a tu correo",
+      "downloadReceipt": "Descargar Recibo",
+      "returnToHome": "Volver al Inicio"
+    },
+    "coupons": {
+      "title": "Cupones de Descuento",
+      "placeholder": "Ingresa código de cupón",
+      "apply": "Aplicar",
+      "appliedCoupons": "Cupones aplicados",
+      "totalDiscountPercentage": "Descuento total",
+      "remove": "Eliminar cupón",
+      "totalDiscount": "Descuento total",
+      "emptyCode": "Por favor ingresa un código de cupón",
+      "alreadyApplied": "Este cupón ya ha sido aplicado",
+      "invalidCoupon": "Cupón inválido o expirado",
+      "maxDiscountExceeded": "No se puede exceder el 50% de descuento total",
+      "maxDiscountCouponApplied": "Ya tienes un cupón con el máximo descuento permitido (50%)",
+      "cannotAddMaxDiscountCoupon": "No puedes agregar un cupón de 50% cuando ya tienes otros cupones aplicados",
+      "approachingMaxDiscount": "Estás cerca del límite máximo de descuento (50%)"     
+    }
+  },
+  "placementTest": {
+    "title": "Evaluación de Nivel",
+    "personalInfo": "Información Personal",
+    "name": "Nombre (opcional)",
+    "email": "Email (opcional)",
+    "age": "Edad",
+    "currentLevel": "Elige el que consideras es tu nivel de inglés actual",
+    "learningGoals": "Objetivos de aprendizaje",
+    "learningGoalsPlaceholder": "¿Para qué quieres aprender inglés? (trabajo, viajes, estudios, etc.)",
+    "startButton": "Comenzar Evaluación",
+    "generating": "Generando...",
+    "aboutTitle": "Sobre nuestra Evaluación de Nivel",
+    "aboutDescription": "Nuestra evaluación sigue los estándares del Marco Común Europeo de Referencia para las Lenguas (MCER).",
+    "howItWorksTitle": "¿Cómo funciona?",
+    "howItWorksList": [
+      "Evaluación GRATUITA de 10 minutos",
+      "Preguntas adaptativas según tus respuestas",
+      "Análisis personalizado con IA",
+      "Descarga de resultados en PDF"
+    ],
+    "encouragement": "¡Descubre tu verdadero nivel de inglés!",
+    "listenQuestion": "Escuchar pregunta",
+    "listenQuestionAria": "Escuchar pregunta en voz alta",
+    "skills": {
+      "grammar": "Gramática",
+      "vocabulary": "Vocabulario",
+      "reading": "Comprensión lectora",
+      "listening": "Comprensión auditiva"
+    },
+    "levels": {
+      "beginner": "Principiante A0",
+      "elementary": "Elemental A1-A2",
+      "intermediate": "Intermedio B1-B2",
+      "advanced": "Avanzado C1-C2"
+    },
+    "results": {
+      "title": "Resultados de tu Evaluación",
+      "date": "Fecha",
+      "score": "Puntuación",
+      "officialDocument": "Este documento es un informe oficial de su evaluación de nivel",
+      "pageInfo": "Página {{page}} de {{totalPages}} | Generado el: {{date}}",
+      "congratulations": "¡Felicidades",
+      "completionMessage": "Has completado la evaluación de nivel.",
+      "level": "Nivel",
+      "beginnerLevels": "Principiantes (A0-A1-A2)",
+      "intermediateLevels": "Intermedios (B1-B2)",
+      "recommendedGroup": "Grupo recomendado",
+      "availableSchedules": "Horarios disponibles",
+      "noSchedules": "No hay horarios disponibles para este grupo",
+      "strengths": "Fortalezas",
+      "weaknesses": "Áreas de mejora",
+      "recommendation": "Recomendación",
+      "nextSteps": "Próximos pasos",
+      "downloadPDF": "Descargar PDF",
+      "takeAnother": "Realizar otra evaluación",
+      "question": "Pregunta {{current}} de {{total}}",
+      "performance": "Rendimiento",
+      "performanceByLevel": "Rendimiento por nivel",
+      "filePrefix": "evaluacion-ingles",
+      "defaultUser": "usuario"
+    },
+    "errors": {
+      "generatingQuestions": "Error al generar preguntas. Por favor, intenta de nuevo.",
+      "evaluatingTest": "Error al evaluar tu prueba. Por favor, intenta de nuevo."
+    }
+  },
+  
+  "contact": {
+    "title": "Contáctanos",
+    "fullName": "Nombre Completo",
+    "interestGroup": "Grupo de Interés",
+    "selectGroup": "Selecciona un grupo",
+    "children": "Niños (8-12 años)",
+    "teenagers": "Adolescentes (13-17 años)",
+    "adults": "Adultos (18+ años)",
+    "consultWith": "Consultar con",
+    "contactViaWhatsapp": "Contactar por WhatsApp",
+    "whatsappMessage": "Hola, estoy interesado en tomar clases de inglés. Mi nombre es {{name}} y me gustaría más información sobre el grupo de {{selectedGroup}}."
+  },
+  "reviewsSection": {
+    "title": "Reseñas",
+    "review": {
+      "name": "Nombre",
+      "date": "Fecha",
+      "rating": "Calificación",
+      "comment": "Comentario"
+    }
+  } 
+}

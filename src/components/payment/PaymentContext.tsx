@@ -13,23 +13,6 @@ export const PaymentProvider: React.FC<PaymentProviderProps> = ({ children, init
   const { discountedPrice } = useCurrency();
   
   // Lista de cupones disponibles (en un entorno real, esto vendría de una API o base de datos)
-  const availableCoupons = useMemo(() => ({
-    'GRAMMAR1': { code: 'GRAMMAR1', discountPercentage: 1, isValid: true },
-    'VOCABPLUS2': { code: 'VOCABPLUS2', discountPercentage: 2, isValid: true },
-    'TALKTIME3': { code: 'TALKTIME3', discountPercentage: 3, isValid: true },
-    'READFAST4': { code: 'READFAST4', discountPercentage: 4, isValid: true },
-    'WRITESMART5': { code: 'WRITESMART5', discountPercentage: 5, isValid: true },
-    'LISTENBETTER6': { code: 'LISTENBETTER6', discountPercentage: 6, isValid: true },
-    'ENGLISHEXPRESS7': { code: 'ENGLISHEXPRESS7', discountPercentage: 7, isValid: true },
-    'SPEAKFLUENT8': { code: 'SPEAKFLUENT8', discountPercentage: 8, isValid: true },
-    'IDIOMBOOST9': { code: 'IDIOMBOOST9', discountPercentage: 9, isValid: true },
-    'FLUENT10': { code: 'FLUENT10', discountPercentage: 10, isValid: true },
-    'POWER20': { code: 'POWER20', discountPercentage: 20, isValid: true },
-    'BOOST30': { code: 'BOOST30', discountPercentage: 30, isValid: true },
-    'SKILL40': { code: 'SKILL40', discountPercentage: 40, isValid: true },
-    'MASTER50': { code: 'MASTER50', discountPercentage: 50, isValid: true },
-    'TAEKWONDO50': { code: 'TAEKWONDO50', discountPercentage: 50, isValid: true },
-  } as Record<string, CouponData>), []);
 
   const initialFormState = useMemo<PaymentFormData>(() => {
     const basePrice = discountedPrice; // Precio base según la ubicación (ya configurado en CurrencyProvider)
@@ -182,27 +165,22 @@ export const PaymentProvider: React.FC<PaymentProviderProps> = ({ children, init
   };
 
   // Función para aplicar un cupón
-  const applyCoupon = (couponCode: string) => {
+  const applyCoupon = (couponData: CouponData) => {
     setFormData(prev => {
       // Verificar si el cupón ya está aplicado
-      const couponAlreadyApplied = prev.appliedCoupons.some(coupon => coupon.code === couponCode);
+      const couponAlreadyApplied = prev.appliedCoupons.some(coupon => coupon.code === couponData.code);
       if (couponAlreadyApplied) {
         return { ...prev, error: 'coupon_already_applied' }; // Cupón ya aplicado
       }
       
       // Verificar si el cupón existe y es válido
-      const coupon = availableCoupons[couponCode];
-      if (!coupon) {
-        return { ...prev, error: 'invalid_coupon' }; // Cupón inválido
-      }
       
+      // Usar directamente el couponData recibido como parámetro
       // Calcular el porcentaje total de descuento actual
-      const currentTotalDiscount = prev.appliedCoupons.reduce(
-        (total, coupon) => total + coupon.discountPercentage, 0
-      );
+      const currentTotalDiscount = prev.appliedCoupons.reduce((total, coupon) => total + coupon.discountPercentage, 0);
       
       // Verificar si al agregar este cupón se excedería el límite del 50%
-      if (currentTotalDiscount + coupon.discountPercentage > 50) {
+      if (currentTotalDiscount + couponData.discountPercentage > 50) {
         return { ...prev, error: 'max_discount_exceeded' }; // Se excede el límite de 50%
       }
       
@@ -213,12 +191,12 @@ export const PaymentProvider: React.FC<PaymentProviderProps> = ({ children, init
       }
       
       // Si el nuevo cupón es de 50% y ya hay otros cupones aplicados
-      if (coupon.discountPercentage === 50 && prev.appliedCoupons.length > 0) {
+      if (couponData.discountPercentage === 50 && prev.appliedCoupons.length > 0) {
         return { ...prev, error: 'cannot_add_max_discount_coupon' }; // No se puede agregar un cupón de 50% con otros cupones
       }
       
       // Añadir el cupón a la lista de cupones aplicados
-      const updatedCoupons = [...prev.appliedCoupons, coupon];
+      const updatedCoupons = [...prev.appliedCoupons, couponData];
       
       // Recalcular el monto con el nuevo cupón aplicado
       const { originalAmount, finalAmount } = calculateAmount(
