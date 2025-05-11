@@ -37,7 +37,7 @@ export interface PaymentContextType {
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
   handleStartDateChange: (date: Date | null) => void;
   handlePaymentMethodChange: (method: PaymentMethodType) => void;
-  applyCoupon: (couponCode: string) => void;
+  applyCoupon: (couponData: CouponData) => void;
   removeCoupon: (couponCode: string) => void;
   initialFormState: PaymentFormData;
   handleSubmit: (e: React.FormEvent) => void;

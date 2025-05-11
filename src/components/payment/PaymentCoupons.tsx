@@ -46,8 +46,7 @@ const PaymentCoupons: React.FC = () => {
     }
   }, [formData.error, t]);
 
-  const handleApplyCoupon = (e: React.MouseEvent<HTMLButtonElement>) => {
-    // Prevenir comportamiento por defecto que podría causar navegación
+  const handleApplyCoupon = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     
     if (!couponCode.trim()) {
@@ -55,9 +54,34 @@ const PaymentCoupons: React.FC = () => {
       return;
     }
 
-    // Intentar aplicar el cupón
-    applyCoupon(couponCode);
-    setCouponCode('');
+    try {
+      // Llamada a la API para validar el cupón y obtener los datos completos
+      const response = await fetch('https://cytalk-backend.onrender.com/coupons/redeem', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'accept': '*/*',
+        },
+        body: JSON.stringify({ code: couponCode })
+      });
+      const data = await response.json();
+      if (response.ok && data.success) {
+        // Ahora usamos el discountPercentage real de la respuesta
+        const couponData = {
+          code: couponCode,
+          discountPercentage: data.discountPercentage,
+          isValid: true
+        };
+        applyCoupon(couponData);
+        setError('');
+      } else {
+        setError(t('payment.coupons.invalidCoupon', 'Cupón inválido o expirado'));
+      }
+    } catch {
+      setError(t('payment.coupons.genericError', 'Error al procesar el cupón'));
+    } finally {
+      setCouponCode('');
+    }
   };
 
   const handleRemoveCoupon = (code: string) => {

@@ -4,6 +4,7 @@ import { FaTag, FaTimes, FaPlus, FaExclamationTriangle } from 'react-icons/fa';
 import { useTranslation } from 'react-i18next';
 import { useCurrency } from '../../context/useCurrency';
 import { motion, AnimatePresence } from 'framer-motion';
+import axios from 'axios';
 
 const PaymentCoupons: React.FC = () => {
   const { t } = useTranslation();
@@ -12,6 +13,7 @@ const PaymentCoupons: React.FC = () => {
   const [couponCode, setCouponCode] = useState('');
   const [error, setError] = useState('');
   const [showMaxDiscountWarning, setShowMaxDiscountWarning] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   
   // Calcular el porcentaje total de descuento actual
   const totalDiscountPercentage = calculateTotalDiscountPercentage(formData.appliedCoupons);
@@ -46,8 +48,7 @@ const PaymentCoupons: React.FC = () => {
     }
   }, [formData.error, t]);
 
-  const handleApplyCoupon = (e: React.MouseEvent<HTMLButtonElement>) => {
-    // Prevenir comportamiento por defecto que podría causar navegación
+  const handleApplyCoupon = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     
     if (!couponCode.trim()) {
@@ -55,9 +56,27 @@ const PaymentCoupons: React.FC = () => {
       return;
     }
 
-    // Intentar aplicar el cupón
-    applyCoupon(couponCode);
-    setCouponCode('');
+    try {
+      setIsSubmitting(true);
+      const response = await axios.post('https://cytalk-backend.onrender.com/coupons/redeem', {
+        code: couponCode
+      });
+
+      if (response.status === 200) {
+        applyCoupon({
+          code: response.data.code,
+          discountPercentage: response.data.discountPercentage,
+          isValid: true
+        });
+        setError('');
+      }
+    } catch (e) {
+      const errorMessage = axios.isAxiosError(e) ? e.response?.data?.message || t('payment.coupons.invalidCoupon', 'Cupón inválido o expirado') : t('payment.coupons.genericError', 'Error al procesar el cupón');
+      setError(errorMessage);
+    } finally {
+      setIsSubmitting(false);
+      setCouponCode('');
+    }
   };
 
   const handleRemoveCoupon = (code: string) => {
@@ -109,9 +128,15 @@ const PaymentCoupons: React.FC = () => {
           onClick={handleApplyCoupon}
           type="button"
           className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center"
-          disabled={totalDiscountPercentage >= 50}
+          disabled={formData.appliedCoupons.some(c => c.code === couponCode) || totalDiscountPercentage >= 50}
         >
-          <FaPlus className="mr-2" />
+          {isSubmitting ? (
+            <svg className="animate-spin h-5 w-5 mr-2" viewBox="0 0 24 24">
+              <path fill="currentColor" d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z"/>
+            </svg>
+          ) : (
+            <FaPlus className="mr-2" />
+          )}
           {t('payment.coupons.apply', 'Aplicar')}
         </button>
       </div>
