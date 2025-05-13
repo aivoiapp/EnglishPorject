@@ -121,8 +121,6 @@ const GuidedTour = () => {
 
   return (
     <>
-      {/* Eliminada la capa de superposición para fondo opaco */}
-      
       {/* Resaltado del elemento objetivo con efecto mejorado */}
       <motion.div 
         ref={highlightRef}
@@ -142,7 +140,6 @@ const GuidedTour = () => {
         }}
         className="fixed z-[1001] border-2 border-blue-400 rounded-lg pointer-events-none bg-gradient-to-r from-blue-400/20 to-purple-400/20 backdrop-blur-sm transition-all duration-300"
       />
-      
       {/* Partículas decorativas */}
       <div className="fixed inset-0 z-[1001] pointer-events-none overflow-hidden">
         {[...Array(15)].map((_, i) => (
@@ -167,7 +164,6 @@ const GuidedTour = () => {
           />
         ))}
       </div>
-      
       {/* Diálogo del tour con animación */}
       <Dialog open={isOpen} onClose={handleClose} className="relative z-[1002]">
         <div className="fixed inset-0 flex items-center justify-center p-4 pointer-events-none">
@@ -183,10 +179,8 @@ const GuidedTour = () => {
               <Dialog.Panel className="relative bg-white/40 dark:bg-gray-800/40 backdrop-blur-md rounded-2xl p-8 shadow-2xl pointer-events-auto dark:text-white border border-white/20 dark:border-gray-700/30 overflow-visible">
                 {/* Efecto de gradiente en el fondo */}
                 <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-purple-500/10 dark:from-blue-600/20 dark:to-purple-600/20 z-0" />
-                
                 {/* Efecto de brillo en la esquina */}
                 <div className="absolute -top-10 -right-10 w-40 h-40 bg-gradient-to-br from-blue-400/30 to-purple-400/30 rounded-full blur-2xl z-0" />
-                
                 <div className="relative z-10">
                   <div className="absolute top-0 right-0 p-2">
                     <motion.button 
@@ -198,7 +192,6 @@ const GuidedTour = () => {
                       <X className="h-5 w-5" />
                     </motion.button>
                   </div>
-                  
                   <div className="flex items-center mb-4">
                     <motion.div
                       animate={{ rotate: 360 }}
@@ -211,7 +204,6 @@ const GuidedTour = () => {
                       {steps[currentStep].title}
                     </h3>
                   </div>
-                  
                   <motion.p 
                     initial={{ opacity: 0, y: 5 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -220,7 +212,6 @@ const GuidedTour = () => {
                   >
                     {steps[currentStep].content}
                   </motion.p>
-                  
                   <div className="flex flex-col space-y-6">
                     <div className="flex justify-center space-x-4">
                       {steps.map((_, index) => (
@@ -235,7 +226,6 @@ const GuidedTour = () => {
                         />
                       ))}
                     </div>
-                    
                     <div className="flex flex-wrap justify-center gap-3">
                       {currentStep > 0 && (
                         <motion.button 
@@ -248,7 +238,6 @@ const GuidedTour = () => {
                           {t('guidedTour.previous', 'Anterior')}
                         </motion.button>
                       )}
-                      
                       <motion.button 
                         onClick={handleSkip}
                         whileHover={{ scale: 1.05 }}
@@ -257,7 +246,6 @@ const GuidedTour = () => {
                       >
                         {t('guidedTour.skip', 'Omitir')}
                       </motion.button>
-                      
                       <motion.button 
                         onClick={handleNext}
                         whileHover={{ scale: 1.05, x: 2 }}
