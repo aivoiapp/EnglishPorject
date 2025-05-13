@@ -471,6 +471,17 @@
       "rating": "Rating",
       "comment": "Comment"
     }
-  }
-  
+  },
+  "guidedTour": {
+    "welcome": "Welcome to CyTalk!",
+    "welcome.content": "We'll guide you to get your coupon and enroll",
+    "step1": "Step 1: Take your placement test",
+    "step1.content": "Click here to start your free evaluation",
+    "step2": "Step 2: Generate your coupon",
+    "step2.content": "After completing the test, you will get a discount code",
+    "step3": "Step 3: Complete your enrollment",
+    "step3.content": "Use your coupon in the payment section to finish",
+    "next": "Next",
+    "skip": "Skip tutorial"
+  } 
 }

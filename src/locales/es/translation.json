@@ -469,5 +469,17 @@
       "rating": "Calificación",
       "comment": "Comentario"
     }
-  } 
+  } ,
+  "guidedTour": {
+    "welcome": "¡Bienvenido a CyTalk!",
+    "welcome.content": "Te guiaremos para obtener tu cupón y matricularte",
+    "step1": "Paso 1: Realiza tu prueba de nivel",
+    "step1.content": "Haz clic aquí para comenzar tu evaluación gratuita",
+    "step2": "Paso 2: Genera tu cupón",
+    "step2.content": "Al completar la prueba, obtendrás un código de descuento",
+    "step3": "Paso 3: Completa tu matrícula",
+    "step3.content": "Usa tu cupón en la sección de pagos para finalizar",
+    "next": "Siguiente",
+    "skip": "Saltar tutorial"
+  }
 }
