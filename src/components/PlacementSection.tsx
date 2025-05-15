@@ -8,7 +8,7 @@ import { evaluateUserTest } from '../services/evaluationService';
 import { generatePlacementTestPDF } from '../services/pdfService'; 
 import { sendPlacementTestData } from '../services/makeServicePlacement';
 import { UserData } from './placement/UserForm';
-import { jsPDF } from 'jspdf';
+import { generatePdfFromHtml } from '../services/htmlToPdf';
 import { selectInitialQuestions, selectNextQuestion, calculatePerformance } from '../services/adaptiveTestService'; // Importar el servicio adaptativo
 import { useTranslation } from 'react-i18next'; // Importar useTranslation para las traducciones
 
@@ -235,63 +235,41 @@ const PlacementSection = () => {
     if (!result) return;
     
     try {
-      const doc = new jsPDF();
-      doc.setFontSize(22);
-      doc.text(t('placementTest.title'), 105, 20, { align: 'center' });
+      // Referencia al contenedor de resultados
+      const resultsContainer = document.getElementById('placement-results-container');
       
-      doc.setFontSize(12);
-      doc.text(`${t('placementTest.name')}: ${userData.name || t('placementTest.results.noSchedules')}`, 20, 30);
-      doc.text(`${t('placementTest.email')}: ${userData.email || t('placementTest.results.noSchedules')}`, 20, 37);
-      doc.text(`${t('placementTest.age')}: ${userData.age}`, 20, 44);
-      
-      doc.setFontSize(16);
-      doc.text(`${t('placementTest.results.level')}: ${result.level}`, 20, 55);
-      doc.text(`${t('placementTest.results.score')}: ${result.score}/100`, 20, 65);
-      
-      if (result.recommendedGroup) {
-        doc.text(`${t('placementTest.results.recommendedGroup')}: ${result.recommendedGroup}`, 20, 75);
+      if (!resultsContainer) {
+        console.error('No se encontró el contenedor de resultados');
+        return;
       }
       
-      doc.setFontSize(14);
-      doc.text(`${t('placementTest.results.strengths')}:`, 20, 90);
-      result.strengths.forEach((strength, i) => {
-        doc.text(`- ${strength}`, 30, 100 + (i * 7));
+      // Generar PDF a partir del contenido HTML
+      await generatePdfFromHtml(resultsContainer, {
+        fileName: `${t('placementTest.results.filePrefix', 'english-assessment')}-${userData.name || t('placementTest.results.defaultUser', 'user')}`,
+        title: t('placementTest.title'),
+        orientation: 'portrait',
+        scale: 1.5,
+        onDocumentReady: (doc) => {
+          // Añadir pie de página
+          const pageCount = doc.getNumberOfPages();
+          for(let i = 1; i <= pageCount; i++) {
+            doc.setPage(i);
+            doc.setFontSize(10);
+            doc.text(`${t('header.title')} - ${t('placementTest.title')}`, 105, 285, { align: 'center' });
+          }
+        },
+        onSaveSuccess: (fileName) => {
+          console.log(`PDF guardado como: ${fileName}`);
+        },
+        onError: (error) => {
+          console.error('Error al generar el PDF:', error);
+          // Usar el método antiguo como respaldo
+          generatePlacementTestPDF(result, userData, t);
+        }
       });
-      
-      const weaknessesStartY = 100 + (result.strengths.length * 7) + 10;
-      doc.text(`${t('placementTest.results.weaknesses')}:`, 20, weaknessesStartY);
-      result.weaknesses.forEach((weakness, i) => {
-        doc.text(`- ${weakness}`, 30, weaknessesStartY + 10 + (i * 7));
-      });
-      
-      const recStartY = weaknessesStartY + 10 + (result.weaknesses.length * 7) + 10;
-      doc.text(`${t('placementTest.results.recommendation')}:`, 20, recStartY);
-      const splitRecommendation = doc.splitTextToSize(result.recommendation, 170);
-      doc.text(splitRecommendation, 20, recStartY + 10);
-      
-      const nextStepsY = recStartY + 10 + (splitRecommendation.length * 7) + 10;
-      doc.text(`${t('placementTest.results.nextSteps')}:`, 20, nextStepsY);
-      result.nextSteps.forEach((step, i) => {
-        const splitStep = doc.splitTextToSize(`${i+1}. ${step}`, 170);
-        doc.text(splitStep, 20, nextStepsY + 10 + (i * 14));
-      });
-      
-      const pageCount = doc.getNumberOfPages();
-      for(let i = 1; i <= pageCount; i++) {
-        doc.setPage(i);
-        doc.setFontSize(10);
-        doc.text(`${t('header.title')} - ${t('placementTest.title')}`, 105, 285, { align: 'center' });
-      }
-      
-      const fileName = `${t('placementTest.results.filePrefix', 'english-assessment')}-${userData.name || t('placementTest.results.defaultUser', 'user')}.pdf`;
-      doc.save(fileName);
-      
-      // Ya no se envía el PDF al webhook
-      // const pdfBlob = doc.output('blob');
-      //await sendPlacementTestData(userData, result);
-      // console.log('Datos y PDF del test de nivel enviados correctamente a Make.com');
     } catch (error) {
       console.error('Error al generar el PDF del test de nivel:', error);
+      // Usar el método antiguo como respaldo
       generatePlacementTestPDF(result, userData, t);
     }
   };
@@ -402,12 +380,14 @@ const PlacementSection = () => {
         ) : isLoading && !result ? (
           <Loader fullScreen={false} evaluationMessages={evaluationMessages} title={t('loader.processing')} />
         ) : result ? (
-          <ResultsDisplay 
-            result={result}
-            userName={userData.name}
-            onReset={resetTest}
-            onGeneratePDF={handleGeneratePDF}
-          />
+          <div id="placement-results-container">
+            <ResultsDisplay 
+              result={result}
+              userName={userData.name}
+              onReset={resetTest}
+              onGeneratePDF={handleGeneratePDF}
+            />
+          </div>
         ) : null}
       </div>
       {/* Loading Overlay para evaluación */}

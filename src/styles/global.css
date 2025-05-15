@@ -1,0 +1,14 @@
+.hide-actions-for-pdf button, .hide-actions-for-pdf [role="button"], .hide-actions-for-pdf a, .hide-actions-for-pdf .CouponModal, .hide-actions-for-pdf .react-confetti {
+  display: none !important;
+}
+.hide-actions-for-pdf .flex.flex-col.md\:flex-row.gap-4 {
+  display: none !important;
+}
+.hide-actions-for-pdf .CouponModal,
+.hide-actions-for-pdf .react-confetti,
+.hide-actions-for-pdf [class*="button"],
+.hide-actions-for-pdf [class*="Button"],
+.hide-actions-for-pdf [class*="btn"],
+.hide-actions-for-pdf [class*="Btn"]{
+  display: none !important;
+}
