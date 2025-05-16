@@ -12,3 +12,8 @@ export { default as useLanguage } from './useLanguage';
 export { default as CurrencyContext } from './CurrencyContext';
 export { default as CurrencyProvider } from './CurrencyProvider';
 export { default as useCurrency } from './useCurrency';
+
+// Exportaciones del contexto de tutorial
+export { TutorialContext } from './TutorialContext';
+export { default as TutorialProvider } from './TutorialProvider';
+export { default as useTutorial } from './useTutorial';

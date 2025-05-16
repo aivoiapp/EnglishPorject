@@ -1,12 +1,18 @@
 import { useState, useEffect, useRef, useMemo } from 'react';
 import { Dialog } from '@headlessui/react';
-import { X, Sparkles } from 'lucide-react';
+import { Sparkles } from 'lucide-react';
 import { FaArrowRight, FaArrowLeft } from 'react-icons/fa';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTutorial } from '../context';
 
-const GuidedTour = () => {
+interface GuidedTourProps {
+  showTutorial?: boolean;
+}
+
+const GuidedTour: React.FC<GuidedTourProps> = ({ showTutorial = false }) => {
   const { t } = useTranslation();
+  const { setShowTutorial: setContextShowTutorial } = useTutorial();
   const [isOpen, setIsOpen] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
   const [targetElement, setTargetElement] = useState<HTMLElement | null>(null);
@@ -19,6 +25,14 @@ const GuidedTour = () => {
       localStorage.setItem('hasSeenTour', 'true');
     }
   }, []);
+  
+  // Efecto para mostrar el tour cuando showTutorial cambia a true
+  useEffect(() => {
+    if (showTutorial) {
+      setIsOpen(true);
+      setCurrentStep(0);
+    }
+  }, [showTutorial]);
 
   const steps = useMemo(() => [
     {
@@ -111,6 +125,8 @@ const GuidedTour = () => {
   const handleClose = () => {
     setIsOpen(false);
     setTargetElement(null);
+    // Restablecer el estado en el contexto para permitir que se vuelva a abrir
+    setContextShowTutorial(false);
   };
 
   const handleSkip = () => {
@@ -182,16 +198,7 @@ const GuidedTour = () => {
                 {/* Efecto de brillo en la esquina */}
                 <div className="absolute -top-10 -right-10 w-40 h-40 bg-gradient-to-br from-blue-400/30 to-purple-400/30 rounded-full blur-2xl z-0" />
                 <div className="relative z-10">
-                  <div className="absolute top-0 right-0 p-2">
-                    <motion.button 
-                      onClick={handleClose} 
-                      whileHover={{ scale: 1.1, rotate: 90 }}
-                      whileTap={{ scale: 0.9 }}
-                      className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 bg-white/30 dark:bg-gray-700/30 backdrop-blur-sm p-2 rounded-full"
-                    >
-                      <X className="h-5 w-5" />
-                    </motion.button>
-                  </div>
+
                   <div className="flex items-center mb-4">
                     <motion.div
                       animate={{ rotate: 360 }}
