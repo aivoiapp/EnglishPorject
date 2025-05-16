@@ -1,15 +1,17 @@
 import { useState, useEffect } from 'react';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, HelpCircle } from 'lucide-react';
 import { ScheduleSection, HeroSection, PaymentSection, FAQSection, PlacementSection, BenefitsSection, AudienceSection, CurriculumSection, ProfessorsSection, FloatingContactButton, AdContainer } from './components';
 import ThemeToggle from './components/ThemeToggle';
 import LanguageSelector from './components/LanguageSelector';
 import CountrySelector from './components/CountrySelector';
 import { AdsProvider, LanguageProvider, CurrencyProvider } from './context';
+import { TutorialProvider, useTutorial } from './context';
 import { useTranslation } from 'react-i18next';
 import GuidedTour from './components/GuidedTour';
 
-function App() {
+function AppContent() {
   const { t } = useTranslation();
+  const { showTutorial, setShowTutorial } = useTutorial();
   // Estado para almacenar los datos del usuario
   const [userData, setUserData] = useState({
     name: '',
@@ -68,7 +70,7 @@ function App() {
     <LanguageProvider>
       <CurrencyProvider>
         <AdsProvider>
-          <GuidedTour />
+          <GuidedTour showTutorial={showTutorial} />
           <div className="min-h-screen bg-gradient-to-b from-[#f5f5f0] to-[#f0f0e8] dark:from-gray-900 dark:to-gray-800 dark:text-white">
             <header className="bg-white dark:bg-gray-800 shadow-lg fixed w-full z-[100]"> 
               <div className="container mx-auto px-6 py-4">
@@ -92,6 +94,13 @@ function App() {
                       <CountrySelector compact={true} />
                       <LanguageSelector />
                       <ThemeToggle />
+                      <button
+                        onClick={() => setShowTutorial(true)}
+                        className="p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-gray-600 dark:text-gray-300"
+                        aria-label="Mostrar tutorial"
+                      >
+                        <HelpCircle className="h-5 w-5" />
+                      </button>
                     </div>
                     
                     {/* Botón de menú móvil */}
@@ -163,6 +172,13 @@ function App() {
                       <CountrySelector compact={true} />
                       <LanguageSelector />
                       <ThemeToggle />
+                      <button
+                        onClick={() => setShowTutorial(true)}
+                        className="p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-gray-600 dark:text-gray-300"
+                        aria-label="Mostrar tutorial"
+                      >
+                        <HelpCircle className="h-5 w-5" />
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -246,6 +262,14 @@ function App() {
         </AdsProvider>
       </CurrencyProvider>
     </LanguageProvider>
+  );
+}
+
+function App() {
+  return (
+    <TutorialProvider>
+      <AppContent />
+    </TutorialProvider>
   );
 }
 
