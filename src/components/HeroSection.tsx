@@ -133,18 +133,17 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onFormSubmit }) => {
 
           {/* Formulario */}
           <motion.div
-            initial={{ opacity: 0, x: 150, y: 50, scale: 0.8, rotate: -5 }}
-            animate={{ opacity: 1, x: 0, y: 0, scale: 1, rotate: 0 }}
+            initial={{ opacity: 0, x: 150, scale: 0.95 }}
+            animate={{ opacity: 1, x: 0, scale: 1 }}
             transition={{ 
-              delay: 4.0,
-              type: 'spring',
-              stiffness: 400,
-              damping: 5,
-              mass: 0.8,
-              velocity: 0.8,
-              bounce: 0.5
+                delay: 0.3,
+                type: 'spring',
+                stiffness: 120,
+                damping: 20,
+                mass: 1,
+                velocity: 0.1
             }}
-            className="relative z-10 bg-[#f6e6fa]/90 dark:bg-gray-800/90 rounded-2xl shadow-2xl ring-2 ring-blue-100 dark:ring-blue-900/40 p-6 md:p-8 backdrop-blur-md transition-all duration-300"
+            className="relative z-10 bg-[#f6e6fa]/90 dark:bg-gray-800/90 rounded-2xl shadow-2xl ring-2 ring-blue-100 dark:ring-blue-900/40 p-6 md:p-8 backdrop-blur-md"
           >
             <div className="text-center mb-6">
               <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-600 to-blue-500 bg-clip-text text-transparent">
