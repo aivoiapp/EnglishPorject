@@ -10,6 +10,7 @@ import '../phone-input.css';
 import { motion } from 'framer-motion';
 import FloatingContactButton from './FloatingContactButton';
 
+
 interface HeroSectionProps {
   onFormSubmit: (name: string, email: string, phone: string) => void; // Update the function signature
 }
@@ -58,6 +59,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onFormSubmit }) => {
           <motion.div 
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.5 }}
             className="relative z-10 space-y-6 text-white"
           >
             <div className="mb-8">
@@ -92,6 +94,9 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onFormSubmit }) => {
                 <motion.div
                   key={index}
                   whileHover={{ scale: 1.02 }}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 1.1 + index * 0.2 }}
                   className="flex items-center p-4 bg-white/10 dark:bg-gray-800/50 rounded-xl backdrop-blur-sm"
                 >
                   <item.icon className="w-8 h-8 text-yellow-400 mr-3 flex-shrink-0" />
@@ -102,8 +107,9 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onFormSubmit }) => {
 
             {/* Precios y Oferta */}
             <motion.div 
-              initial={{ scale: 0.9 }}
-              animate={{ scale: 1 }}
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 2.3 }}
               className="bg-white/10 dark:bg-gray-800/50 p-6 rounded-2xl backdrop-blur-sm"
             >
               <div className="flex items-end gap-4 mb-2">
@@ -127,9 +133,17 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onFormSubmit }) => {
 
           {/* Formulario */}
           <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="relative z-10 bg-[#f6e6fa]/90 dark:bg-gray-800/90 rounded-2xl shadow-2xl ring-2 ring-blue-100 dark:ring-blue-900/40 p-6 md:p-8 backdrop-blur-md transition-all duration-300"
+            initial={{ opacity: 0, x: 150, scale: 0.95 }}
+            animate={{ opacity: 1, x: 0, scale: 1 }}
+            transition={{ 
+                delay: 0.3,
+                type: 'spring',
+                stiffness: 120,
+                damping: 20,
+                mass: 1,
+                velocity: 0.1
+            }}
+            className="relative z-10 bg-[#f6e6fa]/90 dark:bg-gray-800/90 rounded-2xl shadow-2xl ring-2 ring-blue-100 dark:ring-blue-900/40 p-6 md:p-8 backdrop-blur-md"
           >
             <div className="text-center mb-6">
               <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-600 to-blue-500 bg-clip-text text-transparent">
@@ -233,13 +247,8 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onFormSubmit }) => {
       {/* Elimina la sección ContactSection aquí */}
       {/* <ContactSection isOpen={isContactModalOpen} onClose={() => setIsContactModalOpen(false)} /> */}
       {/* Agrega el botón flotante */}
-      <FloatingContactButton />
+      <FloatingContactButton />     
       
-      {/* Efectos de fondo */}
-      <div className="absolute inset-0 opacity-10 dark:opacity-5">
-        <div className="absolute w-[800px] h-[800px] -top-48 -left-48 bg-gradient-to-r from-yellow-400/20 to-transparent rounded-full blur-3xl" />
-        <div className="absolute w-[600px] h-[600px] -bottom-32 -right-32 bg-gradient-to-l from-blue-400/20 to-transparent rounded-full blur-3xl" />
-      </div>
     </section>
   );
 };

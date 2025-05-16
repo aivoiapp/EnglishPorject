@@ -7,3 +7,4 @@ export interface TutorialContextType {
 
 export const TutorialContext = createContext<TutorialContextType | undefined>(undefined);
 
+export default TutorialContext;

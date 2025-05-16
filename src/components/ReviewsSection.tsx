@@ -34,7 +34,7 @@ const ReviewsSection = () => {
   return (
     <section
       id="reviews"
-      className="py-16 bg-gradient-to-b from-[#5B0E88] to-[#C5156E] dark:from-gray-900 dark:to-gray-800 text-gray-800 dark:text-white"
+      className="py-16 bg-gradient-to-b from-[#5B0E88] to-[#C5156E] dark:from-gray-900 dark:to-gray-800 text-gray-100 dark:text-white"
     >
       <div className="container mx-auto px-6 pb-16">
         <h2 className="text-4xl font-bold text-center mb-12 mt-4">
