@@ -25,15 +25,15 @@ export const schedules: ScheduleTranslations = {
     {
       group: "Niños (8-12 años)",
       times: [
-        "Lunes y Miércoles 4:00 PM - 5:00 PM (Intermedios: B1-B2)", 
-        "Martes y Jueves 4:00 PM - 5:00 PM (Principiantes: A0-A1-A2)"
+        "Lunes y Miércoles 5:00 PM - 6:00 PM (Intermedios: B1-B2)", 
+        "Martes y Jueves 5:00 PM - 6:00 PM (Principiantes: A0-A1-A2)"
       ]
     },
     {
       group: "Adolescentes (13-17 años)",
       times: [
-        "Lunes y Miércoles 5:00 PM - 6:00 PM (Intermedios: B1-B2)", 
-        "Martes y Jueves 5:00 PM - 6:00 PM (Principiantes: A0-A1-A2)"
+        "Lunes y Miércoles 6:00 PM - 7:00 PM (Intermedios: B1-B2)", 
+        "Martes y Jueves 6:00 PM - 7:00 PM (Principiantes: A0-A1-A2)"
       ]
     },
     {
@@ -48,15 +48,15 @@ export const schedules: ScheduleTranslations = {
     {
       group: "Children (8-12 years)",
       times: [
-        "Monday and Wednesday 4:00 PM - 5:00 PM (Intermediate: B1-B2)", 
-        "Tuesday and Thursday 4:00 PM - 5:00 PM (Beginners: A0-A1-A2)"
+        "Monday and Wednesday 5:00 PM - 6:00 PM (Intermediate: B1-B2)", 
+        "Tuesday and Thursday 5:00 PM - 6:00 PM (Beginners: A0-A1-A2)"
       ]
     },
     {
       group: "Teenagers (13-17 years)",
       times: [
-        "Monday and Wednesday 5:00 PM - 6:00 PM (Intermediate: B1-B2)", 
-        "Tuesday and Thursday 5:00 PM - 6:00 PM (Beginners: A0-A1-A2)"
+        "Monday and Wednesday 6:00 PM - 7:00 PM (Intermediate: B1-B2)", 
+        "Tuesday and Thursday 6:00 PM - 7:00 PM (Beginners: A0-A1-A2)"
       ]
     },
     {
