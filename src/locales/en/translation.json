@@ -4,8 +4,7 @@
     "selectCountry": "Select country",
     "peruPaymentMethods": "Showing payment methods for Peru",
     "internationalPaymentMethods": "Showing international payment methods",
-    "advertisement": "Advertisement",
-    "copyButton": "Copy",
+        "copyButton": "Copy",
     "closeButton": "Close"
   },
   "benefitsSection": {
@@ -16,7 +15,10 @@
     "betterSalariesDescription": "Bilingual professionals earn on average 30% more than those who speak only one language.",
     "professionalDevelopmentTitle": "Professional Development",
     "professionalDevelopmentDescription": "Enhance your professional profile and access international resources, research, and networking.",
-    "scrollToViewVideo": "Scroll to view video"
+    "scrollToViewVideo": "Scroll to view video",
+    "benefits": {
+      "startNow": "Learn now—get started!"
+    }
   },
   "privacyPolicy": {
     "title": "Personal Data Protection Policy",
@@ -80,6 +82,9 @@
   },
   "faqSection": {
     "title": "Frequently Asked Questions",
+    "faq": {
+      "enrollNow": "Enroll now to receive your discount."
+    },
     "cost": {
       "question": "How much does the course cost?",
       "answer": "Take advantage of our special offers! Get special discounts and take advantage of all the benefits of our courses."
@@ -213,7 +218,7 @@
     "aboutDescription": "Our assessment follows the standards of the Common European Framework of Reference for Languages (CEFR).",
     "howItWorksTitle": "How does it work?",
     "howItWorksList": [
-      "FREE 10-minute assessment",
+      "FREE 5-minute assessment",
       "Adaptive questions based on your answers",
       "AI-powered personalized analysis",
       "Download results in PDF"
@@ -407,11 +412,24 @@
       "maxDiscountCouponApplied": "You already have a coupon with the maximum allowed discount (50%)",
       "cannotAddMaxDiscountCoupon": "You cannot add a 50% coupon when you already have other coupons applied",
       "approachingMaxDiscount": "You're approaching the maximum discount limit (50%)"
-           
+    },
+    "spinWheel": {
+      "title": "Spin the Wheel!",
+      "subtitle": "Try your luck and win a discount for your English course at Cytalk",
+      "spinButton": "Spin!",
+      "spinning": "Spinning...",
+      "congratulations": "Congratulations! You won a {{value}}% discount",
+      "tryAgain": "Try again!",
+      "spinAgain": "You can spin the wheel as many times as you want to get different discounts.",
+      "error": "An error occurred while spinning the wheel. Please try again.",
+      "tooltipText": "Spin the wheel and win",
+      "getCouponButton": "Get My Coupon",
+      "generatingCoupon": "Generating Coupon..."      
     }
   },
     
   "hero": {
+    "takeTest": "¡Take a FREE Level Test in Just 5 Minutes!",
     "title": "Master English with",
     "titleHighlight": "an effective methodology and certified teachers",
     "subtitle": "Boost your personal and professional growth with live, dynamic, and student-centered virtual classes.",
@@ -450,15 +468,14 @@
       "privacyPolicyLink": "Privacy Policy",
       "submitButton": "Continue to payment!",
       "couponNote": "To obtain your discount coupon, contact us via the",
-      "contactLink": "Contact Us section"
+      "contactLink": "Contact Us section",
+      "buttonText": "Next"
     }
   },
   "footer": {
     "copyright": "All rights reserved."
   },
-  "ads": {
-    "advertisement": "Advertisement"
-  },
+  
   "navigation": {
     "next": "Next",
     "previous": "Previous"
@@ -483,5 +500,9 @@
     "step3.content": "Use your coupon in the payment section to finish",
     "next": "Next",
     "skip": "Skip tutorial"
-  } 
+  },
+  "couponModal": {
+    "title": "Your Discount Coupon!",
+    "copied": "Copied to clipboard!"
+  }
 }

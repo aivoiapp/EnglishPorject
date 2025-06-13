@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Menu, X, HelpCircle } from 'lucide-react';
-import { ScheduleSection, HeroSection, PaymentSection, FAQSection, PlacementSection, BenefitsSection, AudienceSection, CurriculumSection, ProfessorsSection, FloatingContactButton, AdContainer } from './components';
+import { ScheduleSection, HeroSection, PaymentSection, FAQSection, PlacementSection, BenefitsSection, AudienceSection, CurriculumSection, ProfessorsSection, FloatingContactButton, SpinWheelButton } from './components';
 import ThemeToggle from './components/ThemeToggle';
 import LanguageSelector from './components/LanguageSelector';
 import CountrySelector from './components/CountrySelector';
-import { AdsProvider, LanguageProvider, CurrencyProvider } from './context';
+import { LanguageProvider, CurrencyProvider } from './context';
 import { TutorialProvider, useTutorial } from './context';
 import { useTranslation } from 'react-i18next';
 import GuidedTour from './components/GuidedTour';
@@ -69,7 +69,7 @@ function AppContent() {
   return (
     <LanguageProvider>
       <CurrencyProvider>
-        <AdsProvider>
+
           <GuidedTour showTutorial={showTutorial} />
           <div className="min-h-screen bg-gradient-to-b from-[#f5f5f0] to-[#f0f0e8] dark:from-gray-900 dark:to-gray-800 dark:text-white">
             <header className="bg-white dark:bg-gray-800 shadow-lg fixed w-full z-[100]"> 
@@ -94,6 +94,7 @@ function AppContent() {
                       <CountrySelector compact={true} />
                       <LanguageSelector />
                       <ThemeToggle />
+                      <SpinWheelButton />
                       <button
                         onClick={() => setShowTutorial(true)}
                         className="p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-gray-600 dark:text-gray-300"
@@ -172,6 +173,7 @@ function AppContent() {
                       <CountrySelector compact={true} />
                       <LanguageSelector />
                       <ThemeToggle />
+                      <SpinWheelButton />
                       <button
                         onClick={() => setShowTutorial(true)}
                         className="p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-gray-600 dark:text-gray-300"
@@ -189,24 +191,12 @@ function AppContent() {
               <HeroSection onFormSubmit={handleHeroFormSubmit} />
               <BenefitsSection />
               
-              {/* Anuncio entre secciones (después de Benefits) */}
-              <AdContainer 
-                position="between-sections" 
-                adClient="ca-pub-XXXXXXXXXXXXXXXX" 
-                adSlot="XXXXXXXXXX" 
-                className="container mx-auto px-6" 
-              />
+
               
               <AudienceSection />
               <CurriculumSection />
               
-              {/* Anuncio entre secciones (después de Curriculum) */}
-              <AdContainer 
-                position="between-sections" 
-                adClient="ca-pub-XXXXXXXXXXXXXXXX" 
-                adSlot="XXXXXXXXXX" 
-                className="container mx-auto px-6" 
-              />
+
               
               <ProfessorsSection />
               <ScheduleSection />
@@ -214,13 +204,7 @@ function AppContent() {
               <PlacementSection />
               <FloatingContactButton onNameChange={handleNameChange} />
               
-              {/* Anuncio antes de la sección de pago */}
-              <AdContainer 
-                position="footer" 
-                adClient="ca-pub-XXXXXXXXXXXXXXXX" 
-                adSlot="XXXXXXXXXX" 
-                className="container mx-auto px-6" 
-              />
+
               
               <PaymentSection 
                 name={userData.name} 
@@ -259,7 +243,7 @@ function AppContent() {
               </div>
             </footer>
           </div>
-        </AdsProvider>
+
       </CurrencyProvider>
     </LanguageProvider>
   );

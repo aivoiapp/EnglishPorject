@@ -4,19 +4,22 @@
     "selectCountry": "Seleccionar país",
     "peruPaymentMethods": "Mostrando métodos de pago para Perú",
     "internationalPaymentMethods": "Mostrando métodos de pago internacionales",
-    "advertisement": "Publicidad",
-    "copyButton": "Copiar",
+        "copyButton": "Copiar",
     "closeButton": "Cerrar"
   },
   "benefitsSection": {
     "title": "Beneficios de aprender inglés",
+    "startNow": "¡Quiero mi plaza ahora!",    
     "globalOpportunitiesTitle": "Oportunidades globales",
     "globalOpportunitiesDescription": "Accede a oportunidades laborales y educativas en todo el mundo. El inglés es el idioma global de los negocios y la educación.",
     "betterSalariesTitle": "Mejores salarios",
     "betterSalariesDescription": "Los profesionales bilingües ganan en promedio un 30% más que aquellos que solo hablan un idioma.",
     "professionalDevelopmentTitle": "Desarrollo profesional",
     "professionalDevelopmentDescription": "Mejora tu perfil profesional y accede a recursos, investigaciones y networking internacional.",
-    "scrollToViewVideo": "Desplázate para ver el video"
+    "scrollToViewVideo": "Desplázate para ver el video",
+    "benefits": {
+      "startNow": "¡Empieza a aprender ahora!"
+    }
   },
   "privacyPolicy": {
     "title": "Política de Protección de Datos Personales",
@@ -132,6 +135,10 @@
   },
   "faqSection": {
     "title": "Preguntas Frecuentes",
+    "enrollNow": "Sí, quiero asegurar mi cupo con el descuento",
+    "faq": {
+      "enrollNow": "¡Matricúlate ahora y obtén tu descuento!"
+    },
     "cost": {
       "question": "¿Cuánto cuesta el curso?",
       "answer": "¡Aprovecha nuestras ofertas especiales! Consigue descuentos especiales y aprovecha todas las ventajas de nuestros cursos."
@@ -189,11 +196,14 @@
     "generatingReport": "Generando tu informe detallado..."
   },
  "hero": {
+    "takeTest": "¡Descubre tu nivel GRATIS en 5 minutos!",
     "title": "Domina el inglés con",
     "titleHighlight": "una metodología eficaz y profesores certificados", 
     "subtitle": "Impulsa tu crecimiento personal y profesional con clases virtuales en vivo, dinámicas y centradas en el estudiante.",
     "discount": "Hasta 50% de descuento en tu mensualidad o en el nivel completo (6 meses)",
     "whyChooseUs": "¿Por qué elegirnos?",
+    "limitedOffer": "ÚLTIMOS CUPOS DISPONIBLES - 50% OFF",
+    
     "benefits": {
         "liveClasses": "Clases en vivo con profesores expertos",
         "sessions": "2 sesiones semanales de 60 minutos",
@@ -227,15 +237,14 @@
       "privacyPolicyLink": "Aviso de privacidad",
       "submitButton": "¡Continuar al pago!",
       "couponNote": "Para obtener tu cupón de descuento, comunícate con nosotros en la sección",
-      "contactLink": "Contáctanos"
+      "contactLink": "Contáctanos",
+      "buttonText": "Siguiente"
     }
   },
   "footer": {
     "copyright": "Todos los derechos reservados."
   },
-  "ads": {
-    "advertisement": "Publicidad"
-  },
+  
   "navigation": {
     "next": "Siguiente",
     "previous": "Anterior"
@@ -396,7 +405,7 @@
     "aboutDescription": "Nuestra evaluación sigue los estándares del Marco Común Europeo de Referencia para las Lenguas (MCER).",
     "howItWorksTitle": "¿Cómo funciona?",
     "howItWorksList": [
-      "Evaluación GRATUITA de 10 minutos",
+      "Evaluación GRATUITA de 5 minutos",
       "Preguntas adaptativas según tus respuestas",
       "Análisis personalizado con IA",
       "Descarga de resultados en PDF"
@@ -481,5 +490,18 @@
     "step3.content": "Usa tu cupón en la sección de pagos para finalizar",
     "next": "Siguiente",
     "skip": "Saltar tutorial"
+  },
+  "spinWheel": {
+    "title": "¡Gira la Ruleta!",
+    "subtitle": "Prueba tu suerte y gana un descuento para tu curso de inglés en Cytalk",
+    "spinButton": "¡Girar!",
+    "spinning": "Girando...",
+    "congratulations": "¡Felicidades! Has ganado un {{value}}% de descuento",
+    "tryAgain": "¡Inténtalo de nuevo!",
+    "spinAgain": "Puedes girar la ruleta tantas veces como quieras para obtener diferentes descuentos.",
+    "error": "Ocurrió un error al girar la ruleta. Por favor, inténtalo de nuevo.",
+    "tooltipText": "Gira la ruleta y gana",
+    "getCouponButton": "Obtener mi cupón",
+    "generatingCoupon": "Generando cupón..."
   }
 }

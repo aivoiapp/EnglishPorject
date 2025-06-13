@@ -8,7 +8,7 @@ import { useLanguage } from '../context/useLanguage';
 import { useCurrency } from '../context/useCurrency';
 import '../phone-input.css';
 import { motion } from 'framer-motion';
-import FloatingContactButton from './FloatingContactButton';
+
 
 
 interface HeroSectionProps {
@@ -211,44 +211,29 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onFormSubmit }) => {
                 </label>
               </div>
 
-              <PrivacyPolicyModal 
-                isOpen={isPrivacyModalOpen}
-                onClose={() => setIsPrivacyModalOpen(false)}
-                />
-  
               <button
                 type="submit"
-                disabled={!privacyAccepted}
-                className="w-full bg-gradient-to-r from-blue-600 to-blue-500 text-white py-4 rounded-xl font-bold hover:from-blue-700 hover:to-blue-600 transition-all flex items-center justify-center gap-2"
+                className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 transition duration-300 ease-in-out text-lg font-semibold transform hover:scale-105 shadow-lg hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-800"
               >
-                <Sparkles className="w-5 h-5" />
-                {t('hero.form.submitButton')}
+                {t('hero.form.buttonText')}
               </button>
-              <p className="text-center text-sm text-gray-500 dark:text-gray-400 mt-3">
-                {t('hero.form.couponNote')}{' '}
-                <button 
-                  type="button"
-                  onClick={() => {
-                    // Simula el click en el botón flotante
-                    const floatBtn = document.querySelector('.fixed.bottom-6.right-6');
-                    if (floatBtn) (floatBtn as HTMLElement).click();
-                  }}
-                  className="text-blue-600 dark:text-blue-400 underline"
-                >
-                  {t('hero.form.contactLink')}
-                </button>
-              </p>
+
+              <button
+                type="button"
+                onClick={() => document.getElementById('placement')?.scrollIntoView({ behavior: 'smooth' })}
+                className="w-full bg-yellow-500 text-gray-900 py-3 rounded-lg hover:bg-yellow-600 transition duration-300 ease-in-out text-lg font-semibold mt-4 transform hover:scale-105 shadow-lg hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-yellow-300 dark:focus:ring-yellow-800"
+              >
+                ¡Descubre tu nivel GRATIS!
+              </button>
             </form>
+
+            <PrivacyPolicyModal
+              isOpen={isPrivacyModalOpen}
+              onClose={() => setIsPrivacyModalOpen(false)}
+            />
           </motion.div>
         </div>
       </div>
-
-      {/* Modal de Contacto */}
-      {/* Elimina la sección ContactSection aquí */}
-      {/* <ContactSection isOpen={isContactModalOpen} onClose={() => setIsContactModalOpen(false)} /> */}
-      {/* Agrega el botón flotante */}
-      <FloatingContactButton />     
-      
     </section>
   );
 };

@@ -1,6 +1,7 @@
 import { Globe, Award, TrendingUp } from 'lucide-react';
 import { useInView } from 'react-intersection-observer';
 import { t } from 'i18next';
+import { Button } from '@headlessui/react';
 
 const BenefitsSection = () => {
   const { ref } = useInView({
@@ -30,6 +31,14 @@ const BenefitsSection = () => {
                   <p className="text-gray-600 dark:text-gray-300">
                     {t('benefitsSection.globalOpportunitiesDescription')}
                   </p>
+                  <div className="mt-4">
+                    <Button
+                      onClick={() => window.location.hash = '#payment'}
+                      className="mt-4 inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-yellow-500 hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 shadow-lg transform transition duration-300 ease-in-out hover:scale-105"
+                    >
+                      {t('benefitsSection.benefits.startNow', '¡Empieza a aprender ahora!')}
+                    </Button>
+                  </div>
                 </div>
               </div>
 
@@ -42,6 +51,14 @@ const BenefitsSection = () => {
                   <p className="text-gray-600 dark:text-gray-300">
                     {t('benefitsSection.betterSalariesDescription')}
                   </p>
+                  <div className="mt-4">
+                  <Button
+                      onClick={() => window.location.hash = '#payment'}
+                      className="mt-4 inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-yellow-500 hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 shadow-lg transform transition duration-300 ease-in-out hover:scale-105"
+                    >
+                      {t('benefitsSection.benefits.startNow', '¡Empieza a aprender ahora!')}
+                    </Button>
+                  </div>
                 </div>
               </div>
 
@@ -54,6 +71,14 @@ const BenefitsSection = () => {
                   <p className="text-gray-600 dark:text-gray-300">
                     {t('benefitsSection.professionalDevelopmentDescription')}
                   </p>
+                  <div className="mt-4">
+                  <Button
+                      onClick={() => window.location.hash = '#payment'}
+                      className="mt-4 inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-yellow-500 hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 shadow-lg transform transition duration-300 ease-in-out hover:scale-105"
+                    >
+                      {t('benefitsSection.benefits.startNow', '¡Empieza a aprender ahora!')}
+                    </Button>
+                  </div>
                 </div>
               </div>
             </div>

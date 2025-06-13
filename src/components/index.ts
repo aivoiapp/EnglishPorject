@@ -11,8 +11,6 @@ export { default as CurriculumSection } from './CurriculumSection.tsx';
 export { default as PricingSection } from './PricingSection.tsx';
 export { default as ProfessorsSection } from './ProfessorsSection.tsx';
 export { default as FloatingContactButton } from './FloatingContactButton.tsx';
-
-// Componentes de anuncios
-export { default as AdBanner } from './AdBanner.tsx';
-export { default as AdContainer } from './AdContainer.tsx';
-export { default as SidebarAdsLayout } from './SidebarAdsLayout.tsx';
+export { default as SpinWheel } from './SpinWheel.tsx';
+export { default as SpinWheelButton } from './SpinWheelButton.tsx';
+export { default as Tooltip } from './Tooltip.tsx';
